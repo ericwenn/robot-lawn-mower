@@ -4,11 +4,12 @@ from plot_splits import plot_image
 
 
 
-imageWidth, imageHeight, rangex, rangey, splits = split_image("assets/grass.jpg", "assets/out")
+size, splits = split_image("assets/ball-on-grass.jpeg", "assets/out")
 
 colors = []
 for split in splits:
-    colors.append(most_frequent_colour(split))
+    split['color'] = most_frequent_colour(split['slice'])
 
+print splits
 
-plot_image(imageWidth, imageHeight, rangex, rangey, splits, colors, "assets/out")
+plot_image(size, splits, "assets/out")

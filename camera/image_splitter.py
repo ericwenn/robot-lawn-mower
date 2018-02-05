@@ -1,6 +1,7 @@
 from PIL import Image
-SPLIT_X=100
-SPLIT_Y=100
+import math
+SPLIT_X=150
+SPLIT_Y=150
 
 
 def split_image(image_path, split_save_path=None):
@@ -9,19 +10,29 @@ def split_image(image_path, split_save_path=None):
     (imageWidth, imageHeight)=img.size
     gridx=SPLIT_X
     gridy=SPLIT_Y
-    rangex=imageWidth/gridx
-    rangey=imageHeight/gridy
+
+    rangex=int(math.ceil(float(imageWidth)/gridx))
+    rangey=int(math.ceil(float(imageHeight)/gridy))
+    print rangex
 
     splits = []
 
     for x in xrange(rangex):
         for y in xrange(rangey):
-            bbox=(x*gridx, y*gridy, x*gridx+gridx, y*gridy+gridy)
+            x1 = x*gridx
+            x2 = min(x1+gridx, imageWidth)
+            y1 = y*gridy
+            y2 = min(y1+gridy, imageHeight)
+            bbox=(x1, y1, x2, y2)
             slice_bit=img.crop(bbox)
 
-            splits.append(slice_bit)
+            splits.append({
+                'slice': slice_bit,
+                'xoffset': x1,
+                'yoffset': y1
+            })
 
             if not split_save_path == None:
                 slice_bit.save('{}/xmap_{}_{}.{}'.format(split_save_path, x, y, ext), optimize=True, bits=6)
 
-    return imageWidth, imageHeight, rangex, rangey, splits
+    return (imageWidth, imageHeight), splits
