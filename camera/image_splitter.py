@@ -1,6 +1,6 @@
 from PIL import Image
-SPLIT_X=50
-SPLIT_Y=50
+SPLIT_X=100
+SPLIT_Y=100
 
 
 def split_image(image_path, split_save_path=None):
@@ -24,4 +24,4 @@ def split_image(image_path, split_save_path=None):
             if not split_save_path == None:
                 slice_bit.save('{}/xmap_{}_{}.{}'.format(split_save_path, x, y, ext), optimize=True, bits=6)
 
-    return splits
+    return imageWidth, imageHeight, rangex, rangey, splits
