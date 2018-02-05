@@ -11,6 +11,6 @@ def most_frequent_colour(image):
         if count > most_frequent_pixel[0]:
             most_frequent_pixel = (count, colour)
 
-    //compare("Most Common", image, most_frequent_pixel[1])
+    # compare("Most Common", image, most_frequent_pixel[1])
 
     return most_frequent_pixel
