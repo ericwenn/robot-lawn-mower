@@ -1,1 +1,0 @@
-Put header files in it's own map inside Arduino install root/libraries map
