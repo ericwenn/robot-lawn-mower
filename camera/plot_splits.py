@@ -15,6 +15,6 @@ def plot_image(size, splits, out):
         #See if the hue is in the green range on HSV scale
         hue = rgb_to_hsv(split['color'][1][0]/255,split['color'][1][1]/255,split['color'][1][2]/255);
         if (150>hue[0]*360 >90) & (hue[1]>1/6):
-            print(hue[1])
+            #print(hue[1])
             draw.text((split['xoffset'], split['yoffset']),"Green",(0,0,0),fnt)
     full_im.save('{}/color.jpg'.format(out), optimize=True, bits=6)
