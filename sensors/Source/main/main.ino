@@ -1,35 +1,32 @@
 #include <Ultrasonic.h>
 
 
-#define MIN_DISTANCE 300
+#define MIN_DISTANCE 10
 #define FRONT_OFFSET 0
 #define LEFT_OFFSET 0
 #define RIGHT_OFFSET 0
 #define REAR_OFFSET 0
 
-#define FRONTSIG 19
-#define LEFTSIG 20
-#define RIGHTSIG 21
-#define REARSIG 22
-#define ERRORSIG 23
+#define FRONTSIG 14
+#define LEFTSIG 15
+#define RIGHTSIG 16
+#define REARSIG 17
+#define ERRORSIG 18
+#define TRIG 12
+#define TIMEOUT 40000UL
 //Sensor declarations
 
-Ultrasonic front(15,14);
-Ultrasonic frontLeft(15,13);
-Ultrasonic frontRight(15,12);
-Ultrasonic left(15,11);
-Ultrasonic right(15,10);
-Ultrasonic rear(15,9);
-Ultrasonic rearLeft(15,8);
-Ultrasonic rearRight(15,7);
+Ultrasonic front(TRIG,11, TIMEOUT);
+Ultrasonic frontLeft(TRIG,10, TIMEOUT);
+Ultrasonic frontRight(TRIG,9, TIMEOUT);
+Ultrasonic left(TRIG,8, TIMEOUT);
+Ultrasonic right(TRIG,7, TIMEOUT);
+Ultrasonic rear(TRIG,6, TIMEOUT);
+Ultrasonic rearLeft(TRIG,5, TIMEOUT);
+Ultrasonic rearRight(TRIG,4, TIMEOUT);
 
 unsigned char signals;
 
-
-
-
-//Maybe we should let all sensors on each side use the same trigger pin to save pins, for example,
-//All sensors mounted on the front can share trigger pin 13?
 
 void setup() {
   pinMode(FRONTSIG, OUTPUT); //FRONTSIG
@@ -37,6 +34,7 @@ void setup() {
   pinMode(RIGHTSIG, OUTPUT); //RIGHTSIG
   pinMode(REARSIG, OUTPUT); //REARSIG
   pinMode(ERRORSIG, OUTPUT); //ERRORSIG
+  digitalWrite(FRONTSIG, LOW);
   signals = 0;
 }
 
@@ -45,18 +43,18 @@ void loop() {
   update_signals(signals);
 }
 
-char read_sensors(char c){
-  char front = determine_blocked(front) + determine_blocked(frontRight) + determine_blocked(frontLeft);
-  char left = determine_blocked(left);
-  char right = determine_blocked(right);
-  char rear = determine_blocked(rear) + determine_blocked(rearRight) + determine_blocked(rearLeft);
-
-  c = front | (left << 1) | (right << 2) | (rear << 3);
+unsigned char read_sensors(char c){
+  unsigned char _front = determine_blocked(front) + determine_blocked(frontRight) + determine_blocked(frontLeft);
+  unsigned char _left = determine_blocked(left);
+  unsigned char _right = determine_blocked(right);
+  unsigned char _rear = determine_blocked(rear) + determine_blocked(rearRight) + determine_blocked(rearLeft);
+  
+  c = _front | (_left << 1) | (_right << 2) | (_rear << 3);
   return c;
   
 }
 
-char determine_blocked(Ultrasonic sensor){
+unsigned char determine_blocked(Ultrasonic sensor){
   if(sensor.distanceRead() < MIN_DISTANCE){
     return 1; 
   }
