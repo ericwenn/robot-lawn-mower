@@ -1,7 +1,7 @@
 #include <Ultrasonic.h>
 
 
-#define MIN_DISTANCE 25
+#define MAX_DISTANCE 25
 #define FRONT_OFFSET 0
 #define LEFT_OFFSET 0
 #define RIGHT_OFFSET 0
@@ -37,7 +37,7 @@ void setup() {
   pinMode(RIGHTSIG, OUTPUT); //RIGHTSIG
   pinMode(REARSIG, OUTPUT); //REARSIG
   pinMode(ERRORSIG, OUTPUT); //ERRORSIG
-  digitalWrite(FRONTSIG, LOW);
+  //digitalWrite(FRONTSIG, LOW);
   signals = 0;
 
   //Used for debug
@@ -48,7 +48,7 @@ void setup() {
 
 void loop() {
   signals = read_sensors(signals);
-  update_signals(signals);
+  //update_signals(signals);
 
 }
 
@@ -56,11 +56,12 @@ unsigned char read_sensors(char c){
   
   //Check front for hit, if hit _front = 1 
   unsigned char _frontFront = frontFront.distanceRead();
-
+  delay(4);
   //Check on the left and right side on the front
   unsigned char _frontLeft = frontLeft.distanceRead();
+  delay(4);
   unsigned char _frontRight = frontRight.distanceRead();
-
+  delay(4);
   //De-bug
 /*
   Serial.print(" Dist FrontRight: ");
@@ -77,19 +78,33 @@ unsigned char read_sensors(char c){
   Serial.print(_frontLeft);
   Serial.print(" ");
   Serial.print(determine_blocked(_frontLeft));
-  //digitalWrite(LEFTSIG,LOW); // can be better looking
+  
+  if(determine_blocked(_frontLeft) == 1){ //can be better looking
+    digitalWrite(LEFTSIG,HIGH);
+    }else{
+     digitalWrite(LEFTSIG,LOW); 
+  }
+
 
   Serial.print(" FrontFront ");
   Serial.print(_frontFront);
   Serial.print(" ");
   Serial.print(determine_blocked(_frontFront));
-  //FRONTSIG = determine_blocked(_frontFront); // can be better looking
+  if(determine_blocked(_frontFront) == 1){ //can be better looking
+    digitalWrite(FRONTSIG,HIGH);
+    }else{
+     digitalWrite(FRONTSIG,LOW); 
+  }
 
   Serial.print(" FrontRight ");
   Serial.print(_frontRight);
   Serial.print(" ");
   Serial.println(determine_blocked(_frontRight));
- // RIGHTSIG = determine_blocked(_frontRight); // can be better looking
+  if(determine_blocked(_frontRight) == 1){ //can be better looking
+    digitalWrite(RIGHTSIG,HIGH);
+    }else{
+     digitalWrite(RIGHTSIG,LOW); 
+  }
   
   return c;
   
@@ -99,7 +114,7 @@ unsigned char read_sensors(char c){
 unsigned char determine_blocked(char dist){
   //unsigned char dist = sensor.distanceRead();
   //if 0, means its too far away for the sensors
-  if(dist <= MIN_DISTANCE && dist != 0){
+  if(dist <= MAX_DISTANCE && dist > 0){
     return 1; 
   }
   return 0;
