@@ -18,6 +18,7 @@ GPIO.setmode(GPIO.BCM)
 chan_list = (17,22,27)
 GPIO.setup(chan_list,GPIO.IN)
 while True:
+    print "Sensing"
     if GPIO.input(17):
         print "Left"
     if GPIO.input(22):
