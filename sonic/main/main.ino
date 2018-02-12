@@ -7,30 +7,33 @@
 #define RIGHT_OFFSET 0
 #define REAR_OFFSET 0
 
-#define FRONTSIG 14
-#define LEFTSIG 15
+#define LEFTSIG 14
+#define FRONTSIG 15
 #define RIGHTSIG 16
 #define REARSIG 17
 #define ERRORSIG 18
-#define TRIG 12
+
+#define TRIG_LEFT 12
+#define TRIG_FRONT 11
+#define TRIG_RIGHT 10
 #define TIMEOUT 40000UL
 //Sensor declarations
 
-Ultrasonic front(TRIG,11);
-Ultrasonic frontLeft(TRIG,10, TIMEOUT);
-Ultrasonic frontRight(TRIG,9, TIMEOUT);
-Ultrasonic left(TRIG,8, TIMEOUT);
-Ultrasonic right(TRIG,7, TIMEOUT);
-Ultrasonic rear(TRIG,6, TIMEOUT);
-Ultrasonic rearLeft(TRIG,5, TIMEOUT);
-Ultrasonic rearRight(TRIG,4, TIMEOUT);
+Ultrasonic frontLeft(TRIG_LEFT,9, TIMEOUT);
+Ultrasonic frontFront(TRIG_FRONT,8,TIMEOUT);;
+Ultrasonic frontRight(TRIG_RIGHT,7, TIMEOUT);
+//Ultrasonic left(TRIG,8, TIMEOUT);
+//Ultrasonic right(TRIG,7, TIMEOUT);
+//Ultrasonic rear(TRIG,6, TIMEOUT);
+//Ultrasonic rearLeft(TRIG,5, TIMEOUT);
+//Ultrasonic rearRight(TRIG,4, TIMEOUT);
 
 unsigned char signals;
 
 
 void setup() {
-  pinMode(FRONTSIG, OUTPUT); //FRONTSIG
   pinMode(LEFTSIG, OUTPUT); //LEFTSIG
+  pinMode(FRONTSIG, OUTPUT); //FRONTSIG
   pinMode(RIGHTSIG, OUTPUT); //RIGHTSIG
   pinMode(REARSIG, OUTPUT); //REARSIG
   pinMode(ERRORSIG, OUTPUT); //ERRORSIG
@@ -50,44 +53,53 @@ void loop() {
 }
 
 unsigned char read_sensors(char c){
-  //Check front for hit, if hit _front = 1
   
-  /* During de-bug
-  unsigned char _front = determine_blocked(front) + determine_blocked(frontRight) + determine_blocked(frontLeft);
+  //Check front for hit, if hit _front = 1 
+  unsigned char _frontFront = frontFront.distanceRead();
 
-  //Check left and right
-  unsigned char _left = determine_blocked(left);
-  unsigned char _right = determine_blocked(right);
-  
-  unsigned char _rear = determine_blocked(rear) + determine_blocked(rearRight) + determine_blocked(rearLeft);
-*/
+  //Check on the left and right side on the front
+  unsigned char _frontLeft = frontLeft.distanceRead();
+  unsigned char _frontRight = frontRight.distanceRead();
+
   //De-bug
-
-  //Serial.print(" FrontLeft: ");
-  //Serial.print(determine_blocked(frontLeft));
-
-    Serial.print(" Dist FrontRight: ");
+/*
+  Serial.print(" Dist FrontRight: ");
   Serial.print(frontRight.distanceRead());
 
-  delayMicroseconds(10);
+  Serial.print(" Dist Front: ");
+  Serial.print(frontFront.distanceRead());
 
-Serial.print(" Dist Front: ");
-  Serial.print(front.distanceRead());
-
-  delayMicroseconds(10);
-
-   Serial.print(" Dist FrontLeft: ");
+  Serial.print(" Dist FrontLeft: ");
   Serial.println(frontLeft.distanceRead());
+  */
+
+  Serial.print("FrontLeft ");
+  Serial.print(_frontLeft);
+  Serial.print(" ");
+  Serial.print(determine_blocked(_frontLeft));
+  //digitalWrite(LEFTSIG,LOW); // can be better looking
+
+  Serial.print(" FrontFront ");
+  Serial.print(_frontFront);
+  Serial.print(" ");
+  Serial.print(determine_blocked(_frontFront));
+  //FRONTSIG = determine_blocked(_frontFront); // can be better looking
+
+  Serial.print(" FrontRight ");
+  Serial.print(_frontRight);
+  Serial.print(" ");
+  Serial.println(determine_blocked(_frontRight));
+ // RIGHTSIG = determine_blocked(_frontRight); // can be better looking
   
-//  c = _front | (_left << 1) | (_right << 2) | (_rear << 3);
   return c;
   
 }
 
-unsigned char determine_blocked(Ultrasonic sensor){
-  unsigned char dist = sensor.distanceRead();
-  //if 0, means its ito far away for the sensors
-  if(dist < MIN_DISTANCE && dist != 0){
+
+unsigned char determine_blocked(char dist){
+  //unsigned char dist = sensor.distanceRead();
+  //if 0, means its too far away for the sensors
+  if(dist <= MIN_DISTANCE && dist != 0){
     return 1; 
   }
   return 0;
