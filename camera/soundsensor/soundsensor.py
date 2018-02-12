@@ -26,3 +26,16 @@ while True:
     if GPIO.input(27):
         print "Middle"
     time.sleep(0.5)
+
+def sensorsLMR():
+    GPIO.setmode(GPIO.BCM)
+    chan_list = (17,22,27)
+    GPIO.setup(chan_list,GPIO.IN)
+    pos = (False,False,False)
+    if GPIO.input(17):
+        pos[0]=True
+    if GPIO.input(22):
+        pos[2] = True
+    if GPIO.input(27):
+        pos[1] = True
+    return pos
