@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+import time
 
 #infiles = set(glob.glob("assets/*")) - set(glob.glob("assets/*.out.*"))
 #for fp in infiles:
@@ -23,3 +24,4 @@ while True:
         print "Right"
     if GPIO.input(27):
         print "Middle"
+    time.sleep(0.5)
