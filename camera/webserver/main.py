@@ -25,7 +25,7 @@ t.start()
 class myHandler(BaseHTTPRequestHandler):
 
     def index(self):
-        pictures = list(set(glob.glob("pictures/*")))
+        pictures = list(set(glob.glob("pictures/*")) - set(glob.glob("pictures/*~")))
         pictures.sort(reverse=True)
         picture = pictures[0]
         print picture
