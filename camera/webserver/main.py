@@ -13,14 +13,12 @@ class myHandler(BaseHTTPRequestHandler):
 
     def index(self):
         pictures = list(set(glob.glob("pictures/*")))
-        print pictures
         pictures.sort(reverse=True)
-        print pictures
+        picture = pictures[0]
+        print picture
         html = '<html><head><title>Webhost</title></head><body>'
-
-        for pic in pictures:
-            basepath = pic.split('/')[-1]
-            html += '<img src="'+basepath+'"/>'
+        basepath = picture.split('/')[-1]
+        html += '<img src="'+basepath+'"/>'
         html += '</body></html>';
         return html
 
