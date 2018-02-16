@@ -8,7 +8,7 @@
 
 #define LEFT 10
 #define RIGHT 11
-#define REVERSE 12  //Pins used by RPI to controll the engines
+#define REVERSE 13  //Pins used by RPI to controll the engines
 
 
 void setup() {
@@ -38,17 +38,15 @@ unsigned char ReverseRead;
 
 void loop() {
   //goStraightForward();
-  /*LeftRead = digitalRead(LEFT);
+  LeftRead = digitalRead(LEFT);
   RightRead = digitalRead(RIGHT);
-  ReverseRead = digitalRead(REVERSE);*/
+  ReverseRead = digitalRead(REVERSE);
   
-  LeftRead = 0;
-  RightRead = 0
-  ReverseRead = 0;
   
   checkForwards();
   checkDirection();
 
+  delay(100);
   analogWrite(enA, LeftSpeed);
   analogWrite(enB, RightSpeed);
 }
