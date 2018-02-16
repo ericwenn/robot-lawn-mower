@@ -13,6 +13,7 @@ class myHandler(BaseHTTPRequestHandler):
 
     def index(self):
         pictures = set(glob.glob("pictures/*"))
+        print pictures
         html = '<html><head><title>Webhost</title></head><body>'
 
         for pic in pictures:
