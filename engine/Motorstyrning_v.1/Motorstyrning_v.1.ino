@@ -1,5 +1,5 @@
-#define In1 12
-#define In2 4
+#define In1 3
+#define In2 2
 #define enA 9 //Enable pins for Motor1
 
 #define In3 7
