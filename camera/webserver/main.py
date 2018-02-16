@@ -12,7 +12,9 @@ PORT_NUMBER = 8080
 class myHandler(BaseHTTPRequestHandler):
 
     def index(self):
-        pictures = list(glob.glob("pictures/*")).sort()
+        pictures = list(set(glob.glob("pictures/*")))
+        print pictures
+        pictures.sort()
         print pictures
         html = '<html><head><title>Webhost</title></head><body>'
 
