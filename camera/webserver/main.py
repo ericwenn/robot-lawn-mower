@@ -15,7 +15,7 @@ def worker():
         cmd = "raspistill -w 910 -h 700 -vf -t 1 -q 20 -o %s/pictures/%s.jpg" % (path.abspath(path.dirname(__file__)), datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
         print cmd
         subprocess.Popen(cmd.split())
-        time.sleep(.5)
+        time.sleep(1)
     return
 t = threading.Thread(target=worker)
 t.start()
