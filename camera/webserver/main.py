@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
-from os import curdir, sep
+from os import curdir, sep, path
 import glob
 import subprocess
 import datetime
@@ -22,7 +22,7 @@ class myHandler(BaseHTTPRequestHandler):
         return html
 
     def take_picture(self):
-        cmd = "raspistill -w 910 -h 700 -vf -q 20 -o /pictures/%s.jpg" % datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+        cmd = "raspistill -w 910 -h 700 -vf -q 20 -o %s/pictures/%s.jpg" % (path.abspath(path.dirname(__file__)), datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
         print cmd
         subprocess.Popen(cmd.split())
 
