@@ -14,7 +14,7 @@ class myHandler(BaseHTTPRequestHandler):
     def index(self):
         pictures = list(set(glob.glob("pictures/*")))
         print pictures
-        pictures.sort()
+        pictures.sort(reverse=True)
         print pictures
         html = '<html><head><title>Webhost</title></head><body>'
 
