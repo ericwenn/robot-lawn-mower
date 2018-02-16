@@ -2,6 +2,7 @@
 from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 from os import curdir, sep
 import glob
+import subprocess
 
 PORT_NUMBER = 8080
 
@@ -19,6 +20,11 @@ class myHandler(BaseHTTPRequestHandler):
         html += '</body></html>';
         return html
 
+    def take_picture(self):
+        cmd = "raspistill -w 910 -h 700 -vf -q 20 -o /pictures/%s.jpg".format(datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
+        subprocess.Popen(cmd.split())
+
+
 	#Handler for the GET requests
     def do_GET(self):
         if self.path=="/":
@@ -28,6 +34,12 @@ class myHandler(BaseHTTPRequestHandler):
             self.wfile.write(self.index())
             return
 
+        if self.path=='/shoot':
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            self.wfile.write('ok')
+            return
 
         try:
         #Check the file extension required and
