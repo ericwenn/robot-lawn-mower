@@ -3,6 +3,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 from os import curdir, sep
 import glob
 import subprocess
+import datetime
 
 PORT_NUMBER = 8080
 
@@ -21,7 +22,8 @@ class myHandler(BaseHTTPRequestHandler):
         return html
 
     def take_picture(self):
-        cmd = "raspistill -w 910 -h 700 -vf -q 20 -o /pictures/%s.jpg".format(datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
+        cmd = "raspistill -w 910 -h 700 -vf -q 20 -o /pictures/%s.jpg" % datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+        print cmd
         subprocess.Popen(cmd.split())
 
 
@@ -35,6 +37,7 @@ class myHandler(BaseHTTPRequestHandler):
             return
 
         if self.path=='/shoot':
+            self.take_picture()
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
