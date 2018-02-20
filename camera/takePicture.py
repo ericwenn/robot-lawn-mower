@@ -17,7 +17,10 @@ camera.capture(stream, format='jpeg')
 # "Rewind" the stream to the beginning so we can read its content
 stream.seek(0)
 image = Image.open(stream)
+end = time.time()
+print (end -start)
 
+start = time.time()
 size, splits = split_image(image, split_x=25, split_y=25)
 colors = []
 for split_x in splits:
