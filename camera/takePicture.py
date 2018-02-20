@@ -5,11 +5,14 @@ from PIL import Image
 from image_splitter import split_image
 from plot_splits import plot_image
 from image_analyze import *
+import time
+
+start = time.time()
 # Create the in-memory stream
 stream = BytesIO()
 camera = PiCamera()
 camera.start_preview()
-sleep(2)
+#sleep(2)
 camera.capture(stream, format='jpeg')
 # "Rewind" the stream to the beginning so we can read its content
 stream.seek(0)
@@ -25,3 +28,5 @@ for split_x in splits:
 
 outfile = 'img.jpeg'
 plot_image(size, splits, outfile)
+end = time.time()
+print (end - start)
