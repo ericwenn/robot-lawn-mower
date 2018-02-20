@@ -4,8 +4,9 @@ import math
 
 
 def split_image(image_path, split_x=None, split_y=None, split_save_path=None):
-    ext = image_path.split(".")[-1]
-    img = Image.open(image_path)
+    #ext = image_path.split(".")[-1]
+    #img = Image.open(image_path)
+    img = image_path
     (imageWidth, imageHeight)=img.size
 
     rangex=split_x
