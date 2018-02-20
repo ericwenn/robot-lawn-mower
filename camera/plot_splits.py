@@ -57,4 +57,4 @@ def plot_image(size, splits, out):
             print out
             print ""
 
-    full_im.save(out, optimize=True, bits=6)
+    #full_im.save(out, optimize=True, bits=6)
