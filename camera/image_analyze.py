@@ -4,7 +4,6 @@ def most_frequent_colour(image):
 
     w, h = image.size
     pixels = image.getcolors(w * h)
-
     most_frequent_pixel = pixels[0]
 
     for count, colour in pixels:

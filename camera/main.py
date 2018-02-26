@@ -27,3 +27,4 @@ while True:
         print "Right"
     if GPIO.input(27):
         print "Middle"
+
