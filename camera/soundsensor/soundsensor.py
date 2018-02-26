@@ -14,6 +14,9 @@ import time
 #    fps[-1] = 'out.'+fps[-1]
 #    outfile = '.'.join(fps)
 #    plot_image(size, splits, outfile)
+
+
+let set = False
 GPIO.setmode(GPIO.BCM)
 chan_list = (17,22,27)
 GPIO.setup(chan_list,GPIO.IN)
@@ -28,9 +31,8 @@ while True:
     time.sleep(0.5)
 
 def sensorsLMR():
-    GPIO.setmode(GPIO.BCM)
-    chan_list = (17,22,27)
-    GPIO.setup(chan_list,GPIO.IN)
+    if(not(set)):
+        setupGPIO
     pos = (False,False,False)
     if GPIO.input(17):
         pos[0]=True
@@ -39,3 +41,9 @@ def sensorsLMR():
     if GPIO.input(27):
         pos[1] = True
     return pos
+
+
+def setupGPIO():
+    GPIO.setmode(GPIO.BCM)
+    chan_list = (17,22,27)
+    GPIO.setup(chan_list,GPIO.IN)

@@ -1,30 +1,45 @@
 from PIL import Image
-SPLIT_X=50
-SPLIT_Y=50
+import math
 
 
-def split_image(image_path, split_save_path=None):
-    ext = image_path.split(".")[-1]
-    img = Image.open(image_path)
+
+def split_image(image_path, split_x=None, split_y=None, split_save_path=None):
+    #ext = image_path.split(".")[-1]
+    #img = Image.open(image_path)
+    img = image_path
     (imageWidth, imageHeight)=img.size
-    gridx=SPLIT_X
-    gridy=SPLIT_Y
-    rangex=imageWidth/gridx
-    rangey=imageHeight/gridy
 
-    splits = []
+    rangex=split_x
+    rangey=split_y
+
+    gridx=int(math.ceil(float(imageWidth)/rangex))
+    gridy=int(math.ceil(float(imageHeight)/rangey))
+
+
+    split_grid = []
+
 
     for x in xrange(rangex):
+        split_grid_y = []
         for y in xrange(rangey):
-            bbox=(x*gridx, y*gridy, x*gridx+gridx, y*gridy+gridy)
+            x1 = min(x*gridx, imageWidth)
+            x2 = min(x1+gridx, imageWidth)
+            y1 = min(y*gridy, imageHeight)
+            y2 = min(y1+gridy, imageHeight)
+
+            if x1 == x2 or y1 == y2:
+                continue
+            bbox=(x1, y1, x2, y2)
             slice_bit=img.crop(bbox)
 
-            splits.append(slice_bit)
+            split_grid_y.append({
+                'slice': slice_bit,
+                'xoffset': x1,
+                'yoffset': y1
+            })
 
             if not split_save_path == None:
                 slice_bit.save('{}/xmap_{}_{}.{}'.format(split_save_path, x, y, ext), optimize=True, bits=6)
-                print 'out/xmap_'+str(x)+'_'+str(y)+'.png'
-
-    return splits
-
-print split_image("color-grid.jpg", "out")
+        if len(split_grid_y) > 0:
+            split_grid.append(split_grid_y)
+    return (imageWidth, imageHeight), split_grid
