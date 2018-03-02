@@ -35,7 +35,7 @@ def sensorsLMR():
         setupGPIO
     pos = (False,False,False)
     if GPIO.input(17):
-        pos[0]=True
+        pos[0] = True
     if GPIO.input(22):
         pos[2] = True
     if GPIO.input(27):
