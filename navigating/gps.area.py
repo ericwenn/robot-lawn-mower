@@ -45,11 +45,16 @@ def saveCoords(listOfCoords,filePath):
             json.dump(listOfCoords, f)
 
 def loadCoords(filePath):
-    with open(filePath, 'r') as f:
-        datastore = json.load(f)
+    try:
+        with open(filePath, 'r') as f:
+            datastore = json.load(f)
+    except ValueError, e:
+        print "No json"
+        return []
+    else:
+        print " json"
+        return datastore
 
-            #Use the new datastore datastructure
-    return datastore
 
 def addCoordToList(x,y,filePath):
     coordlist = loadCoords(filePath)
@@ -60,9 +65,9 @@ def addCoordToList(x,y,filePath):
     saveCoords(coordlist,filePath)
 
 
-testSave()
-checkIfPointInArea(1,2)
-while(False):
+#testSave()
+#checkIfPointInArea(1,2)
+while(True):
     x = int(float(raw_input("x: ")))
     y = int(float(raw_input("y: ")))
     addCoordToList(x,y,'coord.json')
@@ -70,4 +75,7 @@ while(False):
 
     if(more=="N"):
         print json.dumps(loadCoords('coord.json'))
+        x = int(float(raw_input("x: ")))
+        y = int(float(raw_input("y: ")))
+        print checkIfPointInArea(x,y)
         break
