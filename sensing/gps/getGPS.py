@@ -25,6 +25,18 @@ class GpsPoller(threading.Thread):
     while gpsp.running:
       gpsd.next() #this will continue to loop and grab EACH set of gpsd info to clear the buffer
 
+def setupGPS():
+    gpsp = GpsPoller()
+    gpsp.start()
+
+def stopGPS():
+    gpsp.running = False
+    gpsp.join()
+
+def getGPS():
+    return (gpsp.fix.latitude, gpsp.fix.longitude)
+
+
 if __name__ == '__main__':
   gpsp = GpsPoller() # create the thread
   try:
