@@ -13,24 +13,25 @@ stream = BytesIO()
 camera = PiCamera()
 camera.start_preview()
 #sleep(2)
-while(True):
- camera.capture(stream, format='jpeg')
+#while(True):
+camera.capture(stream, format='jpeg')
  # "Rewind" the stream to the beginning so we can read its content
- stream.seek(0)
- image = Image.open(stream)
- end = time.time()
- print (end -start)
+stream.seek(0)
+image = Image.open(stream)
+end = time.time()
+print (end -start)
 
- start = time.time()
- size, splits = split_image(image, split_x=25, split_y=25)
- colors = []
- for split_x in splits:
- 	 for split_y in split_x:
-        	 split_y['color'] = most_frequent_colour(split_y['slice'])
+start = time.time()
+size, splits = split_image(image, split_x=25, split_y=25)
+colors = []
+#for split_x in splits:
+#	for split_y in split_x:
+ #       	 split_y['color'] = most_frequent_colour(split_y['slice'])
 
 
 
- outfile = 'img.jpeg'
- plot_image(size, splits, outfile)
- end = time.time()
- print (end - start)
+outfile = 'img.jpeg'
+# plot_image(size, splits, outfile)
+image.save(outfile,optimize=True,bits=6) 
+end = time.time()
+print (end - start)
