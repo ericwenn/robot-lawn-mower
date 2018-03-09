@@ -1,4 +1,4 @@
-import takePicture
+from takePicture import *
 #import image_splitter, image_analyze
 from image_analyze import *
 from image_splitter import *
@@ -11,5 +11,6 @@ from PIL import Image
 
 def getPictureInfo():
     image = takePicture()
+    image.save("testing.jpeg",optimize=True,bits=6)	
     return analyzeImage(image)
 print getPictureInfo()
