@@ -8,7 +8,7 @@ def takePicture():
 	# Create the in-memory stream
 	stream = BytesIO()
 	#camera = PiCamera()
-	with PiCamera(resolution=(720,480)) as camera
+	with PiCamera(resolution=(720,480)) as camera:
 		camera.start_preview()
 		camera.capture(stream, format='jpeg')
 	# "Rewind" the stream to the beginning so we can read its content
