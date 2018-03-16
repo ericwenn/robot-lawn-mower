@@ -73,34 +73,75 @@ if __name__ == '__main__':
     gpsp.join() # wait for the thread to finish what it's doing
   print "Done.\nExiting."
   '''
-import threading
-import time
+GPSController.py
+
 from gps import *
+import time
+import threading
+import math
 
-class GpsPoller(threading.Thread):
+class GpsController(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
+        self.running = False
 
-   def __init__(self):
-       threading.Thread.__init__(self)
-       self.session = gps(mode=WATCH_ENABLE)
-       self.current_value = None
+    def run(self):
+        self.running = True
+        while self.running:
+            # grab EACH set of gpsd info to clear the buffer
+            self.gpsd.next()
 
-   def get_current_value(self):
-       return self.current_value
+    def stopController(self):
+        self.running = False
 
-   def run(self):
-       try:
-            while True:
-                self.current_value = self.session.next()
-                time.sleep(0.2) # tune this, you might not get values that quickly
-       except StopIteration:
-            pass
+    @property
+    def fix(self):
+        return self.gpsd.fix
+
+    @property
+    def utc(self):
+        return self.gpsd.utc
+
+    @property
+    def satellites(self):
+        return self.gpsd.satellites
 
 if __name__ == '__main__':
+    # create the controller
+    gpsc = GpsController()
+    try:
+        # start controller
+        gpsc.start()
+        while True:
+            print "latitude ", gpsc.fix.latitude
+            print "longitude ", gpsc.fix.longitude
+            print "time utc ", gpsc.utc, " + ", gpsc.fix.time
+            print "altitude (m)", gpsc.fix.altitude
+            print "eps ", gpsc.fix.eps
+            print "epx ", gpsc.fix.epx
+            print "epv ", gpsc.fix.epv
+            print "ept ", gpsc.gpsd.fix.ept
+            print "speed (m/s) ", gpsc.fix.speed
+            print "climb ", gpsc.fix.climb
+            print "track ", gpsc.fix.track
+            print "mode ", gpsc.fix.mode
+            print "sats ", gpsc.satellites
+            time.sleep(0.5)
 
-   gpsp = GpsPoller()
-   gpsp.start()
-   # gpsp now polls every .2 seconds for new data, storing it in self.current_value
-   while 1:
-       # In the main thread, every 5 seconds print the current value
-       time.sleep(5)
-       print gpsp.get_current_value()
+    #Error
+    except:
+        print "Unexpected error:", sys.exc_info()[0]
+        raise
+
+    #Ctrl C
+    except KeyboardInterrupt:
+        print "User cancelled"
+
+    finally:
+        print "Stopping gps controller"
+        gpsc.stopController()
+        #wait for the tread to finish
+        gpsc.join()
+
+    print "Done"
