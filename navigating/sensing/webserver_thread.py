@@ -31,6 +31,7 @@ class WebserverThread(Thread):
         self.gps_queue = gps_queue
         self.camera_queue = camera_queue
         self.should_exit = Event()
+        self.port = port
 
     def run(self):
         server_address = ('', self.port)
@@ -77,15 +78,3 @@ class SensorListener(object):
             pass
 
         return self.gps_stack[-n:]
-
-if __name__ == "__main__":
-    sl = SensorListener()
-    sl.start()
-
-    try:
-        while True:
-            print "Camera events", sl.get_camera_events(3)
-            print "GPS events", sl.get_gps_events(3)
-            time.sleep(1)
-    except KeyboardInterrupt:
-        print "Shutting down webserver"
