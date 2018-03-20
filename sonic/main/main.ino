@@ -1,8 +1,8 @@
 #include <SoftwareSerial.h>
 #include <Ultrasonic.h>
-#define DEBUG
+//#define DEBUG
 
-#define MAX_DISTANCE 25
+#define MAX_DISTANCE 10
 
 #define LEFTSIG 14
 #define FRONTSIG 15
