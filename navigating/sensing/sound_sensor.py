@@ -54,4 +54,5 @@ class SoundSensor(object):
         except Empty:
             pass
 
+        print "stack length", len(self.stack)
         return self.stack[-n:]
