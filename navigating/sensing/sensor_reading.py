@@ -37,7 +37,7 @@ class UltraSoundSensorReading(SensorReading):
   def freshness(self):
     if len(self.raw_data) < 1:
       return 0
-      
+
     diff = (time.time() - self.raw_data[0]["timestamp"]) * 1000
     return max(0, 1 - (diff / FRESHNESS_LIMIT))
 
@@ -73,6 +73,10 @@ class UltraSoundSensorReading(SensorReading):
     #return reduce(operator.mul, certainties)
 
   def verdict(self):
+
+    if len(self.raw_data) < 1:
+      return 1
+
     can_move = True
     for verdict_i in self.raw_data[0]["can_move"]:
       if not verdict_i:
