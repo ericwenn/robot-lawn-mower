@@ -1,7 +1,6 @@
 import RPi.GPIO as GPIO
 
 def stop():
-    print "Stopping"
     chan_list = (5,6,26)
     GPIO.output(chan_list,(GPIO.LOW,GPIO.LOW,GPIO.LOW))
 

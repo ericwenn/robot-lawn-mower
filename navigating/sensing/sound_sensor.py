@@ -50,6 +50,7 @@ class SoundSensor(object):
         try:
             while True:
                 event = self.queue.get(block=False)
+                print "Got event from US"
                 self.stack.append(event)
         except Empty:
             pass
