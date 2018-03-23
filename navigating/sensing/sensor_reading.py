@@ -35,6 +35,9 @@ class UltraSoundSensorReading(SensorReading):
     self.raw_data = raw_data
   
   def freshness(self):
+    if len(self.raw_data) < 1:
+      return 0
+      
     diff = (time.time() - self.raw_data[0]["timestamp"]) * 1000
     return max(0, 1 - (diff / FRESHNESS_LIMIT))
 
