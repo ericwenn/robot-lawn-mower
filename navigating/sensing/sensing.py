@@ -1,6 +1,7 @@
-from webserver_thread import SensorListener
-from sensor_reading import UltraSoundSensorReading
+from sensor_listener import SensorListener
+from sensor_reading import UltraSoundSensorReading, CameraSensorReading, GPSSensorReading
 import time 
+
 
 class Sensors(object):
   def __init__(self):
@@ -15,9 +16,15 @@ class Sensors(object):
       "timestamp": time.time(),
       "can_move": [ True, False, False]
     }])
-
-    time.sleep(0.1)
     return uls
+  
+  def get_camera_readings(self):
+    csr = CameraSensorReading([])
+    return csr
+  
+  def get_gps_readings(self):
+    gsr = GPSSensorReading([])
+    return gsr
 
 
 

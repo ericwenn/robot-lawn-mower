@@ -14,6 +14,13 @@ class SensorReading(object):
     MAX(0, 1 - (diff / FRESHNESS_LIMIT))
     """
     raise NotImplementedError()
+  
+  def verdict(self):
+    """
+    Defines if the sensors think its okay to move forward.
+    returns [-1,1]
+    """
+    raise NotImplementedError()
 
 
 class UltraSoundSensorReading(SensorReading):
@@ -37,7 +44,7 @@ class UltraSoundSensorReading(SensorReading):
     SENSOR_i(t) = value of sensor i at t timesteps ago
     T = number of timesteps to look back
 
-    certainty_i = MAX(0, 1 - (SENSOR_i(0) - AVG(SENSOR_i(1..T))/2))
+    certainty_i = ABS(AVG(SENSOR_i(1..T)))
     certainty = certainty_0 * certainty_1 ... * certainty_U
     """
 
@@ -56,10 +63,41 @@ class UltraSoundSensorReading(SensorReading):
       
       print "sum", sum_readings
       avg = float(sum_readings) / max(1, number_of_readings)
-      print "avg", avg
-      latest = 1 if self.raw_data[0]["can_move"][i] else -1 
-      print "latest", latest 
-      certainties.append(max(0, 1 - (latest - avg) / 2.0))
+      certainties.append(abs(avg))
     
     print "certs", certainties
-    return reduce(operator.mul, certainties)
+    return reduce(lambda x, y: x + y, certainties) / len(certainties)
+    #return reduce(operator.mul, certainties)
+
+  def verdict(self):
+    can_move = True
+    for verdict_i in self.raw_data[0]["can_move"]:
+      if not verdict_i:
+        can_move = False
+    
+    return 1 if can_move else -1
+
+class CameraSensorReading(SensorReading):
+  """
+  """
+  def __init__(self, raw_data):
+    self.raw_data = raw_data
+  
+  def freshness(self):
+    raise NotImplementedError()
+
+  def certainty(self):
+    raise NotImplementedError()
+
+
+class GPSSensorReading(SensorReading):
+  """
+  """
+  def __init__(self, raw_data):
+    self.raw_data = raw_data
+  
+  def freshness(self):
+    raise NotImplementedError()
+
+  def certainty(self):
+    raise NotImplementedError()
