@@ -12,15 +12,11 @@ class SoundSensorThread(Thread):
     def sensorsLMR(self):
         pos = [True,True,True]
         if GPIO.input(17):
-            print "got left"
             pos[0]=False
         if GPIO.input(22):
-            print "got m"            
             pos[2] = False
         if GPIO.input(27):
-            print "got right"
             pos[1] = False
-        print "pos", pos
         return pos
 
     def run(self):
