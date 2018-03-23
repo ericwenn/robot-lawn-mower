@@ -9,6 +9,7 @@ steer.setup()
 def can_move_forward():
   uss = sensors.get_ultrasound_readings()
   if not uss.freshness() < 0.2:
+    print "no fresh"
     return True, 0 # total uncertainty
   
   return uss.verdict() == 1, uss.certainty()
