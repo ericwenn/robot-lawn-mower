@@ -89,6 +89,9 @@ class CameraSensorReading(SensorReading):
   def certainty(self):
     raise NotImplementedError()
 
+  def verdict(self):
+    raise NotImplementedError()
+
 
 class GPSSensorReading(SensorReading):
   """
@@ -100,4 +103,7 @@ class GPSSensorReading(SensorReading):
     raise NotImplementedError()
 
   def certainty(self):
+    raise NotImplementedError()
+  
+  def verdict(self):
     raise NotImplementedError()
