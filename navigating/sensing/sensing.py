@@ -16,7 +16,6 @@ class Sensors(object):
 
   def get_ultrasound_readings(self):
     events = self.sound_sensor.get_ultrasound_events(10)
-    print "got ", len(events), "us events"
 
     uls = UltraSoundSensorReading(events)
     return uls
