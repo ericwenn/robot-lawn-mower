@@ -20,6 +20,7 @@ def spin():
   sleep(time_to_spin)
   steer.stop()
 
+sensors.start()
 while(True):
   can_forward, certainty = can_move_forward()
 
