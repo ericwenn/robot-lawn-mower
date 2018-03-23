@@ -5,22 +5,22 @@ def stop():
     GPIO.output(chan_list,(GPIO.LOW,GPIO.LOW,GPIO.LOW))
 
 def right():
-    print "Going right"    
+    #print "Going right"    
     chan_list = (5,6,26)
     GPIO.output(chan_list,(GPIO.LOW,GPIO.LOW,GPIO.HIGH))
 
 def left():
-    print "Going left"    
+    #print "Going left"    
     chan_list = (5,6,26)
     GPIO.output(chan_list,(GPIO.HIGH,GPIO.LOW,GPIO.LOW))
 
 def forward():
-    print "Going forward"        
+    #print "Going forward"        
     chan_list = (5,6,26)
     GPIO.output(chan_list,(GPIO.HIGH,GPIO.LOW,GPIO.HIGH))
 
 def back():
-    print "Going backward"        
+    #print "Going backward"        
     chan_list = (5,6,26)
     GPIO.output(chan_list,(GPIO.HIGH,GPIO.HIGH,GPIO.HIGH))
 

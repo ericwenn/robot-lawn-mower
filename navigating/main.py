@@ -24,6 +24,8 @@ sensors.start()
 while(True):
   can_forward, certainty = can_move_forward()
 
+  print "Can move forward", can_forward, "certainty", certainty
+
   if can_forward:
     if certainty >= .6:
       steer.forward()
@@ -34,3 +36,4 @@ while(True):
       spin()
     else:
       steer.stop()
+  sleep(.5)
