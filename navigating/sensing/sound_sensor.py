@@ -17,6 +17,7 @@ class SoundSensorThread(Thread):
             pos[2] = False
         if GPIO.input(27):
             pos[1] = False
+        print "pos", pos
         return pos
 
     def run(self):
