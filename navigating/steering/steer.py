@@ -28,3 +28,9 @@ def setup():
     GPIO.setmode(GPIO.BCM)
     chan_list = (5,6,26)
     GPIO.setup(chan_list,GPIO.OUT)
+
+
+
+if __name__ == "__main__":
+    setup()
+    stop()
