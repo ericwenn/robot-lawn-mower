@@ -50,7 +50,7 @@ class UltraSoundSensorReading(SensorReading):
     certainty_i = ABS(AVG(SENSOR_i(1..T)))
     certainty = certainty_0 * certainty_1 ... * certainty_U
     """
-    return 1
+    return 1.0
 
     number_of_readings = len(self.raw_data)
 
