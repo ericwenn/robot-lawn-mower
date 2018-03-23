@@ -10,17 +10,16 @@ class SoundSensorThread(Thread):
         self.queue = queue
 
     def sensorsLMR(self):
-        pos = [False,False,False]
+        pos = [True,True,True]
         if GPIO.input(17):
             print "got left"
-            pos[0]=True
+            pos[0]=False
         if GPIO.input(22):
             print "got m"            
-            pos[2] = True
+            pos[2] = False
         if GPIO.input(27):
             print "got right"
-            
-            pos[1] = True
+            pos[1] = False
         print "pos", pos
         return pos
 
