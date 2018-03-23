@@ -29,6 +29,7 @@ while(True):
 
   if can_forward:
     if certainty >= .6:
+      print "going forward"
       steer.forward()
     else:
       steer.stop()
