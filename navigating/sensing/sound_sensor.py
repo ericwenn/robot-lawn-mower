@@ -21,7 +21,6 @@ class SoundSensorThread(Thread):
         return pos
 
     def run(self):
-        print "us run"
         while(True):
             reading = self.sensorsLMR()
             event =  {
@@ -52,7 +51,6 @@ class SoundSensor(object):
         try:
             while True:
                 event = self.queue.get(block=False)
-                print "Got event from US"
                 self.stack.append(event)
         except Empty:
             pass

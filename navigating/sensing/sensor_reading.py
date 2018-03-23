@@ -64,11 +64,9 @@ class UltraSoundSensorReading(SensorReading):
       for reading in self.raw_data:
         sum_readings += 1 if reading["can_move"][i] else -1
       
-      print "sum", sum_readings
       avg = float(sum_readings) / max(1, number_of_readings)
       certainties.append(abs(avg))
     
-    print "certs", certainties
     return reduce(lambda x, y: x + y, certainties) / len(certainties)
     #return reduce(operator.mul, certainties)
 
