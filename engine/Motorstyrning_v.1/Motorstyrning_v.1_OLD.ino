@@ -58,7 +58,6 @@ void loop() {
 
 void changeEngines(unsigned char dir){
   if(dir == 0b00000000){
-      //Stop
       forwardsRightEngine();
       forwardsLeftEngine();
       LeftSpeed=0;
@@ -70,7 +69,6 @@ void changeEngines(unsigned char dir){
       state =0;
 
     }else if(dir == 0b00000001){
-      //Forward
       forwardsRightEngine();
       forwardsLeftEngine();
       LeftSpeed=215;
@@ -82,7 +80,6 @@ void changeEngines(unsigned char dir){
       state =1;
       
     }else if(dir == 0b00000010){
-      //Backwards
       backwardsRightEngine();
       backwardsLeftEngine();
       LeftSpeed=215;
@@ -94,7 +91,6 @@ void changeEngines(unsigned char dir){
       state =2;
       
     }else if(dir == 0b00000011){
-      //Right
       backwardsRightEngine();
       forwardsLeftEngine();
       LeftSpeed=160;
@@ -107,7 +103,6 @@ void changeEngines(unsigned char dir){
       
       
     }else if(dir == 0b00000100){
-      //Left
       forwardsRightEngine();
       backwardsLeftEngine();
       LeftSpeed=160;
@@ -142,25 +137,25 @@ void checkDirection(){
    }
   }
 */
-void forwardsLeftEngine(){
-   //Forwards settings for left engine
-    digitalWrite(In1,LOW);
-    digitalWrite(In2,HIGH);
-}
 void forwardsRightEngine(){
    //Forwards settings for right engine
-    digitalWrite(In3,LOW);
-    digitalWrite(In4,HIGH);
-    }
-void backwardsLeftEngine(){
-    //Backwards settings for left engine
     digitalWrite(In1,HIGH);
     digitalWrite(In2,LOW);
-    }
-void backwardsRightEngine(){
-   //Backwards settings for right engine
+}
+void forwardsLeftEngine(){
+   //Forwards settings for left engine
     digitalWrite(In3,HIGH);
     digitalWrite(In4,LOW);
+    }
+void backwardsRightEngine(){
+    //Backwards settings for right engine
+    digitalWrite(In1,LOW);
+    digitalWrite(In2,HIGH);
+    }
+void backwardsLeftEngine(){
+   //Backwards settings for left engine
+    digitalWrite(In3,LOW);
+    digitalWrite(In4,HIGH);
     }
 
 void delayEngine(){
@@ -170,3 +165,21 @@ void delayEngine(){
   delay(200);
   }
 
+
+//not used  
+void goStraightForward(){
+  analogWrite(enA,255);
+  analogWrite(enB,255);
+}
+void goBackwards(){
+  analogWrite(enA,150);
+  analogWrite(enB,150);
+}
+void goLeft(){
+  analogWrite(enA,50);
+  analogWrite(enB,150);
+}
+void goRight(){ 
+  analogWrite(enA,150);
+  analogWrite(enB,50);
+}
