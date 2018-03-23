@@ -35,6 +35,8 @@ class UltraSoundSensorReading(SensorReading):
     self.raw_data = raw_data
   
   def freshness(self):
+    return 1.0
+    
     if len(self.raw_data) < 1:
       return 0
 
