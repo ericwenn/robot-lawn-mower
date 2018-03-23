@@ -21,6 +21,7 @@ class SoundSensorThread(Thread):
         return pos
 
     def run(self):
+        print "us run"
         while(True):
             reading = self.sensorsLMR()
             event =  {
