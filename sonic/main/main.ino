@@ -1,12 +1,12 @@
-#include <SoftwareSerial.h>
+
 #include <Ultrasonic.h>
 //#define DEBUG
 
 #define MAX_DISTANCE 10
 
-#define LEFTSIG 14
-#define FRONTSIG 15
-#define RIGHTSIG 16
+#define LEFTSIG A0
+#define FRONTSIG A1
+#define RIGHTSIG A2
 
 #define TRIG_RIGHT 10
 #define TRIG_FRONT 11
@@ -23,14 +23,11 @@ Ultrasonic sonicRight(TRIG_RIGHT,ECHO_RIGHT, TIMEOUT);
 Ultrasonic sonicFront(TRIG_FRONT,ECHO_FRONT,TIMEOUT);
 Ultrasonic sonicLeft(TRIG_LEFT,ECHO_LEFT, TIMEOUT);
 
-SoftwareSerial serialRPi (15,16);
 
 void setup() {
   pinMode(LEFTSIG, OUTPUT); //LEFTSIG
   pinMode(FRONTSIG, OUTPUT); //FRONTSIG
   pinMode(RIGHTSIG, OUTPUT); //RIGHTSIG
-
-  serialRPi.begin(9600);
 
   #ifdef DEBUG
     Serial.begin(9600);
@@ -62,8 +59,6 @@ void check_sensors(){
   unsigned char blockedRight = determine_blocked(_sonicRight);
   digitalWrite(RIGHTSIG,blockedRight);
 
-  char serialValues[] = {blockedLeft,blockedFront,blockedRight};
-  serialRPi.write(serialValues);
 
   #ifdef DEBUG
     //If you use a smart serial monitor (like putty) these two lines will do you good
