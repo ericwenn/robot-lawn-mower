@@ -2,17 +2,19 @@ from io import BytesIO
 from time import sleep
 from picamera import PiCamera
 from PIL import Image
+import math
+import colorsys
 
 
 class camera(object):
-
-
+    sizeDifference = 0.1
+    proximity = 0.5
 
     def get_picture_info(self):
-        return self.analyzeImage(self.takePicture)
+        return self.analyzeImage(self.takePicture())
     #Between 0 and 1
-    proximity = 0.5
-    sizeDifference = 0.1
+    #proximity = 0.5
+    #sizeDifference = 0.1
 
     #Uses the Pi camera to take a picture
     def takePicture(self):
@@ -120,10 +122,10 @@ class camera(object):
                 close = self.closeness_to_green(split['color'][1])
                 if not close:
                     perGreen=perGreen +1
-            if ((float(perGreen)/mx) > sizeDifference) and not breaks:
+            if ((float(perGreen)/mx) > self.sizeDifference) and not breaks:
                 yCoord = y +1
                 breaks = True
-        if breaks and float(yCoord)/my > proximity:
+        if breaks and float(yCoord)/my > self.proximity:
             return False
         return True
 
