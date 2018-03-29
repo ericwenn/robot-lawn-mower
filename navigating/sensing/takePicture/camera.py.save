@@ -1,3 +1,4 @@
+
 from io import BytesIO
 from time import sleep
 from picamera import PiCamera
@@ -15,7 +16,7 @@ class camera(object):
     sizeDifference = 0.1
 
     #Uses the Pi camera to take a picture
-    def takePicture(self):
+    def takePicture():
     	# Create the in-memory stream
     	stream = BytesIO()
     	#camera = PiCamera()
@@ -32,7 +33,7 @@ class camera(object):
         #ext = image_path.split(".")[-1]
         #img = Image.open(image_path)
         img = image_path
-        (imageWidth, imageHeight)=image_path.size
+        (imageWidth, imageHeight)=img.size()
 
         rangex=split_x
         rangey=split_y
