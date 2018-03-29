@@ -1,4 +1,4 @@
-from takePicture import *
+from takePicture import camera as c
 
-
-print analyzeImage(takePicture())
+cm = c.camera()
+print (cm.get_picture_info())
