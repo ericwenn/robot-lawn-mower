@@ -8,7 +8,7 @@ class camera(object):
 
 
 
-    def get_picture_info():
+    def get_picture_info(self):
         return self.analyzeImage(self.takePicture())
     #Between 0 and 1
     proximity = 0.5
@@ -117,7 +117,7 @@ class camera(object):
             perGreen =0;
             for x in range(start, stop):
                 split = splits[x][y]
-                close = closeness_to_green(split['color'][1])
+                close = self.closeness_to_green(split['color'][1])
                 if not close:
                     perGreen=perGreen +1
             if ((float(perGreen)/mx) > sizeDifference) and not breaks:
@@ -131,7 +131,7 @@ class camera(object):
     #"Splits" the image into three parts and checks wether each part is free
     def analyzeImage(image):
 
-        size, splits = split_image(image, split_x=25, split_y=25)
+        size, splits = self.split_image(image, split_x=25, split_y=25)
         sec1 = int(math.floor(len(splits)/3))
         sec2 = 2 * sec1
 
@@ -140,11 +140,11 @@ class camera(object):
         #Replace actual color with avarage colour
         for split_x in splits:
             for split_y in split_x:
-                split_y['color'] = most_frequent_colour(split_y['slice'])
+                split_y['color'] = self.most_frequent_colour(split_y['slice'])
 
 
-        clear1 = analyzeSection(splits,0,sec1)
-        clear2 = analyzeSection(splits,sec1,sec2)
-        clear3 = analyzeSection(splits,sec2,len(splits))
+        clear1 = self.analyzeSection(splits,0,sec1)
+        clear2 = self.analyzeSection(splits,sec1,sec2)
+        clear3 = self.analyzeSection(splits,sec2,len(splits))
 
         return (clear1, clear2, clear3)
