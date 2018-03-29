@@ -14,6 +14,7 @@ class camera(object):
     proximity = 0.5
     sizeDifference = 0.1
 
+    #Uses the Pi camera to take a picture
     def takePicture():
     	# Create the in-memory stream
     	stream = BytesIO()
@@ -26,6 +27,7 @@ class camera(object):
     	image = Image.open(stream)
     	return image
 
+    #Splits and image in squares
     def split_image(image_path, split_x=None, split_y=None, split_save_path=None):
         #ext = image_path.split(".")[-1]
         #img = Image.open(image_path)
@@ -103,7 +105,7 @@ class camera(object):
 
         return most_frequent_pixel
 
-
+    #Checks if a section of an image is clear
     def analyzeSection(splits, start, stop):
         yCoord = 0
         breaks = False
