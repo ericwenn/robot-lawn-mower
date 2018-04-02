@@ -20,8 +20,8 @@ def can_move_forward():
 REVOLVE_TIME = 2
 def spin():
   time_to_spin = random()*REVOLVE_TIME
-  #steer.back()
-  #sleep(2.5)
+  steer.back()
+  sleep(1)
   steer.right()
   sleep(time_to_spin)
   steer.stop()
@@ -43,4 +43,4 @@ while(True):
       spin()
     else:
       steer.stop()
-  sleep(.5)
+  sleep(.2)
