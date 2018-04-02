@@ -18,5 +18,5 @@ def print_ultrasound(us_reading):
     graphs[0].append( '|' if reading['can_move'][0] else '.')
 
   
-  win.addstr(graphs[0], curses.color_pair(1))
+  win.addstr("".join(graphs[0]), curses.color_pair(1))
   win.refresh()
