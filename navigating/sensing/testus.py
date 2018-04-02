@@ -13,5 +13,4 @@ while True:
 		pos[0] = False
 	if GPIO.input(27):
 		pos[1] = False
-	print "pos", pos
 	time.sleep(0.5)

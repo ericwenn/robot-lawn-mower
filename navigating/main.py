@@ -3,16 +3,15 @@ import steering.steer as steer
 from random import random
 from time import sleep
 from visualization.printer import print_ultrasound
+import curses
 
 sensors = Sensors()
-steer.setup()
 
 def can_move_forward():
   uss = sensors.get_ultrasound_readings()
   print_ultrasound(uss)
 
   if uss.freshness() < 0.2:
-    print "no fresh"
     return True, 0 # total uncertainty
   
   return uss.verdict() == 1, uss.certainty()
@@ -26,21 +25,25 @@ def spin():
   sleep(time_to_spin)
   steer.stop()
 
-sensors.start()
-while(True):
-  can_forward, certainty = can_move_forward()
 
-  print "Can move forward", can_forward, "certainty", certainty
+def main():
+  steer.setup()
+  sensors.start()
+  while(True):
+    can_forward, certainty = can_move_forward()
 
-  if can_forward:
-    if certainty >= .6:
-      print "going forward"
-      steer.forward()
+
+    if can_forward:
+      if certainty >= .6:
+        steer.forward()
+      else:
+        steer.stop()
     else:
-      steer.stop()
-  else:
-    if certainty >= .5:
-      spin()
-    else:
-      steer.stop()
-  sleep(.001)
+      if certainty >= .5:
+        spin()
+      else:
+        steer.stop()
+    sleep(.001)
+
+if __name__ == '__main__':
+  curses.wrapper(main)

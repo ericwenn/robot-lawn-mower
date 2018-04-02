@@ -44,7 +44,6 @@ class UltraSoundSensorReading(SensorReading):
       return 0
 
     diff = (time.time() - self.raw_data[-1]["timestamp"]) * 1000
-    print "fresh diff", diff
     return max(0, 1 - (diff / FRESHNESS_LIMIT))
 
   def certainty(self):
