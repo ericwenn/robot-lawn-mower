@@ -22,6 +22,9 @@ class SensorReading(object):
     """
     raise NotImplementedError()
 
+  def raw(self):
+    raise NotImplementedError()
+
 
 class UltraSoundSensorReading(SensorReading):
   """
@@ -85,6 +88,10 @@ class UltraSoundSensorReading(SensorReading):
         can_move = False
     
     return 1 if can_move else -1
+
+  
+  def raw(self):
+    return self.raw_data
 
 class CameraSensorReading(SensorReading):
   """
