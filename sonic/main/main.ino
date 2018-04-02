@@ -2,7 +2,9 @@
 #include <Ultrasonic.h>
 #define DEBUG
 
-#define MAX_DISTANCE 15
+
+//Not used anymore, don't touch it
+//#define MAX_DISTANCE 15
 
 #define LEFTSIG A0
 #define FRONTSIG A1
@@ -44,19 +46,19 @@ void check_sensors(){
   //LEFT
   unsigned char _sonicLeft = sonicLeft.distanceRead();
   delay(6);
-  unsigned char blockedLeft = determine_blocked(_sonicLeft);
+  unsigned char blockedLeft = determine_blocked(20, _sonicLeft);
   digitalWrite(LEFTSIG, blockedLeft);
   
   //FRONT
   unsigned char _sonicFront = sonicFront.distanceRead();
   delay(6);
-  unsigned char blockedFront = determine_blocked(_sonicFront);
+  unsigned char blockedFront = determine_blocked(15, _sonicFront);
   digitalWrite(FRONTSIG,blockedFront);
  
   //RIGHT
   unsigned char _sonicRight = sonicRight.distanceRead();
   delay(6);
-  unsigned char blockedRight = determine_blocked(_sonicRight);
+  unsigned char blockedRight = determine_blocked(20, _sonicRight);
   digitalWrite(RIGHTSIG,blockedRight);
 
 
@@ -68,17 +70,17 @@ void check_sensors(){
     Serial.print("Left ");
     Serial.print(_sonicLeft);
     Serial.print(" ");
-    Serial.println(determine_blocked(_sonicLeft));
+    Serial.println(determine_blocked(20, _sonicLeft));
   
     Serial.print("Front ");
     Serial.print(_sonicFront);
     Serial.print(" ");
-    Serial.println(determine_blocked(_sonicFront));
+    Serial.println(determine_blocked(15, _sonicFront));
   
     Serial.print("Right ");
     Serial.print(_sonicRight);
     Serial.print(" ");
-    Serial.println(determine_blocked(_sonicRight));
+    Serial.println(determine_blocked(20, _sonicRight));
     Serial.println("");
 
     /*Serial.print("FRONTSIG: ");
@@ -93,7 +95,7 @@ void check_sensors(){
 }
 
 //Updates given signal in case given distance is to short
-unsigned char determine_blocked(unsigned char dist){
+unsigned char determine_blocked(unsigned char MAX_DISTANCE, unsigned char dist){
   return (dist <= MAX_DISTANCE && dist !=0);
 }
 
