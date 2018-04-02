@@ -43,4 +43,4 @@ while(True):
       spin()
     else:
       steer.stop()
-  sleep(.2)
+  sleep(.001)
