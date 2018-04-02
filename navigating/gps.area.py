@@ -40,11 +40,12 @@ def checkIfPointInArea(x,y):
     print codes
     print path
     print path.contains_point((x,y))
-def saveCoords(listOfCoords,filePath):
+
+def saveCoords(listOfCoords,filePath="coord.json"):
         with open(filePath, 'w') as f:
             json.dump(listOfCoords, f)
 
-def loadCoords(filePath):
+def loadCoords(filePath="coord.json"):
     try:
         with open(filePath, 'r') as f:
             datastore = json.load(f)
