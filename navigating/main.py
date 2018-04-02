@@ -10,7 +10,7 @@ screen = None
 
 def can_move_forward():
   uss = sensors.get_ultrasound_readings()
-  print_ultrasound(scr, uss)
+  print_ultrasound(screen, uss)
 
   if uss.freshness() < 0.2:
     return True, 0 # total uncertainty
