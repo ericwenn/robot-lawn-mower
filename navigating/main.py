@@ -6,10 +6,11 @@ from visualization.printer import print_ultrasound
 import curses
 
 sensors = Sensors()
+screen = None
 
 def can_move_forward():
   uss = sensors.get_ultrasound_readings()
-  print_ultrasound(uss)
+  print_ultrasound(scr, uss)
 
   if uss.freshness() < 0.2:
     return True, 0 # total uncertainty
@@ -26,12 +27,12 @@ def spin():
   steer.stop()
 
 
-def main():
+def main(scr):
+  screen = scr
   steer.setup()
   sensors.start()
   while(True):
     can_forward, certainty = can_move_forward()
-
 
     if can_forward:
       if certainty >= .6:
