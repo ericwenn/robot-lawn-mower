@@ -2,12 +2,15 @@ from sensing.sensing import Sensors
 import steering.steer as steer
 from random import random
 from time import sleep
+from visualization.printer import print_ultrasound
 
 sensors = Sensors()
 steer.setup()
 
 def can_move_forward():
   uss = sensors.get_ultrasound_readings()
+  print_ultrasound(uss)
+
   if uss.freshness() < 0.2:
     print "no fresh"
     return True, 0 # total uncertainty
