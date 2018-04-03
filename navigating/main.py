@@ -1,16 +1,12 @@
 from sensing.sensing import Sensors
+from sensing.sensor_reading import UltraSoundSensorReading
 import steering.steer as steer
 from random import random
 from time import sleep
-from visualization.printer import print_ultrasound
-import curses
-
 sensors = Sensors()
-screen = None
 
 def can_move_forward():
   uss = sensors.get_ultrasound_readings()
-  print_ultrasound(screen, uss)
 
   if uss.freshness() < 0.2:
     return True, 0 # total uncertainty
@@ -27,8 +23,7 @@ def spin():
   steer.stop()
 
 
-def main(scr):
-  screen = scr
+def main():
   steer.setup()
   sensors.start()
   while(True):
@@ -46,5 +41,5 @@ def main(scr):
         steer.stop()
     sleep(.001)
 
-if __name__ == '__main__':
-  curses.wrapper(main)
+if __name__ == "__main__":
+  main()
