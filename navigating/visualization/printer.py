@@ -1,7 +1,9 @@
 import curses
 import curses.ascii as asc
 import time
+import locale
 
+locale.setlocale(locale.LC_ALL, '')
 
 class Vis(object):
   def __init__(self, scr):
