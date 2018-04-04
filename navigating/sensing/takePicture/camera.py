@@ -10,20 +10,20 @@ class camera(object):
     sizeDifference = 0.1
     proximity = 0.5
 
-    def get_picture_info(self):
-        return self.analyzeImage(self.takePicture())
+    def get_picture_info(self,camera):
+        return self.analyzeImage(self.takePicture(camera))
     #Between 0 and 1
     #proximity = 0.5
     #sizeDifference = 0.1
 
     #Uses the Pi camera to take a picture
-    def takePicture(self):
+    def takePicture(self,camera):
     	# Create the in-memory stream
     	stream = BytesIO()
     	#camera = PiCamera()
-    	with PiCamera(resolution=(720,480)) as camera:
-    		camera.start_preview()
-    		camera.capture(stream, format='jpeg', use_video_port = True)
+    	#with PiCamera(resolution=(720,480)) as camera:
+    	camera.start_preview()
+    	camera.capture(stream, format='jpeg', use_video_port = True)
     	# "Rewind" the stream to the beginning so we can read its content
     	stream.seek(0)
     	image = Image.open(stream)
