@@ -134,8 +134,8 @@ class camera(object):
     def analyzeImage(self,image):
 
         size, splits = self.split_image(image, 25, 25)
-        sec1 = int(math.floor(len(splits)/3))
-        sec2 = 2 * sec1
+        sec1 = int(math.floor(len(splits)/2))
+        #sec2 = 2 * sec1
 
         clear1, clear2, clear3 = False, False, False
 
@@ -146,7 +146,7 @@ class camera(object):
 
 
         clear1 = self.analyzeSection(splits,0,sec1)
-        clear2 = self.analyzeSection(splits,sec1,sec2)
-        clear3 = self.analyzeSection(splits,sec2,len(splits))
+        clear2 = self.analyzeSection(splits,sec1,len(splits))
+        #clear3 = self.analyzeSection(splits,sec2,len(splits))
 
-        return (clear1, clear2, clear3)
+        return (clear1, clear2)

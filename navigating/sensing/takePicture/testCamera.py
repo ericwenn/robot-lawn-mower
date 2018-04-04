@@ -19,6 +19,9 @@ def takePicture():
 '''
 cam = camera.camera()
 with PiCamera(resolution = (720,480)) as c:
-    while True:
-        print cam.get_picture_info(c)
-        sleep(0.5)
+	try:
+		while True:
+        	print cam.get_picture_info(c)
+        	sleep(0.5)
+	except KeyboardInterrupt:
+        print "User cancelled"
