@@ -3,11 +3,19 @@ from sensing.sensor_reading import UltraSoundSensorReading
 import steering.steer as steer
 from random import random
 from time import sleep
+from visualization.printer import create_visualizer
+import atexit
+
 sensors = Sensors()
+
+vis = create_visualizer()
+atexit.register(vis.cleanup)
 
 def can_move_forward():
   uss = sensors.get_ultrasound_readings()
-
+  
+  vis.register_reading('Ultrasound', 'ultrasound', uss)
+  vis.render()
   if uss.freshness() < 0.2:
     return True, 0 # total uncertainty
   
