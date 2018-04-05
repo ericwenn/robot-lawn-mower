@@ -3,7 +3,6 @@ import curses.ascii as asc
 import time
 import locale
 
-locale.setlocale(locale.LC_ALL, '')
 
 class Vis(object):
   def __init__(self, scr):
@@ -84,9 +83,9 @@ class Vis(object):
 
     reading['screen'].addstr(1, 2, key)
 
-    reading['screen'].addstr(2, 2, " ".join(graphs[0]).encode('utf-8'), curses.color_pair(2))
-    reading['screen'].addstr(3, 2, " ".join(graphs[1]).encode('utf-8'), curses.color_pair(2))
-    reading['screen'].addstr(4, 2, " ".join(graphs[2]).encode('utf-8'), curses.color_pair(2))
+    reading['screen'].addstr(2, 2, " ".join(graphs[0]), curses.color_pair(2))
+    reading['screen'].addstr(3, 2, " ".join(graphs[1]), curses.color_pair(2))
+    reading['screen'].addstr(4, 2, " ".join(graphs[2]), curses.color_pair(2))
 
     reading['screen'].addstr(6, 2, 'Freshness')
     reading['screen'].addstr(6, 15, str(freshness), self.color(0, 1, freshness))
