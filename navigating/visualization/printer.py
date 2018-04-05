@@ -98,7 +98,6 @@ class Vis(object):
 
     reading['screen'].border()
     reading['screen'].refresh()
-    print "refresh"
   
   def render_can_move(self, key, reading):
     data = reading['data'][-1]
