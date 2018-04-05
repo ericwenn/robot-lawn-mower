@@ -15,14 +15,18 @@ def can_move_forward():
   uss = sensors.get_ultrasound_readings()
   
   vis.register_reading('Ultrasound', 'ultrasound', uss)
-  vis.render()
   if uss.freshness() < 0.2:
     return True, 0 # total uncertainty
   
-  return uss.verdict() == 1, uss.certainty()
+  can_forward = uss.verdict() == 1
+  certainty = uss.certainty()
+
+  vis.register_reading('Can move forward', 'can_move_forward', (can_forward, certainty))
+  return can_forward, certainty
 
 REVOLVE_TIME = 2
 def spin():
+  # spin atleast .2s
   time_to_spin = random()*REVOLVE_TIME
   steer.back()
   sleep(1)
@@ -47,6 +51,8 @@ def main():
         spin()
       else:
         steer.stop()
+    vis.render()
+    
     sleep(.001)
 
 if __name__ == "__main__":

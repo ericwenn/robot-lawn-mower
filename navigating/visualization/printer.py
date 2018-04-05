@@ -11,11 +11,11 @@ class Vis(object):
     self.readings = {}
     self.screens = [
       (1, 1),
+      (1, 27),
       (17, 1),
+      (17, 27),
       (33, 1),
-      (1, 22),
-      (17, 22),
-      (33, 22)
+      (33, 27)
     ]
     self.screen_index = 0
     curses.curs_set(0)
@@ -47,6 +47,11 @@ class Vis(object):
       
       if reading['type'] == 'ultrasound':
         self.render_us(key, reading)
+      
+      if reading['type'] == 'can_move_forward':
+        self.render_can_move(key, reading)
+    
+    #self.scr.refresh()
 
 
   def color(self, minv, maxv, value):
@@ -94,6 +99,23 @@ class Vis(object):
 
     reading['screen'].border()
     reading['screen'].refresh()
+    print "refresh"
+  
+  def render_can_move(self, key, reading):
+    data = reading['data'][-1]
+
+    reading['screen'].clear()
+    reading['screen'].addstr(1, 2, key)
+    
+    reading['screen'].addstr(2, 2, 'Verdict')
+    reading['screen'].addstr(2, 15, str(data[0]), self.color(-1, 1, data[0]))
+
+    reading['screen'].addstr(3, 2, 'Certainty')
+    reading['screen'].addstr(3, 15, str(data[1]), self.color(-1, 1, data[1]))
+
+    reading['screen'].border()
+    reading['screen'].refresh()
+
 
 def _create(screen):
   return Vis(screen)

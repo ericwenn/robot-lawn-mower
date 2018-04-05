@@ -37,8 +37,9 @@ if __name__ == "__main__":
     'timestamp': time.time(),
     'can_move': [False, True, True]
   }])
-
   vis.register_reading('Ultrasound', 'ultrasound', mock_us)
+  vis.register_reading('Can move forward', 'can_move_forward', (True, .9))  
+
   while(True):
     vis.render()
-    time.sleep(0.01)
+    time.sleep(.2)
