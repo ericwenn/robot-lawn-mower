@@ -6,7 +6,7 @@ import math
 import colorsys
 
 
-class camera(object):
+class Camera(object):
     sizeDifference = 0.1
     proximity = 0.5
 
@@ -65,8 +65,8 @@ class camera(object):
                     'yoffset': y1
                 })
 
-                if not split_save_path == None:
-                    slice_bit.save('{}/xmap_{}_{}.{}'.format(split_save_path, x, y, ext), optimize=True, bits=6)
+                # if not split_save_path == None:
+                #     slice_bit.save('{}/xmap_{}_{}.{}'.format(split_save_path, x, y, ext), optimize=True, bits=6)
             if len(split_grid_y) > 0:
                 split_grid.append(split_grid_y)
         return (imageWidth, imageHeight), split_grid
@@ -116,7 +116,7 @@ class camera(object):
         #Loop over the splits in given interval, see if any row is more than sizeDifference percent not green, record the y coordinate that
         #had the first anomaly, if that was under proximity return false otherwise return true
         for y in reversed(range(my)):
-            perGreen =0;
+            perGreen = 0
             for x in range(start, stop):
                 split = splits[x][y]
                 close = self.closeness_to_green(split['color'][1])

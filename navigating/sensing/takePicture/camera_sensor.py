@@ -10,7 +10,7 @@ class CameraSensorThread(Thread):
     def __init__(self, queue):
         Thread.__init__(self)
         self.queue = queue
-        self.camera = camera.camera()
+        self.camera = camera.Camera()
 
     def sensorCam(self, camera):
         return self.camera.get_picture_info(camera)
@@ -39,7 +39,7 @@ class CameraSensor(object):
         self.thread.daemon = True
         self.thread.start()
 
-    def get_ultrasound_events(self, n=1):
+    def get_camera_events(self, n=1):
         # Read all events from sensors
         try:
             while True:
