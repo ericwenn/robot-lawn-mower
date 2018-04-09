@@ -71,16 +71,18 @@ class Vis(object):
   def render_sensor(self, key, reading):
     raw_data = reading['data'][-1].raw()
     graphs = []
-    if len(raw_data[0]['payload']['can_move']) == 3:
-      graphs = [["L"], ["M"], ["R"]]
-    else:
-      graphs = [["L"], ["R"]]
 
+    if (len(raw_data) > 0):
+      if len(raw_data[0]['payload']['can_move']) == 3:
+        graphs = [["L"], ["M"], ["R"]]
+      else:
+        graphs = [["L"], ["R"]]
+
+      
+      for d in raw_data:
+        for i in range(len(d['payload']['can_move'])):
+          graphs[i].append( '*' if d['payload']['can_move'][0] else '_')
     
-    for d in raw_data:
-      for i in range(len(d['payload']['can_move'])):
-        graphs[i].append( '*' if d['payload']['can_move'][0] else '_')
-
     freshness = reading['data'][-1].freshness()
     certainty = reading['data'][-1].certainty()
     verdict = reading['data'][-1].verdict()
