@@ -109,6 +109,8 @@ def analyze_section(splits, start, stop):
 def analyze_image(image):
 
     size, splits = split_image(image, 25, 25)
+
+    print "Found", len(splits), "splits"
     sec1 = int(math.floor(len(splits)/2))
     #sec2 = 2 * sec1
 
@@ -119,6 +121,7 @@ def analyze_image(image):
         for split_y in split_x:
             split_y['color'] = most_frequent_colour(split_y['slice'])
 
+    print splits[0][0]['color']
 
     clear1 = analyze_section(splits,0,sec1)
     clear2 = analyze_section(splits,sec1,len(splits))
@@ -126,7 +129,3 @@ def analyze_image(image):
 
     return (clear1, clear2)
 
-
-if __name__ == '__main__':
-  
-  print "man"
