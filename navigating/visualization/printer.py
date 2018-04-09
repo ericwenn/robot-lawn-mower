@@ -70,11 +70,16 @@ class Vis(object):
 
   def render_sensor(self, key, reading):
     raw_data = reading['data'][-1].raw()
-    graphs = [["L"], ["M"], ["R"]]
+    graphs = []
+    if len(raw_data['payload']['can_move']) == 3:
+      graphs = [["L"], ["M"], ["R"]]
+    else:
+      graphs = [["L"], ["R"]]
+
+    
     for d in raw_data:
-      graphs[0].append( "*" if d['payload']['can_move'][0] else '_')
-      graphs[1].append( "*" if d['payload']['can_move'][1] else '_')
-      graphs[2].append( "*" if d['payload']['can_move'][2] else '_')
+      for i in range(d['payload']['can_move']):
+        graphs[i].append( '*' if d['payload']['can_move'][0] else '_')
 
     freshness = reading['data'][-1].freshness()
     certainty = reading['data'][-1].certainty()
@@ -82,20 +87,28 @@ class Vis(object):
 
     reading['screen'].clear()
 
+    row = 1
+
     reading['screen'].addstr(1, 2, key)
+    row += 1
 
-    reading['screen'].addstr(2, 2, " ".join(graphs[0]), curses.color_pair(2))
-    reading['screen'].addstr(3, 2, " ".join(graphs[1]), curses.color_pair(2))
-    reading['screen'].addstr(4, 2, " ".join(graphs[2]), curses.color_pair(2))
+    for g in graphs:
+      reading['screen'].addstr(row, 2, " ".join(g), curses.color_pair(2))
+      row += 1
+      
+    row += 2
 
-    reading['screen'].addstr(6, 2, 'Freshness')
-    reading['screen'].addstr(6, 15, str(freshness), self.color(0, 1, freshness))
+    reading['screen'].addstr(row, 2, 'Freshness')
+    reading['screen'].addstr(row, 15, str(freshness), self.color(0, 1, freshness))
+    row +=1
 
-    reading['screen'].addstr(7, 2, 'Certainty')
-    reading['screen'].addstr(7, 15, str(certainty), self.color(0, 1, certainty))
+    reading['screen'].addstr(row, 2, 'Certainty')
+    reading['screen'].addstr(row, 15, str(certainty), self.color(0, 1, certainty))
+    row +=1
 
-    reading['screen'].addstr(8, 2, 'Verdict')
-    reading['screen'].addstr(8, 15, str(verdict), self.color(-1, 1, verdict))
+    reading['screen'].addstr(row, 2, 'Verdict')
+    reading['screen'].addstr(row, 15, str(verdict), self.color(-1, 1, verdict))
+    row +=1
 
     reading['screen'].border()
     reading['screen'].refresh()
