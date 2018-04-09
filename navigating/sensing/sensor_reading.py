@@ -106,6 +106,9 @@ class CameraSensorReading(SensorReading):
 
   def verdict(self):
     return -1.0
+    
+  def raw(self):
+    return self.raw_data
 
 
 class GPSSensorReading(SensorReading):
