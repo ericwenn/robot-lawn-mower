@@ -62,13 +62,13 @@ class UltraSoundSensorReading(SensorReading):
     if number_of_readings == 0:
       return 0
 
-    number_of_sensors = len(self.raw_data[0]["can_move"])
+    number_of_sensors = len(self.raw_data[0]['payload']["can_move"])
 
     certainties = []
     for i in range(number_of_sensors):
       sum_readings = 0
       for reading in self.raw_data:
-        sum_readings += 1 if reading["can_move"][i] else -1
+        sum_readings += 1 if reading['payload']["can_move"][i] else -1
       
       avg = float(sum_readings) / max(1, number_of_readings)
       certainties.append(abs(avg))
@@ -82,7 +82,7 @@ class UltraSoundSensorReading(SensorReading):
       return 1
 
     can_move = True
-    for verdict_i in self.raw_data[-1]["can_move"]:
+    for verdict_i in self.raw_data[-1]['payload']["can_move"]:
       if not verdict_i:
         can_move = False
     
@@ -99,13 +99,13 @@ class CameraSensorReading(SensorReading):
     self.raw_data = raw_data
   
   def freshness(self):
-    raise NotImplementedError()
+    return 1.0    
 
   def certainty(self):
-    raise NotImplementedError()
+    return 1.0    
 
   def verdict(self):
-    raise NotImplementedError()
+    return -1.0
 
 
 class GPSSensorReading(SensorReading):

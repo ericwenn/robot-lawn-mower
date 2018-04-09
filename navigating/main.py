@@ -13,7 +13,9 @@ atexit.register(vis.cleanup)
 
 def can_move_forward():
   uss = sensors.get_ultrasound_readings()
+  css = sensors.get_camera_readings()
   
+  vis.register_reading('Camera', 'camera', css)
   vis.register_reading('Ultrasound', 'ultrasound', uss)
   if uss.freshness() < 0.2:
     return True, 0 # total uncertainty

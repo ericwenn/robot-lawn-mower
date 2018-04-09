@@ -44,8 +44,8 @@ class Vis(object):
         reading['screen'] = curses.newwin(15, 25, windef[0], windef[1])
         self.screen_index += 1
       
-      if reading['type'] == 'ultrasound':
-        self.render_us(key, reading)
+      if reading['type'] == 'ultrasound' or reading['type'] == 'camera':
+        self.render_sensor(key, reading)
       
       if reading['type'] == 'can_move_forward':
         self.render_can_move(key, reading)
@@ -67,7 +67,7 @@ class Vis(object):
 
     return curses.color_pair(1)
 
-  def render_us(self, key, reading):
+  def render_sensor(self, key, reading):
     raw_data = reading['data'][-1].raw()
     graphs = [["L"], ["M"], ["R"]]
     for d in raw_data:

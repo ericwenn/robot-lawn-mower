@@ -23,7 +23,9 @@ class SoundSensorThread(Thread):
         while(True):
             reading = self.sensorsLMR()
             event =  {
-                'can_move': reading,
+                'payload': {
+                    'can_move': reading,
+                },
                 'timestamp': time.time()
             }
             self.queue.put(event)

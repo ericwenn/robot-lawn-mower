@@ -21,7 +21,8 @@ class Sensors(object):
     return uls
   
   def get_camera_readings(self):
-    csr = CameraSensorReading([])
+    events = self.sensor_listener.get_camera_events(10)
+    csr = CameraSensorReading(events)
     return csr
   
   def get_gps_readings(self):
