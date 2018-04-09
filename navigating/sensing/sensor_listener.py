@@ -15,6 +15,7 @@ def make_handler(gps_queue, camera_queue):
                 'payload': json.loads(data),
                 'timestamp': time.time()
             }
+            print "Got request", self.path
 
             if self.path == '/camera':
                 camera_queue.put(parsed_data)
