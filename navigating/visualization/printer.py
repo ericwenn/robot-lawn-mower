@@ -71,7 +71,7 @@ class Vis(object):
   def render_sensor(self, key, reading):
     raw_data = reading['data'][-1].raw()
     graphs = []
-    if len(raw_data['payload']['can_move']) == 3:
+    if len(raw_data[0]['payload']['can_move']) == 3:
       graphs = [["L"], ["M"], ["R"]]
     else:
       graphs = [["L"], ["R"]]
