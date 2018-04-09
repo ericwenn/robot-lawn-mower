@@ -19,6 +19,7 @@ class CameraSensorThread(Thread):
     def send(self, reading):
         conn = httplib.HTTPConnection("cmg-navigating", "8080")
         body = json.dumps({ 'can_move': reading })
+        print body
         conn.request("POST", "/camera", body, { 'Content-Type': 'application/json' })
     def run(self):
         with PiCamera(resolution = (720,480)) as c:
