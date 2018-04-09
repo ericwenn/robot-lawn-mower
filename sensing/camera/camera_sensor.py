@@ -4,51 +4,40 @@ from threading import Thread, Event
 from Queue import Queue, Empty
 from picamera import PiCamera
 import camera
-
+import httplib
+import json
 
 class CameraSensorThread(Thread):
-    def __init__(self, queue):
+    def __init__(self):
         Thread.__init__(self)
-        self.queue = queue
         self.camera = camera.Camera()
 
     def sensorCam(self, camera):
         return self.camera.get_picture_info(camera)
 
+
+    def send(self, reading):
+        conn = httplib.HTTPConnection("cmg-navigating", "8080")
+        body = json.dumps({ 'can_move': reading })
+        conn.request("POST", "/camera", body, { 'Content-Type': 'application/json' })
     def run(self):
         with PiCamera(resolution = (720,480)) as c:
             while(True):
                 reading = self.sensorCam(c)
-                event =  {
-                    'can_move': reading,
-                    'timestamp': time.time()
-                    }
-                self.queue.put(event)
+                self.send(reading)
                 time.sleep(.5)
 
 
 
 class CameraSensor(object):
     def __init__(self, port=8080):
-        self.queue = Queue()
-        self.stack = []
-        self.thread = CameraSensorThread(self.queue)
+        self.thread = CameraSensorThread()
 
 
     def start(self):
         self.thread.daemon = True
         self.thread.start()
 
-    def get_camera_events(self, n=1):
-        # Read all events from sensors
-        try:
-            while True:
-                event = self.queue.get(block=False)
-                self.stack.append(event)
-        except Empty:
-            pass
-
-        return self.stack[-n:]
 
 
 
@@ -57,5 +46,4 @@ if __name__ == "__main__":
 
     cam_sense.start()
     while True:
-        print cam_sense.get_camera_events(3)
         time.sleep(.5)
