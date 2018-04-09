@@ -52,7 +52,7 @@ class CameraSensor(object):
 
 
 
-if __name__ === "__main__":
+if __name__ == "__main__":
     cam_sense = CameraSensor()
 
     cam_sense.start()
