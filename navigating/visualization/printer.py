@@ -81,7 +81,7 @@ class Vis(object):
       
       for d in raw_data:
         for i in range(len(d['payload']['can_move'])):
-          graphs[i].append( '*' if d['payload']['can_move'][0] else '_')
+          graphs[i].append( '*' if d['payload']['can_move'][i] else '_')
     
     freshness = reading['data'][-1].freshness()
     certainty = reading['data'][-1].certainty()
