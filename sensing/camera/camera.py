@@ -1,13 +1,14 @@
 from io import BytesIO
 from PIL import Image
 from analyze_image import analyze_image
-
+from store_image import store_image
 
 class Camera(object):
 
 
     def get_picture_info(self,camera):
         img = self.takePicture(camera)
+        store_image(img)
         return analyze_image(img)
 
     #Between 0 and 1
