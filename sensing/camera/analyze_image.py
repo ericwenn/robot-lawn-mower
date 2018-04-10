@@ -179,6 +179,7 @@ def analyze_image(image):
     print clear1, s1, s_limit1, p_limit1
     print clear2, s2, s_limit2, p_limit2
     print clear3, s3, s_limit3, p_limit3
+    print ""
     #clear3 = self.analyzeSection(splits,sec2,len(splits))
 
     return (clear1, clear2, clear3), intermediate_images
