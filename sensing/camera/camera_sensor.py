@@ -3,6 +3,8 @@ import time
 from threading import Thread, Event
 from Queue import Queue, Empty
 from picamera import PiCamera
+from take_picture import take_picture
+from analyze_image import analyze_image
 import camera
 import httplib
 import json
@@ -10,17 +12,17 @@ import json
 class CameraSensorThread(Thread):
     def __init__(self):
         Thread.__init__(self)
-        self.camera = camera.Camera()
 
     def sensorCam(self, camera):
-        return self.camera.get_picture_info(camera)
-
+        img = take_picture(camera)
+        reading, _ = analyze_image(img)
+        return reading
 
     def send(self, reading):
         conn = httplib.HTTPConnection("cmg-navigating", "8080")
         body = json.dumps({ 'can_move': reading })
-        print body
         conn.request("POST", "/camera", body, { 'Content-Type': 'application/json' })
+        
     def run(self):
         with PiCamera(resolution = (720,480)) as c:
             while(True):
