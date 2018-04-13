@@ -20,7 +20,7 @@ while(True):
     lng=data[5]
     lng_sign=data[6]
 
-    if(lat==""||lat_sign==""||lng==""||lng_sign==""):
+    if(lat=="" || lat_sign=="" || lng=="" || lng_sign==""):
             print("NO FIX!")
             continue
 
