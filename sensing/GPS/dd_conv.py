@@ -3,10 +3,9 @@ import serial
 ser = serial.Serial('/dev/serial0', 9600, timeout=0.5)
 
 while(True):
-        #print("Hello World")
     try:
         str=ser.readline()
-        print(str)
+        print(str[1:7])
     except:
         pass
     if(str[1:7]!="GPRMC"):
@@ -24,13 +23,17 @@ while(True):
 
     if(lat_sign == "N"):
         lat_sign = 1
-    else:
+    else if(lat_sign == "S"):
         lat_sign = -1
+    else:
+        lat_sign = 0
 
     if(lng_sign == "E"):
         lng_sign = 1
-    else:
+    else if(lng_sign == "W":
         lng_sign = -1
+    else:
+        lng_sign = 0
 
     dd=[lat_sign*(float(lat[0:2])+(float(lat[2:])/60)),lng_sign*(float(lng[0:3])+(float(lng[3:]))/60)]
     print(dd)
