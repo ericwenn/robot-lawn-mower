@@ -1,10 +1,16 @@
-from subprocess import check_output
-from os import system
+import serial
 
-system("stty -F /dev/serial0 raw 9600 cs8 clocal -cstopb")
+ser = serial.Serial('/dev/ttyACM0', 9600)
 
 while(True):
-    str=check_output(["cat", "/dev/serial0", "|", "grep", "GPRMC"]) 
+     
+    try:
+        str=serial.readline()
+    except:
+        pass
+    if(str[1:7]!="GPRMC"):
+        continue
+
 
     #sentence to decimal degrees convertion code
 
