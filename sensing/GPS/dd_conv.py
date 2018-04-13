@@ -1,6 +1,6 @@
 import subprocess
 
-subprocess.run(["stty", "-F", "/dev/serial0", "raw", "9600", "cs8", "clocal", "-cstopb"])
+subprocess.check_output(["stty", "-F", "/dev/serial0", "raw", "9600", "cs8", "clocal", "-cstopb"])
 
 while(true):
     str=subprocess.check_output(["cat", "/dev/serial0", "|", "grep", "GPRMC"]) 
