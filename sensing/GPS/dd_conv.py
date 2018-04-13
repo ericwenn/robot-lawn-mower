@@ -2,7 +2,7 @@ import serial
 
 ser = serial.Serial('/dev/serial0', 9600, timeout=0.5)
 
-getDDconv():
+def getDDconv():
     while True:
         try:
             str=ser.readline()
