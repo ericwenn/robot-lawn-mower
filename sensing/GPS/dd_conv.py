@@ -30,7 +30,7 @@ while(True):
 
     if(lng_sign == "E"):
         lng_sign = 1
-    elif(lng_sign == "W":
+    elif(lng_sign == "W"):
         lng_sign = -1
     else:
         lng_sign = 0
