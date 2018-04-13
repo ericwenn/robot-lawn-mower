@@ -11,7 +11,7 @@ def ensure_dir_exists():
 
 def store_image(image, variant, n_variants):
   ensure_dir_exists()
-  path = "{}/{}.{}.jpg".format(DIR, int(time()*100), variant)
+  path = "{}/{}.{}.jpg".format(DIR, int(time()), variant)
   image.save(path, optimize=True, bits=6)
   cleanup(FILE_LIMIT*n_variants)
 

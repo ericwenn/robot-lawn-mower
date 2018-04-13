@@ -36,6 +36,7 @@ class CameraSensorThread(Thread):
             while(True):
                 reading = self.sensorCam(c)
                 self.send(reading)
+                time.sleep(0.3)
 
 
 
