@@ -4,7 +4,6 @@ ser = serial.Serial('/dev/serial0', 9600, timeout=0.5)
 
 while(True):
     try:
-        str=ser.readline()
         print(str[1:6])
     except:
         pass
@@ -21,19 +20,19 @@ while(True):
     lng=data[5]
     lng_sign=data[6]
 
+    if(lat==""||lat_sign==""||lng==""||lng_sign==""):
+            print("NO FIX!")
+            continue
+
     if(lat_sign == "N"):
         lat_sign = 1
-    elif(lat_sign == "S"):
-        lat_sign = -1
     else:
-        lat_sign = 0
+        lat_sign = -1
 
     if(lng_sign == "E"):
         lng_sign = 1
-    elif(lng_sign == "W"):
-        lng_sign = -1
     else:
-        lng_sign = 0
+        lng_sign = -1
 
     dd=[lat_sign*(float(lat[0:2])+(float(lat[2:])/60)),lng_sign*(float(lng[0:3])+(float(lng[3:]))/60)]
     print(dd)
