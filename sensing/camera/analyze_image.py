@@ -149,7 +149,7 @@ def stitch_green_splits(splits, size):
 #"Splits" the image into three parts and checks wether each part is free
 def analyze_image(image):
 
-    size, splits = split_image(image, 12, 12)
+    size, splits = split_image(image, 36, 36)
     sec1 = int(math.floor(len(splits)/3))
     sec2 = 2 * sec1
 
