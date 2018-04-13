@@ -2,6 +2,7 @@ import serial
 
 ser = serial.Serial('/dev/serial0', 9600, timeout=0.5)
 
+#Will return a tuple [a,b] where a is latitude in decimal degrees and b is longitude...
 def getDDconv():
     while True:
         try:
@@ -40,5 +41,5 @@ def getDDconv():
 while True:
     try:
         print(getDDconv())
-    except ValueError as e
+    except ValueError as e:
         print(e.args)
