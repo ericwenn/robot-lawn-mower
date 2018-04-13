@@ -19,8 +19,6 @@ class myHandler(BaseHTTPRequestHandler):
         pictures = list(set(glob.glob(DIR+"/*")))
         pictures.sort(reverse=True)
         picture = pictures[0]
-        print picture
-        print len(pictures)
 
         html = '<html><head><title>Webhost</title></head><body>'
         for pic in pictures:
