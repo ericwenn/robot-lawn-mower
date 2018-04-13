@@ -3,7 +3,7 @@ import os
 import math
 
 DIR = 'stored_images'
-FILE_LIMIT = 5
+FILE_LIMIT = 500
 
 def ensure_dir_exists():
   if not os.path.exists(DIR):
@@ -18,6 +18,7 @@ def store_image(image, variant, n_variants):
 
 def cleanup(limit):
   files = os.listdir(DIR)
+  print len(files)
   if len(files) <= limit:
     return
 
