@@ -32,7 +32,7 @@ class CameraSensorThread(Thread):
             pass
         
     def run(self):
-        with PiCamera(resolution = (720,480)) as c:
+        with PiCamera(resolution = (72,48)) as c:
             while(True):
                 reading = self.sensorCam(c)
                 self.send(reading)
