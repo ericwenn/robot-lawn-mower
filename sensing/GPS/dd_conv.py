@@ -23,14 +23,14 @@ while(True):
 
     if(lat_sign == "N"):
         lat_sign = 1
-    else if(lat_sign == "S"):
+    elif(lat_sign == "S"):
         lat_sign = -1
     else:
         lat_sign = 0
 
     if(lng_sign == "E"):
         lng_sign = 1
-    else if(lng_sign == "W":
+    elif(lng_sign == "W":
         lng_sign = -1
     else:
         lng_sign = 0
