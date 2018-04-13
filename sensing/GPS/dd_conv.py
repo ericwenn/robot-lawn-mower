@@ -9,7 +9,7 @@ ser = serial.Serial(port='/dev/ttyAMA0',
                     )
 
 while(True):
-     
+    print("Hello World")
     try:
         str=ser.readline()
     except:
