@@ -1,11 +1,17 @@
 import serial
 
-ser = serial.Serial('/dev/ttyACM0', 9600)
+ser = serial.Serial(port='/dev/ttyAMA0',
+                    baudrate = 9600,
+                    parity=serial.PARITY_NONE,
+                    stopbits=serial.STOPBITS_ONE,
+                    bytesize=serial.EIGHTBITS,
+                    timeout=1
+                    )
 
 while(True):
      
     try:
-        str=serial.readline()
+        str=ser.readline()
     except:
         pass
     if(str[1:7]!="GPRMC"):
