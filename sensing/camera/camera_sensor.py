@@ -8,7 +8,8 @@ from analyze_image import analyze_image
 import camera
 import httplib
 import json
-
+from visualize_images import CameraVisualizer
+from store_image import store_image
 class CameraSensorThread(Thread):
     def __init__(self):
         Thread.__init__(self)
@@ -16,6 +17,10 @@ class CameraSensorThread(Thread):
     def sensorCam(self, camera):
         img = take_picture(camera)
         reading, _ = analyze_image(img)
+        reading, intermediate = analyze_image(img)
+        store_image(img, 'in', 3)
+        store_image(intermediate[0], 'avg', 3)
+        store_image(intermediate[1], 'green', 3)
         return reading
 
     def send(self, reading):
@@ -45,7 +50,8 @@ class CameraSensor(object):
 
 if __name__ == "__main__":
     cam_sense = CameraSensor()
-
     cam_sense.start()
+    camera_vis = CameraVisualizer()
+    camera_vis.start()
     while True:
         time.sleep(.5)
