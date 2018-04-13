@@ -9,9 +9,10 @@ ser = serial.Serial(port='/dev/ttyAMA0',
                     )
 
 while(True):
-    print("Hello World")
+        #print("Hello World")
     try:
         str=ser.readline()
+        print(str)
     except:
         pass
     if(str[1:7]!="GPRMC"):
