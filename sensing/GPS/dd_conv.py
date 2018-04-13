@@ -4,7 +4,7 @@ ser = serial.Serial('/dev/serial0', 9600, timeout=0.5)
 
 while(True):
     try:
-        print(str[1:6])
+        str=ser.readline()
     except:
         pass
     if(str[1:6]!="GPRMC"):
