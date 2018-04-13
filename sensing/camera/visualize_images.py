@@ -31,6 +31,8 @@ class myHandler(BaseHTTPRequestHandler):
         return html
 
 
+  def log_message(self, format, *args):
+            return
 
 
 	#Handler for the GET requests
