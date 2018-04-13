@@ -2,7 +2,7 @@ import subprocess
 
 subprocess.check_output(["stty", "-F", "/dev/serial0", "raw", "9600", "cs8", "clocal", "-cstopb"])
 
-while(true):
+while(True):
     str=subprocess.check_output(["cat", "/dev/serial0", "|", "grep", "GPRMC"]) 
 
     #sentence to decimal degrees convertion code
