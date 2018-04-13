@@ -22,8 +22,7 @@ def getDDconv():
         lng_sign=data[6]
 
         if(lat=="" or lat_sign=="" or lng=="" or lng_sign==""):
-                print("NO FIX!")
-                return 1
+                raise ValueError('NO FIX!')
 
         if(lat_sign == "N"):
             lat_sign = 1
@@ -39,4 +38,7 @@ def getDDconv():
         return(dd)
 
 while True:
-    print(getDDconv())
+    try:
+        print(getDDconv())
+    except ValueError as e
+        print(e.args)
