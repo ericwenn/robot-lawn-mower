@@ -1,9 +1,10 @@
-import subprocess
+from subprocess import check_output
+from os import system
 
-os.system("stty -F /dev/serial0 raw 9600 cs8 clocal -cstopb")
+system("stty -F /dev/serial0 raw 9600 cs8 clocal -cstopb")
 
 while(True):
-    str=subprocess.check_output(["cat", "/dev/serial0", "|", "grep", "GPRMC"]) 
+    str=check_output(["cat", "/dev/serial0", "|", "grep", "GPRMC"]) 
 
     #sentence to decimal degrees convertion code
 
