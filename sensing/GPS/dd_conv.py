@@ -8,7 +8,7 @@ while(True):
         print(str[1:6])
     except:
         pass
-    if(str[1:7]!="GPRMC"):
+    if(str[1:6]!="GPRMC"):
         continue
 
 
