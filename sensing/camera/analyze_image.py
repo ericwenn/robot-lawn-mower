@@ -2,8 +2,17 @@ import math
 import colorsys
 from PIL import Image
 
-sizeDifference = 0.1
-proximity = 0.5
+SIZE_DIFF = .3
+PROXIMITY = 0.41
+HUE_LOWER = .12
+HUE_UPPER = .23
+SAT_LOWER = .3
+SAT_UPPER = .7
+VAL_LOWER = 30
+VAL_UPPER = 165
+
+SPLITS_X = 9
+SPLITS_Y = 14
 
 #Splits and image in squares
 def split_image(image_path, split_x=None, split_y=None, split_save_path=None):
@@ -48,13 +57,15 @@ def split_image(image_path, split_x=None, split_y=None, split_save_path=None):
     return (imageWidth, imageHeight), split_grid
 
 #Check of a given RGB color is within the green color spectrum
-def close_to_green(color):
+def close_to_green(color, (hue_lower, hue_upper, sat_lower, sat_upper, val_lower, val_upper)):
     hsv = colorsys.rgb_to_hsv(color[0] + 0.0, color[1] + 0.0, color[2] + 0.0)
     green = (0, 255, 0)
     diff = (green[0] - color[0], green[1] - color[1], green[2] - color[2])
-    hue_treshold = [0.1, 0.55]
-    sat_treshold = [0.15, 1]
-    val_treshold = [10, 250]
+    hue_treshold = [hue_lower, hue_upper]
+    sat_treshold = [sat_lower, sat_upper]
+    val_treshold = [val_lower, val_upper]
+
+#    print hue_treshold, sat_treshold, val_treshold
 
     valid_hue = hsv[0] <= hue_treshold[1] and hsv[0] >= hue_treshold[0]
     valid_sat = hsv[1] <= sat_treshold[1] and hsv[1] >= sat_treshold[0]
@@ -100,7 +111,7 @@ def average_color(image):
     return (counts, average_color)
 
 # Checks if a section of an image is clear
-def analyze_section(splits, start, stop):
+def analyze_section(splits, start, stop, (proximity, size_diff)):
     yCoord = 0
     breaks = False
     mx = stop - start
@@ -119,7 +130,7 @@ def analyze_section(splits, start, stop):
 
 
     proximity_limit = math.ceil(proximity*my)
-    size_limit = math.ceil(sizeDifference*mx)
+    size_limit = math.ceil(size_diff*mx)
 
     can_move = True
     for (i,p) in enumerate(green_in_row):
@@ -147,9 +158,12 @@ def stitch_green_splits(splits, size):
     return full_im
 
 #"Splits" the image into three parts and checks wether each part is free
-def analyze_image(image):
+def analyze_image(image, stitch = True, size_diff = SIZE_DIFF, proximity = PROXIMITY, hue_lower = HUE_LOWER,
+    hue_upper = HUE_UPPER, sat_lower = SAT_LOWER, sat_upper = SAT_UPPER, val_lower = VAL_LOWER, 
+    val_upper = VAL_UPPER, splits_x = SPLITS_X, splits_y = SPLITS_Y):
 
-    size, splits = split_image(image, 36, 36)
+
+    size, splits = split_image(image, splits_x, splits_y)
     sec1 = int(math.floor(len(splits)/3))
     sec2 = 2 * sec1
 
@@ -162,25 +176,26 @@ def analyze_image(image):
         for split_y in split_x:
             split_y['color'] = average_color(split_y['slice'])
 
-    intermediate_images.append(stitch_colored_splits(splits, image.size))
+    if stitch:
+        intermediate_images.append(stitch_colored_splits(splits, image.size))
 
     #Replace actual color with average color
     for split_x in splits:
         for split_y in split_x:
-            split_y['is_green'] = close_to_green(split_y['color'][1])
-
-    intermediate_images.append(stitch_green_splits(splits, image.size))
+            split_y['is_green'] = close_to_green(
+                split_y['color'][1],
+                (hue_lower, hue_upper, sat_lower, sat_upper, val_lower, val_upper)
+            )
+    if stitch:
+        intermediate_images.append(stitch_green_splits(splits, image.size))
     
 
-    clear1, s1, s_limit1, p_limit1 = analyze_section(splits, 0, sec1)
-    clear2, s2, s_limit2, p_limit2 = analyze_section(splits, sec1, sec2)
-    clear3, s3, s_limit3, p_limit3 = analyze_section(splits, sec2, len(splits))
+    clear1, s1, s_limit1, p_limit1 = analyze_section(splits, 0, sec1, (proximity, size_diff))
+    clear2, s2, s_limit2, p_limit2 = analyze_section(splits, sec1, sec2, (proximity, size_diff))
+    clear3, s3, s_limit3, p_limit3 = analyze_section(splits, sec2, len(splits), (proximity, size_diff))
 
-    print clear1, s1, s_limit1, p_limit1
-    print clear2, s2, s_limit2, p_limit2
-    print clear3, s3, s_limit3, p_limit3
-    print ""
-    #clear3 = self.analyzeSection(splits,sec2,len(splits))
-
+    # print s1
+    # print s2
+    # print s3
     return (clear1, clear2, clear3), intermediate_images
 
