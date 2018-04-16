@@ -3,7 +3,7 @@ from time import sleep
 ser = serial.Serial('/dev/serial0', 9600, timeout=0.5)
 
 config = False
-coords[]
+coords = []
 
 #Will return a tuple [a,b] where a is latitude in decimal degrees and b is longitude...
 def getDDconv():
