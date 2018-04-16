@@ -70,6 +70,7 @@ def setup_config(val):
         print("Hello")
         config = True
     else:
+        print("bye")
         file = open("config_data.java", "a")
         for c in coords:
             file.write(str(c[0])+","+str(c[1]+"\n"))
