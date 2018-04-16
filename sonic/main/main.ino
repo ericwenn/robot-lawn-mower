@@ -1,6 +1,6 @@
 
 #include <Ultrasonic.h>
-#define DEBUG
+//#define DEBUG
 
 
 //Not used anymore, don't touch it
@@ -46,19 +46,19 @@ void check_sensors(){
   //LEFT
   unsigned char _sonicLeft = sonicLeft.distanceRead();
   delay(6);
-  unsigned char blockedLeft = determine_blocked(20, _sonicLeft);
+  unsigned char blockedLeft = determine_blocked(30, _sonicLeft);
   digitalWrite(LEFTSIG, blockedLeft);
   
   //FRONT
   unsigned char _sonicFront = sonicFront.distanceRead();
   delay(6);
-  unsigned char blockedFront = determine_blocked(15, _sonicFront);
+  unsigned char blockedFront = determine_blocked(30, _sonicFront);
   digitalWrite(FRONTSIG,blockedFront);
  
   //RIGHT
   unsigned char _sonicRight = sonicRight.distanceRead();
   delay(6);
-  unsigned char blockedRight = determine_blocked(20, _sonicRight);
+  unsigned char blockedRight = determine_blocked(30, _sonicRight);
   digitalWrite(RIGHTSIG,blockedRight);
 
 
