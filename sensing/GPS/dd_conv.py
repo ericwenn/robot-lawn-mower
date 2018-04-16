@@ -3,7 +3,7 @@ from time import sleep
 ser = serial.Serial('/dev/serial0', 9600, timeout=0.5)
 
 config = False
-
+coords[]
 
 #Will return a tuple [a,b] where a is latitude in decimal degrees and b is longitude...
 def getDDconv():
@@ -40,6 +40,29 @@ def getDDconv():
 
         dd=[lat_sign*(float(lat[0:2])+(float(lat[2:])/60)),lng_sign*(float(lng[0:3])+(float(lng[3:]))/60)]
         return(dd)
+
+def save_point():
+    if(config):
+        x = 0
+        y = 0
+        c = [0,0]
+        for i in range(0, 5):
+            e_count = 0
+            while(True):
+                try:
+                    c = getDDconv()
+                    break;
+                except ValueError:
+                    e_count+=1
+                    if(e_count > 5):
+                        raise ValueError('Save time out')
+
+            x = x + c[0]
+            y = y + c[1]
+        point=[c[0]/5,c[1]/5]
+        coords.append(point)
+    else:
+        raise Exception('Not possible outside of config mode, please run setup_config(True) first')
 
 
 
