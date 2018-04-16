@@ -98,15 +98,16 @@ def average_color(image):
     pixels = image.getcolors(w * h)
 
     counts = 0
-    rgb = (0,0,0)
+    r, g, b = 0, 0, 0
 
     for count, colour in pixels:
-        weighted_color = (colour[0]*count, colour[1]*count, colour[2]*count)
-        rgb = tuple(map(sum,zip(rgb,weighted_color)))
-        counts += count
-    # compare("Most Common", image, most_frequent_pixel[1])
-    average_color = ( rgb[0]/counts, rgb[1] /counts, rgb[2]/counts)
-    #print average_color
+        if count > 1:
+            r += colour[0]*count
+            g += colour[1]*count
+            b += colour[2]*count
+            counts += count
+
+    average_color = (r/counts, g/counts, b/counts) if counts > 0 else (0,0,0)
 
     return (counts, average_color)
 
