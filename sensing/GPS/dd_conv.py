@@ -74,7 +74,7 @@ def setup_config(val):
         config = False
 
 def load_file(file_name):
-    coords_tmp[]
+    coords_tmp = []
     with open(file_name) as file:
         for line in file:
            splitted_line = line.split(",")
