@@ -1,5 +1,7 @@
 import json
 from matplotlib.path import Path
+import matplotlib.patches as mpatches
+import matplotlib.pyplot as plt
 
 def testSave():
     coordlist=[]
@@ -41,6 +43,22 @@ def checkIfPointInArea(x,y):
     print path
     print path.contains_point((x,y))
 
+def getPath():
+    coords=loadCoords('coord.json')
+    verts=[]
+    codes=[]
+
+    for coord in coords:
+        verts.append((coord['x'],coord['y']))
+    verts.append((0,0))
+
+    codes.append(Path.MOVETO)
+    for x in range(0,len(verts)-2):
+        codes.append(Path.LINETO)
+    codes.append(Path.CLOSEPOLY)
+
+    return Path(verts,codes)
+
 def saveCoords(listOfCoords,filePath="coord.json"):
         with open(filePath, 'w') as f:
             json.dump(listOfCoords, f)
@@ -68,15 +86,29 @@ def addCoordToList(x,y,filePath):
 
 #testSave()
 #checkIfPointInArea(1,2)
-while(True):
-    x = int(float(raw_input("x: ")))
-    y = int(float(raw_input("y: ")))
-    addCoordToList(x,y,'coord.json')
-    more = raw_input("continue?Y/N: ")
-
-    if(more=="N"):
-        print json.dumps(loadCoords('coord.json'))
+new = raw_input("new=Y/N?")
+if(new=="Y"):
+    while(True):
         x = int(float(raw_input("x: ")))
         y = int(float(raw_input("y: ")))
-        print checkIfPointInArea(x,y)
-        break
+        addCoordToList(x,y,'coord.json')
+        more = raw_input("continue?Y/N: ")
+
+        if(more=="N"):
+            break
+print json.dumps(loadCoords('coord.json'))
+x = int(float(raw_input("x: ")))
+y = int(float(raw_input("y: ")))
+print checkIfPointInArea(x,y)
+
+fix, ax = plt.subplots()
+
+path_data = getPath()
+patch = mpatches.PathPatch(path_data,facecolor='r',alpha=0.5)
+ax.add_patch(patch)
+x, y = zip(*path_data.vertices)
+line, = ax.plot(x,y,'go-')
+
+ax.grid()
+ax.axis('equal')
+plt.show()
