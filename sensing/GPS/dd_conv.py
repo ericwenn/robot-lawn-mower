@@ -66,7 +66,8 @@ def save_point():
         raise Exception('Not possible outside of config mode, please run setup_config(True) first')
 
 def setup_config(val):
-    if(not val):
+    if(val):
+        print("Hello")
         config = True
     else:
         file = open("config_data.java", "a")
