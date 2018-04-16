@@ -1,6 +1,9 @@
 import serial
-
+from time import sleep
 ser = serial.Serial('/dev/serial0', 9600, timeout=0.5)
+
+config = False
+
 
 #Will return a tuple [a,b] where a is latitude in decimal degrees and b is longitude...
 def getDDconv():
@@ -38,8 +41,24 @@ def getDDconv():
         dd=[lat_sign*(float(lat[0:2])+(float(lat[2:])/60)),lng_sign*(float(lng[0:3])+(float(lng[3:]))/60)]
         return(dd)
 
-while True:
-    try:
-        print(getDDconv())
-    except ValueError as e:
-        print(e.args)
+
+
+
+def isPointInPath(x, y, poly):
+    """
+    x, y -- x and y coordinates of point
+    poly -- a list of tuples [(x, y), (x, y), ...]
+    """
+    num = len(poly)
+    i = 0
+    j = num - 1
+    c = False
+    for i in range(num):
+        if ((poly[i][1] > y) != (poly[j][1] > y)) and \
+                (x < poly[i][0] + (poly[j][0] - poly[i][0]) * (y - poly[i][1]) /
+                                  (poly[j][1] - poly[i][1])):
+            c = not c
+        j = i                              
+    return c
+
+
