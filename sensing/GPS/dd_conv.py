@@ -16,7 +16,7 @@ def getDDconv():
             continue
 
 
-        #sentence to decimal degrees convertion code
+        #sentence to decimal degrees conversion code
 
         data = str.split(",")
 
