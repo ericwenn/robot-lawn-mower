@@ -9,7 +9,8 @@ coords = []
 def getDDconv():
     while True:
         try:
-            str=ser.readline()
+            #str=ser.readline()
+            str="$GPRMC,093643.000,A,5741.2511,N,01158.7425,E,0.30,174.65,130418,,,A*61"
         except:
             pass
         if(str[1:6]!="GPRMC"):
