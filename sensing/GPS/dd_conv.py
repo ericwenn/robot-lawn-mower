@@ -73,7 +73,14 @@ def setup_config(val):
             file.write(str(c[0])+","+str(c[1]+"\n"))
         config = False
 
-
+def load_file(file_name)
+    coords_tmp[]
+    with open(file_name) as file
+        for line in file
+           splitted_line = line.split(",")
+           coords_tmp.append( [ int(splitted_line[0]) , int(splitted_line[1]) ] )
+    coords = coords_tmp
+    
 def isPointInPath(x, y, poly):
     """
     x, y -- x and y coordinates of point
