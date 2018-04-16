@@ -2,8 +2,8 @@ import serial
 from time import sleep
 ser = serial.Serial('/dev/serial0', 9600, timeout=0.5)
 
-global config = False
-global coords = []
+config = False
+coords = []
 
 #Will return a tuple [a,b] where a is latitude in decimal degrees and b is longitude...
 def getDDconv():
@@ -66,7 +66,7 @@ def save_point():
         raise Exception('Not possible outside of config mode, please run setup_config(True) first')
 
 def setup_config(val):
-    if(val):
+    if(not val):
         config = True
     else:
         file = open("config_data.java", "a")
