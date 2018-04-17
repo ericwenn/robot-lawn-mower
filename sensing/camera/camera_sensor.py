@@ -40,7 +40,7 @@ class CameraSensorThread(Thread):
 
 
 class CameraSensor(object):
-    def __init__(self, port=8080):
+    def __init__(self):
         self.thread = CameraSensorThread()
 
 

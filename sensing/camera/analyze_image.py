@@ -16,80 +16,70 @@ SPLITS_Y = 14
 
 #Splits and image in squares
 def split_image(image_path, split_x=None, split_y=None, split_save_path=None):
-    #ext = image_path.split(".")[-1]
-    #img = Image.open(image_path)
-    img = image_path
-    (imageWidth, imageHeight)=image_path.size
+  img = image_path
+  (imageWidth, imageHeight)=image_path.size
 
-    rangex=split_x
-    rangey=split_y
+  rangex=split_x
+  rangey=split_y
 
-    gridx=int(math.ceil(float(imageWidth)/rangex))
-    gridy=int(math.ceil(float(imageHeight)/rangey))
+  gridx=int(math.ceil(float(imageWidth)/rangex))
+  gridy=int(math.ceil(float(imageHeight)/rangey))
 
+  split_grid = []
+  for x in xrange(rangex):
+    split_grid_y = []
+    for y in xrange(rangey):
+      x1 = min(x*gridx, imageWidth)
+      x2 = min(x1+gridx, imageWidth)
+      y1 = min(y*gridy, imageHeight)
+      y2 = min(y1+gridy, imageHeight)
 
-    split_grid = []
+      if x1 == x2 or y1 == y2:
+        continue
+      bbox=(x1, y1, x2, y2)
+      slice_bit=img.crop(bbox)
 
+      split_grid_y.append({
+          'slice': slice_bit,
+          'xoffset': x1,
+          'yoffset': y1
+      })
 
-    for x in xrange(rangex):
-        split_grid_y = []
-        for y in xrange(rangey):
-            x1 = min(x*gridx, imageWidth)
-            x2 = min(x1+gridx, imageWidth)
-            y1 = min(y*gridy, imageHeight)
-            y2 = min(y1+gridy, imageHeight)
-
-            if x1 == x2 or y1 == y2:
-                continue
-            bbox=(x1, y1, x2, y2)
-            slice_bit=img.crop(bbox)
-
-            split_grid_y.append({
-                'slice': slice_bit,
-                'xoffset': x1,
-                'yoffset': y1
-            })
-
-            # if not split_save_path == None:
-            #     slice_bit.save('{}/xmap_{}_{}.{}'.format(split_save_path, x, y, ext), optimize=True, bits=6)
-        if len(split_grid_y) > 0:
-            split_grid.append(split_grid_y)
-    return (imageWidth, imageHeight), split_grid
+    if len(split_grid_y) > 0:
+      split_grid.append(split_grid_y)
+  return (imageWidth, imageHeight), split_grid
 
 #Check of a given RGB color is within the green color spectrum
 def close_to_green(color, (hue_lower, hue_upper, sat_lower, sat_upper, val_lower, val_upper)):
-    hsv = colorsys.rgb_to_hsv(color[0] + 0.0, color[1] + 0.0, color[2] + 0.0)
-    hue_treshold = [hue_lower, hue_upper]
-    sat_treshold = [sat_lower, sat_upper]
-    val_treshold = [val_lower, val_upper]
-
-#    print hue_treshold, sat_treshold, val_treshold
-
-    valid_hue = hsv[0] <= hue_treshold[1] and hsv[0] >= hue_treshold[0]
-    valid_sat = hsv[1] <= sat_treshold[1] and hsv[1] >= sat_treshold[0]
-    valid_val = hsv[2] <= val_treshold[1] and hsv[2] >= val_treshold[0]
+  hsv = colorsys.rgb_to_hsv(color[0] + 0.0, color[1] + 0.0, color[2] + 0.0)
+  hue_treshold = [hue_lower, hue_upper]
+  sat_treshold = [sat_lower, sat_upper]
+  val_treshold = [val_lower, val_upper]
 
 
-    r = False
-    if valid_hue and valid_sat and valid_val:
-        r = True
-    #print valid_hue, valid_sat, valid_val, hsv
-    return r
-    #return hsv[0]*hsv[2]
+  valid_hue = hsv[0] <= hue_treshold[1] and hsv[0] >= hue_treshold[0]
+  valid_sat = hsv[1] <= sat_treshold[1] and hsv[1] >= sat_treshold[0]
+  valid_val = hsv[2] <= val_treshold[1] and hsv[2] >= val_treshold[0]
+
+
+  r = False
+  if valid_hue and valid_sat and valid_val:
+      r = True
+  return r
 
 
 #Analyze the pixels in an image and return the most frequent colur present
 def most_frequent_colour(image):
-    w, h = image.size
-    pixels = image.getcolors(w * h)
+  w, h = image.size
+  pixels = image.getcolors(w * h)
 
-    most_frequent_pixel = pixels[0]
+  most_frequent_pixel = pixels[0]
 
-    for count, colour in pixels:
-        if count > most_frequent_pixel[0]:
-            most_frequent_pixel = (count, colour)
+  for count, colour in pixels:
+    if count > most_frequent_pixel[0]:
+      most_frequent_pixel = (count, colour)
 
-    return most_frequent_pixel
+  return most_frequent_pixel
 
 def average_color(image):
     w, h = image.size

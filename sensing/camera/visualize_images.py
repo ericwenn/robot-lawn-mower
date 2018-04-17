@@ -25,7 +25,7 @@ class myHandler(BaseHTTPRequestHandler):
           basepath = pic.split('/')[-1]
           html += '<img style="width:30%" src="'+basepath+'"/>'
           
-        html += '</body></html>';
+        html += '</body></html>'
         return html
 
 
