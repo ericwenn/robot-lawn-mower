@@ -8,12 +8,16 @@ coords = []
 #Will return a tuple [a,b] where a is latitude in decimal degrees and b is longitude...
 def getDDconv():
     while True:
+        e_count = 0
         try:
             #str=ser.readline()
             str="$GPRMC,093643.000,A,5741.2511,N,01158.7425,E,0.30,174.65,130418,,,A*61"
         except:
             pass
         if(str[1:6]!="GPRMC"):
+            e_count += 1
+            if(e_count > 20):
+                raise Exception('serial read time out, GPS communication faulty!')
             continue
 
 
