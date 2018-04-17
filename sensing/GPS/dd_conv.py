@@ -66,7 +66,7 @@ def save_point():
 
             x = x + c[0]
             y = y + c[1]
-        point=[c[0]/5,c[1]/5]
+        point=[x/5,y/5]
         coords.append(point)
     else:
         raise Exception('Not possible outside of config mode, please run setup_config(True) first')
@@ -77,9 +77,9 @@ def setup_config(val):
     if(val):
         config = True
     else:
-        file = open("config_data.java", "a")
+        file = open("config_data.conf", "a")
         for c in coords:
-            file.write(str(c[0])+","+str(c[1]+"\n"))
+            file.write(str(c[0])+","+str(c[1])+"\n")
         config = False
 
 def load_file(file_name):
