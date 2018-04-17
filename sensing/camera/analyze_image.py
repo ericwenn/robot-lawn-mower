@@ -59,8 +59,6 @@ def split_image(image_path, split_x=None, split_y=None, split_save_path=None):
 #Check of a given RGB color is within the green color spectrum
 def close_to_green(color, (hue_lower, hue_upper, sat_lower, sat_upper, val_lower, val_upper)):
     hsv = colorsys.rgb_to_hsv(color[0] + 0.0, color[1] + 0.0, color[2] + 0.0)
-    green = (0, 255, 0)
-    diff = (green[0] - color[0], green[1] - color[1], green[2] - color[2])
     hue_treshold = [hue_lower, hue_upper]
     sat_treshold = [sat_lower, sat_upper]
     val_treshold = [val_lower, val_upper]
@@ -113,8 +111,6 @@ def average_color(image):
 
 # Checks if a section of an image is clear
 def analyze_section(splits, start, stop, (proximity, size_diff)):
-    yCoord = 0
-    breaks = False
     mx = stop - start
     my = len(splits[0])
     
@@ -164,7 +160,7 @@ def analyze_image(image, stitch = True, size_diff = SIZE_DIFF, proximity = PROXI
     val_upper = VAL_UPPER, splits_x = SPLITS_X, splits_y = SPLITS_Y):
 
 
-    size, splits = split_image(image, splits_x, splits_y)
+    _, splits = split_image(image, splits_x, splits_y)
     sec1 = int(math.floor(len(splits)/3))
     sec2 = 2 * sec1
 

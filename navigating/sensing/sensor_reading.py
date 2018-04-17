@@ -55,24 +55,30 @@ class UltraSoundSensorReading(SensorReading):
     certainty_i = ABS(AVG(SENSOR_i(1..T)))
     certainty = certainty_0 * certainty_1 ... * certainty_U
     """
-    return 1.0
 
     number_of_readings = len(self.raw_data)
 
-    if number_of_readings == 0:
+    if number_of_readings < 3:
       return 0
 
     number_of_sensors = len(self.raw_data[0]['payload']["can_move"])
 
     certainties = []
+    gamma = .9
     for i in range(number_of_sensors):
       sum_readings = 0
-      for reading in self.raw_data:
-        sum_readings += 1 if reading['payload']["can_move"][i] else -1
-      
-      avg = float(sum_readings) / max(1, number_of_readings)
-      certainties.append(abs(avg))
+      sum_gammas = 0
+      _gamma = gamma
+      for reading in self.raw_data[1:]:
+        sum_readings += _gamma * (1 if reading['payload']["can_move"][i] else -1)
+        sum_gammas += _gamma
+        _gamma *= gamma
+      latest_reading = 1 if self.raw_data[0]['payload']['can_move'][i] else -1
+      diff = abs((sum_readings / sum_gammas) - latest_reading) / 2
+      print sum_readings, sum_gammas, diff
+      certainties.append(1 - diff)
     
+    return min(certainties)
     return reduce(lambda x, y: x + y, certainties) / len(certainties)
     #return reduce(operator.mul, certainties)
 
