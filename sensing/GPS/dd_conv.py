@@ -1,6 +1,6 @@
-import serial
-from time import sleep
-ser = serial.Serial('/dev/serial0', 9600, timeout=0.5)
+#import serial
+#from time import sleep
+#ser = serial.Serial('/dev/serial0', 9600, timeout=0.5)
 
 config = False
 coords = []
@@ -43,6 +43,8 @@ def getDDconv():
         return(dd)
 
 def save_point():
+    global config
+    global coords
     if(config):
         x = 0
         y = 0
@@ -66,17 +68,18 @@ def save_point():
         raise Exception('Not possible outside of config mode, please run setup_config(True) first')
 
 def setup_config(val):
+    global config
+    global coords
     if(val):
-        print("Hello")
         config = True
     else:
-        print("bye")
         file = open("config_data.java", "a")
         for c in coords:
             file.write(str(c[0])+","+str(c[1]+"\n"))
         config = False
 
 def load_file(file_name):
+    global coords
     coords_tmp = []
     with open(file_name) as file:
         for line in file:
