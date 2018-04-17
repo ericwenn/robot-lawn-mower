@@ -19,10 +19,6 @@ class TestUltraSoundReadings(unittest.TestCase):
     usr = UltraSoundSensorReading(raw_data)
     self.assertLessEqual(usr.certainty(), .3)
 
-
-
-
-
   def test_certainty_all_sensors_agreed(self):
     raw_data = [{
       "timestamp": time.time(),
