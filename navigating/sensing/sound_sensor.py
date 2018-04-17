@@ -29,7 +29,7 @@ class SoundSensorThread(Thread):
                 'timestamp': time.time()
             }
             self.queue.put(event)
-            time.sleep(.5)
+            time.sleep(.01)
 
 
 
