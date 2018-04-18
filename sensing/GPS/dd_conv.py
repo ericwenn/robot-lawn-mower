@@ -77,7 +77,7 @@ def setup_config(val):
     if(val):
         config = True
     else:
-        file = open("config_data.conf", "a")
+        file = open("config_data.conf", "w")
         for c in coords:
             file.write(str(c[0])+","+str(c[1])+"\n")
         config = False
@@ -112,5 +112,6 @@ def check_if_inside():
     global coords
     pos = getDDconv()
     return isPointInPath(pos[0],pos[1],coords)
+
 
 

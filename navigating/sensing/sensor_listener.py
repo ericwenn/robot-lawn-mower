@@ -2,7 +2,6 @@ from threading import Thread, Event
 from Queue import Queue, Empty
 import time
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
-import SocketServer
 import json
 
 
