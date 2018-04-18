@@ -89,11 +89,11 @@ def average_color(image):
     r, g, b = 0, 0, 0
 
     for count, colour in pixels:
-        if count > 1:
-            r += colour[0]*count
-            g += colour[1]*count
-            b += colour[2]*count
-            counts += count
+        #if count > 1:
+        r += colour[0]*count
+        g += colour[1]*count
+        b += colour[2]*count
+        counts += count
 
     average_color = (r/counts, g/counts, b/counts) if counts > 0 else (0,0,0)
 
