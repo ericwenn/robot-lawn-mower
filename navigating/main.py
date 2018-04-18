@@ -31,7 +31,7 @@ def spin():
   # spin atleast .2s
   time_to_spin = random()*REVOLVE_TIME
   steer.back()
-  sleep(1)
+  sleep(2)
   steer.right()
   sleep(time_to_spin)
   steer.stop()
