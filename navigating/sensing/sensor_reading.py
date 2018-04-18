@@ -75,7 +75,6 @@ class UltraSoundSensorReading(SensorReading):
         _gamma *= gamma
       latest_reading = 1 if self.raw_data[0]['payload']['can_move'][i] else -1
       diff = abs((sum_readings / sum_gammas) - latest_reading) / 2
-      print sum_readings, sum_gammas, diff
       certainties.append(1 - diff)
     
     return min(certainties)
