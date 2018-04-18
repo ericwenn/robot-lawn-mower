@@ -22,7 +22,7 @@ class myHandler(BaseHTTPRequestHandler):
         print "found", len(pictures)
 
         html = '<html><head><title>Webhost</title></head><body>'
-        for pic in pictures:
+        for pic in pictures[:10]:
           basepath = pic.split('/')[-1]
           html += '<img style="width:30%" src="'+basepath+'"/>'
           
