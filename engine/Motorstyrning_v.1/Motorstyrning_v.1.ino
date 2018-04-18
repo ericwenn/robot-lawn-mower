@@ -34,6 +34,7 @@ unsigned char readDriveBit1;
 unsigned char readDriveBit2;
 unsigned char readDriveBit3;
 unsigned char state=0;
+unsigned char prevDir = 0;
 
 void loop() {
   readDriveBit1 = digitalRead(DriveBit1);
@@ -48,12 +49,46 @@ void loop() {
   dir = dir | (unsigned char)readDriveBit1;
   dir = dir | ((unsigned char)readDriveBit2 <<1);
   dir = dir | ((unsigned char)readDriveBit3 <<2);
-
+  while(dir != prevDir){
+    if(RightSpeed != 0){
+        RightSpeed--;
+        analogWrite(enA, RightSpeed);
+    }
+    if(LeftSpeed != 0){
+        LeftSpeed--;
+        analogWrite(enB, LeftSpeed);
+    }
+    if(LeftSpeed == 0 && RightSpeed == 0){
+        analogWrite(enA, 0);
+        analogWrite(enB, 0);
+        break;
+    }
+    delay(1);
+         
+  }  
   changeEngines(dir);
+  unsigned char i = 0;
+  unsigned char j = 30;
+  while(dir != prevDir){
 
-  //Write the speed to the engine
-  analogWrite(enA, RightSpeed);
-  analogWrite(enB, LeftSpeed);
+    if(i <= RightSpeed){
+         i++;
+         analogWrite(enA, i);
+    }
+    if(j <= LeftSpeed){
+         j++;
+         analogWrite(enB, j);
+    }
+    if(i >= RightSpeed && j >= LeftSpeed){
+        analogWrite(enA, RightSpeed);
+        analogWrite(enB, LeftSpeed);
+        break;
+    }
+      delay(3);
+           
+  } 
+
+  prevDir = dir;
 }
 
 void changeEngines(unsigned char dir){
