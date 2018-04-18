@@ -18,10 +18,11 @@ class myHandler(BaseHTTPRequestHandler):
     def index(self):
         pictures = list(set(glob.glob(DIR+"/*")))
         pictures.sort(reverse=True)
-        picture = pictures[0]
+
+        print "found", len(pictures)
 
         html = '<html><head><title>Webhost</title></head><body>'
-        for pic in pictures:
+        for pic in pictures[:10]:
           basepath = pic.split('/')[-1]
           html += '<img style="width:30%" src="'+basepath+'"/>'
           
@@ -85,6 +86,7 @@ class CameraVisualizerThread(Thread):
         self.port = port
 
     def run(self):
+        print "run", self.port
         server_address = ('', self.port)
         httpd = HTTPServer(server_address, myHandler)
         httpd.serve_forever()
