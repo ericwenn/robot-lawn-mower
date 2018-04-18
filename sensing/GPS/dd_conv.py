@@ -58,7 +58,7 @@ def save_point():
             while(True):
                 try:
                     c = getDDconv()
-                    break;
+                    break
                 except ValueError:
                     e_count+=1
                     if(e_count > 5):
@@ -108,7 +108,7 @@ def isPointInPath(x, y, poly):
         j = i                              
     return c
 
-def check_if_inside()
+def check_if_inside():
     global coords
     pos = getDDconv()
     return isPointInPath(pos[0],pos[1],coords)
