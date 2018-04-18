@@ -62,7 +62,7 @@ def save_point():
                 except ValueError:
                     e_count+=1
                     if(e_count > 5):
-                        raise ValueError('Save time out')
+                        raise ValueError('Save timeout')
 
             x = x + c[0]
             y = y + c[1]
@@ -107,5 +107,10 @@ def isPointInPath(x, y, poly):
             c = not c
         j = i                              
     return c
+
+def check_if_inside()
+    global coords
+    pos = getDDconv()
+    return isPointInPath(pos[0],pos[1],coords)
 
 
