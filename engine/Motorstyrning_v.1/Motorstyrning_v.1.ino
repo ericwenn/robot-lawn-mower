@@ -73,8 +73,8 @@ void changeEngines(unsigned char dir){
       //Forward
       forwardsRightEngine();
       forwardsLeftEngine();
-      LeftSpeed=150;
-      RightSpeed=140;
+      LeftSpeed=250;
+      RightSpeed=240;
       
       if(state != 1){
         delayEngine();
@@ -85,8 +85,8 @@ void changeEngines(unsigned char dir){
       //Backwards
       backwardsRightEngine();
       backwardsLeftEngine();
-      LeftSpeed=150;
-      RightSpeed=140;
+      LeftSpeed=250;
+      RightSpeed=240;
 
       if(state != 2){
         delayEngine();
@@ -97,8 +97,8 @@ void changeEngines(unsigned char dir){
       //Right
       backwardsRightEngine();
       forwardsLeftEngine();
-      LeftSpeed=100;
-      RightSpeed=90;
+      LeftSpeed=200;
+      RightSpeed=190;
 
       if(state != 3){
         delayEngine();
@@ -110,8 +110,8 @@ void changeEngines(unsigned char dir){
       //Left
       forwardsRightEngine();
       backwardsLeftEngine();
-      LeftSpeed=100;
-      RightSpeed=90;
+      LeftSpeed=200;
+      RightSpeed=190;
 
 
       if(state != 4){
