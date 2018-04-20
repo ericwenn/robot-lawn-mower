@@ -123,10 +123,13 @@ class GPSSensorReading(SensorReading):
     self.raw_data = raw_data
   
   def freshness(self):
-    raise NotImplementedError()
+    return 1.0    
 
   def certainty(self):
-    raise NotImplementedError()
-  
+    return 1.0    
+
   def verdict(self):
-    raise NotImplementedError()
+    return -1.0
+    
+  def raw(self):
+    return self.raw_data
