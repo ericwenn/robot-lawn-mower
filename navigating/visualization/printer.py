@@ -121,7 +121,29 @@ class Vis(object):
   def render_gps(self, key, reading):
     
     raw_data = reading['data'][-1].raw()
+    freshness = reading['data'][-1].freshness()
+    certainty = reading['data'][-1].certainty()
+    verdict = reading['data'][-1].verdict()
+
+    reading['screen'].clear()
     
+    row = 1
+
+    reading['screen'].addstr(row, 2, key)
+    row += 1
+
+    reading['screen'].addstr(row, 2, 'Freshness')
+    reading['screen'].addstr(row, 15, str(freshness), self.color(0, 1, freshness))
+    row +=1
+
+    reading['screen'].addstr(row, 2, 'Certainty')
+    reading['screen'].addstr(row, 15, str(certainty), self.color(0, 1, certainty))
+    row +=1
+
+    reading['screen'].addstr(row, 2, 'Verdict')
+    reading['screen'].addstr(row, 15, str(verdict), self.color(-1, 1, verdict))
+    row +=1
+
     reading['screen'].border()
     reading['screen'].refresh()
   
