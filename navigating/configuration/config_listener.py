@@ -80,10 +80,7 @@ class ConfigListener(object):
   def register_position(self, position):
     self.position_queue.put(position)
   
-  def is_configuring(self):
-    return self.config_mode
-
-  def last_command(self):
+  def aggregate_commands(self):
     try:
       while True:
         command = self.command_queue.get(block=False)
@@ -95,7 +92,13 @@ class ConfigListener(object):
         self.command = command
     except Empty:
       pass
-    
+
+  def is_configuring(self):
+    self.aggregate_commands()
+    return self.config_mode
+
+  def last_command(self):
+    self.aggregate_commands() 
     if not self.config_mode:
       return None
     

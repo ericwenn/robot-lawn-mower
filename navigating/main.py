@@ -54,6 +54,7 @@ def main():
   while(True):
 
     if conf.is_configuring():
+      print "In conf"
       cmd = conf.last_command()
       print cmd
     else:
