@@ -59,6 +59,10 @@ def main2():
   while True:
     cmd = conf.last_command()
 
+    uss = sensors.get_ultrasound_readings()
+    css = sensors.get_camera_readings()
+    grs = sensors.get_gps_readings()
+
     if cmd == None:
       steer.stop()
       continue
@@ -69,15 +73,21 @@ def main2():
 
     if cmd == cmds.FORWARD:
       steer.forward()
+      save(uss, css, grs, True)
       just_spun = False
 
     elif cmd == cmds.BACKWARD:
       if not just_spun:
         spin()
+        save(uss, css, grs, False)
         just_spun = True
     
     sleep(0.1)
     
+def save(uss, css, grs, can_move):
+  print uss, css, grs
+  print can_move
+  print ""
 
 def main():
   steer.setup()
