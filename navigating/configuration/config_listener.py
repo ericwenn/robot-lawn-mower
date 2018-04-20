@@ -86,10 +86,10 @@ class ConfigListener(object):
         command = self.command_queue.get(block=False)
         if command == commands.CONFIG_ON:
           self.config_mode = True
-        
-        if command == commands.CONFIG_OFF:
+        elif command == commands.CONFIG_OFF:
           self.config_mode = False
-        self.command = command
+        else:
+          self.command = command
     except Empty:
       pass
 

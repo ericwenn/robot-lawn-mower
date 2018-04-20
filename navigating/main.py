@@ -54,9 +54,13 @@ def main():
   while(True):
 
     if conf.is_configuring():
-      print "In conf"
       cmd = conf.last_command()
-      print cmd
+      if cmd == cmds.LEFT:
+        steer.left()
+      if cmd == cmds.RIGHT:
+        steer.right()
+      if cmd == cmds.STOP:
+        steer.stop()
     else:
       can_forward, certainty = can_move_forward()
 
