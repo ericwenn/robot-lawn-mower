@@ -45,6 +45,9 @@ class Vis(object):
         reading['screen'] = curses.newwin(15, 25, windef[0], windef[1])
         self.screen_index += 1
       
+      if reading['type'] == 'gps':
+        self.render_gps(key, reading)
+
       if reading['type'] == 'ultrasound' or reading['type'] == 'camera':
         self.render_sensor(key, reading)
       
@@ -99,6 +102,36 @@ class Vis(object):
       row += 1
       
     row += 2
+
+    reading['screen'].addstr(row, 2, 'Freshness')
+    reading['screen'].addstr(row, 15, str(freshness), self.color(0, 1, freshness))
+    row +=1
+
+    reading['screen'].addstr(row, 2, 'Certainty')
+    reading['screen'].addstr(row, 15, str(certainty), self.color(0, 1, certainty))
+    row +=1
+
+    reading['screen'].addstr(row, 2, 'Verdict')
+    reading['screen'].addstr(row, 15, str(verdict), self.color(-1, 1, verdict))
+    row +=1
+
+    reading['screen'].border()
+    reading['screen'].refresh()
+  
+  def render_gps(self, key, reading):
+    raw_data = reading['data'][-1].raw()
+
+    freshness = reading['data'][-1].freshness()
+    certainty = reading['data'][-1].certainty()
+    verdict = reading['data'][-1].verdict()
+
+    reading['screen'].clear()
+
+    reading['screen'].addstr(1, 2, key)
+    row = 3
+
+    reading['screen'].addstr(row, 2, 'Lat')
+    reading['screen'].addstr(row, 15, str())
 
     reading['screen'].addstr(row, 2, 'Freshness')
     reading['screen'].addstr(row, 15, str(freshness), self.color(0, 1, freshness))

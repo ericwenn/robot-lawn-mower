@@ -15,10 +15,11 @@ def can_move_forward():
   uss = sensors.get_ultrasound_readings()
   css = sensors.get_camera_readings()
   grs = sensors.get_gps_readings()
-  print "grs", grs
 
   vis.register_reading('Camera', 'camera', css)
   vis.register_reading('Ultrasound', 'ultrasound', uss)
+  vis.register_reading('GPS', 'gps', grs)
+  
   if uss.freshness() < 0.2:
     return True, 0 # total uncertainty
   
