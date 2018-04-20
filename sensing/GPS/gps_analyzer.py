@@ -20,7 +20,7 @@ class AnalyzerThread(Thread):
             
     def run(self):
         while True:
-            self.send(str(dd_conv.getDDconv()), str(dd_conv.check_if_inside()))
+            self.send(dd_conv.getDDconv(), dd_conv.check_if_inside())
             time.sleep(0.1)
             try:
                 cmd = self.queue.get(block=False)
