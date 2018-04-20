@@ -27,11 +27,10 @@ class CameraSensorThread(Thread):
         conn = httplib.HTTPConnection("cmg-navigating", "8080")
         body = json.dumps({ 'can_move': reading })
         try:
-            resp = conn.request("POST", "/camera", body, { 'Content-Type': 'application/json' })
-            print resp
+            conn.request("POST", "/camera", body, { 'Content-Type': 'application/json' })
 
-            print resp.getresponse().status
-            print resp.getresponse().getheaders()
+            print conn.getresponse().status
+            print conn.getresponse().getheaders()
         except:
             pass
         
