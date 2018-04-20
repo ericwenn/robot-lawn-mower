@@ -18,6 +18,7 @@ def make_handler(gps_queue, camera_queue):
             if self.path == '/camera':
                 camera_queue.put(parsed_data)
             if self.path == '/gps':
+                print "got GPS", parsed_data
                 gps_queue.put(parsed_data)
             self.send_response(200)
         
