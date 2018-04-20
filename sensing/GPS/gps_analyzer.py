@@ -15,7 +15,8 @@ class AnalyzerThread(Thread):
     body = json.dumps({ 'coord': coord,'isInside': verdict })
     try:
       conn.request("POST", "/gps", body, { 'Content-Type': 'application/json' })
-    except:
+    except Exception as e:
+      print e
       pass
             
   def run(self):
@@ -33,7 +34,7 @@ class AnalyzerThread(Thread):
       except:
         pass
       
-      time.sleep(0.1)
+      time.sleep(0.5)
 
     
 
