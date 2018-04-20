@@ -7,6 +7,7 @@ from visualization.printer import create_visualizer
 from configuration.config_listener import ConfigListener
 import configuration.commands as cmds
 import atexit
+import persistant_readings
 
 sensors = Sensors()
 vis = create_visualizer()
@@ -72,14 +73,14 @@ def main2():
       continue
 
     if cmd == cmds.FORWARD:
+      persistant_readings.store_reading(uss, css, grs, True)
       steer.forward()
-      save(uss, css, grs, True)
       just_spun = False
 
     elif cmd == cmds.BACKWARD:
       if not just_spun:
+        persistant_readings.store_reading(uss, css, grs, False)    
         spin()
-        save(uss, css, grs, False)
         just_spun = True
     
     sleep(0.1)
