@@ -47,7 +47,7 @@ class Vis(object):
       
       if reading['type'] == 'gps':
         #self.render_gps(key, reading)
-        pass
+        print "gps"
 
       if reading['type'] == 'ultrasound' or reading['type'] == 'camera':
         self.render_sensor(key, reading)
