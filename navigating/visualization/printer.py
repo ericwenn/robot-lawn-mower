@@ -124,9 +124,13 @@ class Vis(object):
     freshness = reading['data'][-1].freshness()
     certainty = reading['data'][-1].certainty()
     verdict = reading['data'][-1].verdict()
-    lat = raw_data['payload']['coord'][0]
-    lon = raw_data['payload']['coord'][1]
-
+    if len(raw_data) > 0:
+      lat = raw_data[0]['payload']['coord'][0]
+      lon = raw_data[0]['payload']['coord'][1]
+    else:
+      lat = '-'
+      lon = '-'
+      
     reading['screen'].clear()
     
     row = 1
