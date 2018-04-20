@@ -15,8 +15,9 @@ class AnalyzerThread(Thread):
     body = json.dumps({ 'coord': coord,'isInside': verdict })
     try:
       conn.request("POST", "/gps", body, { 'Content-Type': 'application/json' })
+      conn.getresponse()
+      
     except Exception as e:
-      print "2", e
       pass
             
   def run(self):
@@ -27,7 +28,6 @@ class AnalyzerThread(Thread):
         inside = dd_conv.check_if_inside()
         self.send(conv, inside)
       except Exception as e:
-        print "1", e
         pass
 
       try:
@@ -40,10 +40,9 @@ class AnalyzerThread(Thread):
           dd_conv.setup_config(False)
           
       except Exception as e:
-        print "3", e
         pass
       
-      time.sleep(0.5)
+      time.sleep(0.05)
 
     
 
