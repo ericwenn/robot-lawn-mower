@@ -19,8 +19,7 @@ def can_move_forward():
 
 
   if len(grs.raw()) > 0:
-    print grs.raw()
-    conf.register_position(grs.raw()[0]['payload']['coords'])
+    conf.register_position(grs.raw()[0]['payload']['coord'])
   
   vis.register_reading('Camera', 'camera', css)
   vis.register_reading('Ultrasound', 'ultrasound', uss)
@@ -50,6 +49,7 @@ def spin():
 def main():
   steer.setup()
   sensors.start()
+  conf.start()
   while(True):
     can_forward, certainty = can_move_forward()
 
