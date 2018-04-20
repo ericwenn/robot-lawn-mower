@@ -28,8 +28,10 @@ class CameraSensorThread(Thread):
         body = json.dumps({ 'can_move': reading })
         try:
             resp = conn.request("POST", "/camera", body, { 'Content-Type': 'application/json' })
-            print resp.status
-            print resp.getheaders()
+            print resp
+
+            print resp.getresponse().status
+            print resp.getresponse().getheaders()
         except:
             pass
         
