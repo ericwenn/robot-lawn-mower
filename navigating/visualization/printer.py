@@ -130,7 +130,7 @@ class Vis(object):
     else:
       lat = '-'
       lon = '-'
-      
+
     reading['screen'].clear()
     
     row = 1
@@ -139,11 +139,11 @@ class Vis(object):
     row += 1
 
     reading['screen'].addstr(row, 2, 'Lat')
-    reading['screen'].addstr(row, 15, str(lat), self.color(0, 1, freshness))
+    reading['screen'].addstr(row, 8, str(lat), self.color(0, 1, freshness))
     row +=1    
 
     reading['screen'].addstr(row, 2, 'Lon')
-    reading['screen'].addstr(row, 15, str(lon), self.color(0, 1, freshness))
+    reading['screen'].addstr(row, 8, str(lon), self.color(0, 1, freshness))
     row +=2
 
     reading['screen'].addstr(row, 2, 'Freshness')

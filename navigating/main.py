@@ -4,11 +4,12 @@ import steering.steer as steer
 from random import random
 from time import sleep
 from visualization.printer import create_visualizer
+from configuration.config_listener import ConfigListener
 import atexit
 
 sensors = Sensors()
-
 vis = create_visualizer()
+conf = ConfigListener(8085)
 atexit.register(vis.cleanup)
 
 def can_move_forward():
@@ -16,9 +17,13 @@ def can_move_forward():
   css = sensors.get_camera_readings()
   grs = sensors.get_gps_readings()
 
+  if len(grs.raw()) > 0:
+    conf.register_position(grs.raw()[0]['payload']['coords'])
+  
   vis.register_reading('Camera', 'camera', css)
   vis.register_reading('Ultrasound', 'ultrasound', uss)
   vis.register_reading('GPS', 'gps', grs)
+
 
   if uss.freshness() < 0.2:
     return True, 0 # total uncertainty

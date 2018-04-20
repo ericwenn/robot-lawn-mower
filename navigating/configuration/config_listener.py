@@ -77,6 +77,7 @@ class ConfigListener(object):
     print "ConfigListener now listening on port", self.port
 
   def register_position(self, position):
+    print "got pos", position
     self.position_queue.put(position)
 
   def last_command(self):
