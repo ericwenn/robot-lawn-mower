@@ -17,8 +17,8 @@ def can_move_forward():
   css = sensors.get_camera_readings()
   grs = sensors.get_gps_readings()
 
-  if len(grs.raw()) > 0:
-    print grs.raw()
+  #if len(grs.raw()) > 0:
+    #print grs.raw()
     #conf.register_position(grs.raw()[0]['payload']['coords'])
   
   vis.register_reading('Camera', 'camera', css)
