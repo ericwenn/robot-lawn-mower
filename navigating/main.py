@@ -46,7 +46,7 @@ def main():
   while(True):
     can_forward, certainty = can_move_forward()
 
-    #vis.render()    
+    vis.render()    
     if can_forward:
       if certainty >= .6:
         steer.forward()
