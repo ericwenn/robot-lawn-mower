@@ -19,13 +19,11 @@ def store_reading(uss, css, gsr, can_move):
     'gsr': gsr.raw(),
     'can_move': can_move
   }
-  print data
 
-  # path = "{}/{}.json".format(DIR, int(time()*1000))
-  # with open(path, 'w') as outfile:
-  #   json.dump(data, outfile)
-  # image.save(path, optimize=True, bits=6)
-  # cleanup(FILE_LIMIT*n_variants)
+  path = "{}/{}.json".format(DIR, int(time()*1000))
+  with open(path, 'w') as outfile:
+    json.dump(data, outfile)
+  cleanup(FILE_LIMIT)
 
 
 def cleanup(limit):
