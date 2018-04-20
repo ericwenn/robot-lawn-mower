@@ -61,6 +61,11 @@ def main():
         steer.right()
       if cmd == cmds.STOP:
         steer.stop()
+      if cmd == cmds.FORWARD:
+        steer.forward()
+      if cmd == cmds.BACKWARD:
+        steer.back()
+
     else:
       can_forward, certainty = can_move_forward()
 
