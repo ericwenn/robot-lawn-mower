@@ -16,7 +16,7 @@ class AnalyzerThread(Thread):
     try:
       conn.request("POST", "/gps", body, { 'Content-Type': 'application/json' })
     except Exception as e:
-      print e
+      print "2", e
       pass
             
   def run(self):
@@ -31,7 +31,8 @@ class AnalyzerThread(Thread):
         elif(cmd == "exit_config"):
           dd_conv.setup_config(False)
           
-      except:
+      except Exception as e:
+        print "3", e
         pass
       
       time.sleep(0.5)
