@@ -64,6 +64,11 @@ def main2():
     css = sensors.get_camera_readings()
     grs = sensors.get_gps_readings()
 
+    vis.register_reading('Camera', 'camera', css)
+    vis.register_reading('Ultrasound', 'ultrasound', uss)
+    vis.register_reading('GPS', 'gps', grs)
+    vis.render()
+
     if cmd == None:
       steer.stop()
       continue
