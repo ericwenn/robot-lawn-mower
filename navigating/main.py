@@ -19,7 +19,7 @@ def can_move_forward():
   vis.register_reading('Camera', 'camera', css)
   vis.register_reading('Ultrasound', 'ultrasound', uss)
   vis.register_reading('GPS', 'gps', grs)
-  
+
   if uss.freshness() < 0.2:
     return True, 0 # total uncertainty
   
@@ -46,7 +46,7 @@ def main():
   while(True):
     can_forward, certainty = can_move_forward()
 
-    vis.render()    
+    #vis.render()    
     if can_forward:
       if certainty >= .6:
         steer.forward()
