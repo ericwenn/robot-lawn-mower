@@ -26,5 +26,6 @@ class Sensors(object):
     return csr
   
   def get_gps_readings(self):
-    gsr = GPSSensorReading([])
+    events = self.sensor_listener.get_gps_events(10)
+    gsr = GPSSensorReading(events)
     return gsr
