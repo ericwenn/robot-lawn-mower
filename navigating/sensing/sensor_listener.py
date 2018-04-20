@@ -23,7 +23,6 @@ def make_handler(gps_queue, camera_queue):
                 self.send_response(200)
             except Exception as e:
                 pass
-            print self.path
         def log_message(self, format, *args):
             return
     return Webserver
