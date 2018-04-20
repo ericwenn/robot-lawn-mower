@@ -8,19 +8,22 @@ import json
 def make_handler(gps_queue, camera_queue):
     class Webserver(BaseHTTPRequestHandler):
         def do_POST(self):
-            length = int(self.headers.getheader('content-length'))
-            data = self.rfile.read(length)
-            parsed_data = {
-                'payload': json.loads(data),
-                'timestamp': time.time()
-            }
+            try:
+                length = int(self.headers.getheader('content-length'))
+                data = self.rfile.read(length)
+                parsed_data = {
+                    'payload': json.loads(data),
+                    'timestamp': time.time()
+                }
 
-            if self.path == '/camera':
-                camera_queue.put(parsed_data)
-            if self.path == '/gps':
-                gps_queue.put(parsed_data)
-            self.send_response(200)
-        
+                if self.path == '/camera':
+                    camera_queue.put(parsed_data)
+                if self.path == '/gps':
+                    gps_queue.put(parsed_data)
+                self.send_response(200)
+            except Exception as e:
+                print "eee"
+                print e
         def log_message(self, format, *args):
             return
     return Webserver
