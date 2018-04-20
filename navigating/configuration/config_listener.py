@@ -32,7 +32,7 @@ def make_handler(command_queue, position_queue):
       if self.path == '/config/on':
         command_queue.put(commands.CONFIG_ON)
       if self.path == '/config/off':
-        command_queue.put(commands.CONFIG_ON)
+        command_queue.put(commands.CONFIG_OFF)
 
       if self.path == '/config/probe':
         command_queue.put(commands.PROBE)
