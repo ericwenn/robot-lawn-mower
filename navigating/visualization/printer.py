@@ -46,8 +46,7 @@ class Vis(object):
         self.screen_index += 1
       
       if reading['type'] == 'gps':
-        #self.render_gps(key, reading)
-        print "gps"
+        self.render_gps(key, reading)
 
       if reading['type'] == 'ultrasound' or reading['type'] == 'camera':
         self.render_sensor(key, reading)
@@ -120,13 +119,6 @@ class Vis(object):
     reading['screen'].refresh()
   
   def render_gps(self, key, reading):
-    raw_data = reading['data'][-1].raw()
-
-    reading['screen'].clear()
-
-    reading['screen'].addstr(1, 2, key)
-    row = 3
-
     
     reading['screen'].border()
     reading['screen'].refresh()
