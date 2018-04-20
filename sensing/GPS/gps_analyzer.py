@@ -21,8 +21,16 @@ class AnalyzerThread(Thread):
             
   def run(self):
     while True:
+
       try:
-        self.send(dd_conv.getDDconv(), dd_conv.check_if_inside())
+        conv = dd_conv.getDDconv()
+        inside = dd_conv.check_if_inside()
+        self.send(conv, inside)
+      except Exception as e:
+        print "1", e
+        pass
+
+      try:
         cmd = self.queue.get(block=False)
         if(cmd == "probe"):
           dd_conv.save_point()
