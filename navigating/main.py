@@ -47,6 +47,38 @@ def spin():
   steer.stop()
 
 
+def main2():
+
+  steer.setup()
+  sensors.start()
+  conf.start()
+
+  initialized = False
+  just_spun = False
+
+  while True:
+    cmd = conf.last_command()
+
+    if cmd == None:
+      steer.stop()
+      continue
+    if cmd == cmds.STOP:
+      steer.stop()
+      just_spun = False
+      continue
+
+    if cmd == cmds.FORWARD:
+      steer.forward()
+      just_spun = False
+
+    elif cmd == cmds.BACKWARD:
+      if not just_spun:
+        spin()
+        just_spun = True
+    
+    sleep(0.1)
+    
+
 def main():
   steer.setup()
   sensors.start()
@@ -84,4 +116,4 @@ def main():
     sleep(.001)
 
 if __name__ == "__main__":
-  main()
+  main2()
