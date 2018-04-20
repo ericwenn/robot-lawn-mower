@@ -29,9 +29,9 @@ def make_handler(command_queue, position_queue):
       if self.path == '/config/stop':
         command_queue.put(commands.STOP)
 
-      if self.path == '/config/config_on':
+      if self.path == '/config/on':
         command_queue.put(commands.CONFIG_ON)
-      if self.path == '/config/config_off':
+      if self.path == '/config/off':
         command_queue.put(commands.CONFIG_ON)
 
       if self.path == '/config/probe':
@@ -79,6 +79,9 @@ class ConfigListener(object):
 
   def register_position(self, position):
     self.position_queue.put(position)
+  
+  def is_configuring(self):
+    return self.config_mode
 
   def last_command(self):
     try:

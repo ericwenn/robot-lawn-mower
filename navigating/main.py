@@ -5,6 +5,7 @@ from random import random
 from time import sleep
 from visualization.printer import create_visualizer
 from configuration.config_listener import ConfigListener
+import configuration.commands as cmds
 import atexit
 
 sensors = Sensors()
@@ -51,20 +52,25 @@ def main():
   sensors.start()
   conf.start()
   while(True):
-    can_forward, certainty = can_move_forward()
 
-    #vis.render()    
-    if can_forward:
-      if certainty >= .6:
-        steer.forward()
-      else:
-        steer.stop()
+    if conf.is_configuring():
+      cmd = conf.last_command()
+      print cmd
     else:
-      if certainty >= .5:
-        spin()
+      can_forward, certainty = can_move_forward()
+
+      #vis.render()    
+      if can_forward:
+        if certainty >= .6:
+          steer.forward()
+        else:
+          steer.stop()
       else:
-        steer.stop()
-    
+        if certainty >= .5:
+          spin()
+        else:
+          steer.stop()
+      
     sleep(.001)
 
 if __name__ == "__main__":
