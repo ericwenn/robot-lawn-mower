@@ -20,6 +20,8 @@ class AnalyzerThread(Thread):
                     dd_conv.setup_config(True)
                 elif(cmd == "exit_config"):
                     dd_conv.setup_config(False)
+		elif(cmd == "left"):
+		    print "Hello World!"
                 
             except Empty:
                 pass
