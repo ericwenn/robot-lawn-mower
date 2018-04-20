@@ -124,6 +124,8 @@ class Vis(object):
     freshness = reading['data'][-1].freshness()
     certainty = reading['data'][-1].certainty()
     verdict = reading['data'][-1].verdict()
+    lat = raw_data['payload']['coord'][0]
+    lon = raw_data['payload']['coord'][1]
 
     reading['screen'].clear()
     
@@ -131,6 +133,14 @@ class Vis(object):
 
     reading['screen'].addstr(row, 2, key)
     row += 1
+
+    reading['screen'].addstr(row, 2, 'Lat')
+    reading['screen'].addstr(row, 15, str(lat), self.color(0, 1, freshness))
+    row +=1    
+
+    reading['screen'].addstr(row, 2, 'Lon')
+    reading['screen'].addstr(row, 15, str(lon), self.color(0, 1, freshness))
+    row +=2
 
     reading['screen'].addstr(row, 2, 'Freshness')
     reading['screen'].addstr(row, 15, str(freshness), self.color(0, 1, freshness))
