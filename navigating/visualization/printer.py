@@ -120,6 +120,8 @@ class Vis(object):
   
   def render_gps(self, key, reading):
     
+    raw_data = reading['data'][-1].raw()
+    
     reading['screen'].border()
     reading['screen'].refresh()
   
