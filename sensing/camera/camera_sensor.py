@@ -35,6 +35,7 @@ class CameraSensorThread(Thread):
         analyzed, intermediates = analyze_image(image)
         store_image(image, 'in', 1)
         print "stored and analyzed image", i
+        time.sleep(0.05)
         i += 1
 #        self.send(analyzed)
 class CameraSensor(object):
