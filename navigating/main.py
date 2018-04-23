@@ -92,10 +92,6 @@ def main2():
     
     sleep(0.1)
     
-def save(uss, css, grs, can_move):
-  print uss, css, grs
-  print can_move
-  print ""
 
 def main():
   steer.setup()
@@ -143,4 +139,4 @@ def main():
     sleep(.001)
 
 if __name__ == "__main__":
-  main()
+  main2()
