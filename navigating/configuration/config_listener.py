@@ -15,7 +15,8 @@ def make_handler(command_queue, position_queue):
             self.last_pos = position_queue.get(block=False)
         except Empty:
           pass
-        if not self.last_pos == None:
+        
+        if hasattr(self, 'last_pos') and not self.last_pos == None:
           self.send_response(200)
           self.send_header('Content-Type', 'application/json')
           self.end_headers()
