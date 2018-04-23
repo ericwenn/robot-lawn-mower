@@ -14,13 +14,13 @@ class CameraCaptureStreamThread(Thread):
   def run(self):
     with PiCamera(resolution = (144,96)) as c:
       stream = io.BytesIO()
-        for foo in camera.capture_continuous(stream, format='jpeg'):
-          # Truncate the stream to the current position (in case
-          # prior iterations output a longer image)
-          stream.truncate()
-          stream.seek(0)
-          img = Image.open(stream)
-          self.queue.put(img)
+      for foo in camera.capture_continuous(stream, format='jpeg'):
+        # Truncate the stream to the current position (in case
+        # prior iterations output a longer image)
+        stream.truncate()
+        stream.seek(0)
+        img = Image.open(stream)
+        self.queue.put(img)
 
 
 class CameraCaptureStream(object):
