@@ -13,7 +13,7 @@ class CameraCaptureStreamThread(Thread):
     Thread.__init__(self)
 
   def run(self):
-    with PiCamera(resolution = (15,10)) as c:
+    with PiCamera(resolution = (144,96)) as c:
       stream = io.BytesIO()
       for foo in c.capture_continuous(stream, format='jpeg', use_video_port=True):
         # Truncate the stream to the current position (in case
