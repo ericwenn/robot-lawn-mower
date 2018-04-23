@@ -82,23 +82,9 @@ def most_frequent_colour(image):
   return most_frequent_pixel
 
 def average_color(image):
-    w, h = image.size
-    pixels = image.getcolors(w * h)
-
-    counts = 0
-    r, g, b = 0, 0, 0
-
-    for count, colour in pixels:
-        #if count > 1:
-        r += colour[0]*count
-        g += colour[1]*count
-        b += colour[2]*count
-        counts += count
-
-    average_color = (r/counts, g/counts, b/counts) if counts > 0 else (0,0,0)
-
-    return (counts, average_color)
-
+    rsz = image.resize((1,1), Image.BILINEAR)
+    return rsz.getcolors()[0]
+    
 # Checks if a section of an image is clear
 def analyze_section(splits, start, stop, (proximity, size_diff)):
     mx = stop - start
@@ -144,38 +130,33 @@ def stitch_green_splits(splits, size):
             full_im.paste(im, (split['xoffset'], split['yoffset']))
     return full_im
 
+
 #"Splits" the image into three parts and checks wether each part is free
 def analyze_image(image, stitch = True, size_diff = SIZE_DIFF, proximity = PROXIMITY, hue_lower = HUE_LOWER,
     hue_upper = HUE_UPPER, sat_lower = SAT_LOWER, sat_upper = SAT_UPPER, val_lower = VAL_LOWER, 
     val_upper = VAL_UPPER, splits_x = SPLITS_X, splits_y = SPLITS_Y):
 
 
-    _, splits = split_image(image, splits_x, splits_y)
-    sec1 = int(math.floor(len(splits)/3))
+    resized = image.resize((splits_x, splits_y), Image.BILINEAR)
+
+    sec1 = int(math.floor(splits_x/3))
     sec2 = 2 * sec1
 
     clear1, clear2, clear3 = False, False, False
 
-    intermediate_images = []
-    
+    splits = []
     #Replace actual color with average color
-    for split_x in splits:
-        for split_y in split_x:
-            split_y['color'] = average_color(split_y['slice'])
+    for x in range(splits_x):
+        split_x = []
+        for y in range(splits_y):
+            split_x.append({
+                'is_green': close_to_green(
+                    resized.getpixel((x,y)),
+                    (hue_lower, hue_upper, sat_lower, sat_upper, val_lower, val_upper)
+                )
+            })
+        splits.append(split_x)
 
-    if stitch:
-        intermediate_images.append(stitch_colored_splits(splits, image.size))
-
-    #Replace actual color with average color
-    for split_x in splits:
-        for split_y in split_x:
-            split_y['is_green'] = close_to_green(
-                split_y['color'][1],
-                (hue_lower, hue_upper, sat_lower, sat_upper, val_lower, val_upper)
-            )
-    if stitch:
-        intermediate_images.append(stitch_green_splits(splits, image.size))
-    
 
     clear1, s1, s_limit1, p_limit1 = analyze_section(splits, 0, sec1, (proximity, size_diff))
     clear2, s2, s_limit2, p_limit2 = analyze_section(splits, sec1, sec2, (proximity, size_diff))
@@ -184,5 +165,5 @@ def analyze_image(image, stitch = True, size_diff = SIZE_DIFF, proximity = PROXI
     # print s1
     # print s2
     # print s3
-    return (clear1, clear2, clear3), intermediate_images
+    return (clear1, clear2, clear3), []
 

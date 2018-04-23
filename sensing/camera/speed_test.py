@@ -19,18 +19,6 @@ def test_full():
     for img in imgs:
       _ = analyze_image(img, stitch = False)
 
-
-def test_split():
-  for i in range(10):
-    for img in imgs:
-      _ = split_image(img, SPLITS_X, SPLITS_Y)
-
-def test_avg():
-  for i in range(100):
-    for split_x in splits:
-        for split_y in split_x:
-            _ = average_color(split_y['slice'])
-
 def test_is_green():
   for i in range(100):
     for split_x in splits:
@@ -44,13 +32,6 @@ if __name__ == '__main__':
     import timeit
     s = timeit.timeit("test_full()", setup="from __main__ import test_full", number=1)
     print "{} analyzes per second".format(100/s)
-
-
-    s = timeit.timeit("test_split()", setup="from __main__ import test_split", number=1)
-    print "{} splits per second".format(100/s)
-
-    s = timeit.timeit("test_avg()", setup="from __main__ import test_avg", number=1)
-    print "{} averages per second".format(100/s)
 
     s = timeit.timeit("test_is_green()", setup="from __main__ import test_is_green", number=1)
     print "{} is green checks per second".format(100/s)
