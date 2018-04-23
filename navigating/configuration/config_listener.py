@@ -6,21 +6,20 @@ import json
 import commands
 
 def make_handler(command_queue, position_queue):
-  last_pos = None
   class Webserver(BaseHTTPRequestHandler):
     def do_POST(self):
       print "Got config", self.path
       if self.path == '/config/position':
         try:
           while True:
-            last_pos = position_queue.get(block=False)
+            self.last_pos = position_queue.get(block=False)
         except Empty:
           pass
-        if not last_pos == None:
+        if not self.last_pos == None:
           self.send_response(200)
           self.send_header('Content-Type', 'application/json')
           self.end_headers()
-          body = json.dumps({ 'coords': last_pos })
+          body = json.dumps({ 'coords': self.last_pos })
           print body
           self.wfile.write(body)
         return

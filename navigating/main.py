@@ -22,7 +22,6 @@ def can_move_forward():
 
   if len(grs.raw()) > 0:
     coords = grs.raw()[0]['payload']['coord']
-    print "Register position", coords
     conf.register_position(coords)
   
   vis.register_reading('Camera', 'camera', css)
