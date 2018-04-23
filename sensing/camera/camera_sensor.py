@@ -19,9 +19,9 @@ class CameraSensorThread(Thread):
         img = take_picture(camera)
         reading, _ = analyze_image(img)
         reading, intermediate = analyze_image(img)
-        store_image(img, 'in', 3)
-        store_image(intermediate[0], 'avg', 3)
-        store_image(intermediate[1], 'green', 3)
+        #store_image(img, 'in', 3)
+        #store_image(intermediate[0], 'avg', 3)
+        #store_image(intermediate[1], 'green', 3)
         return reading
 
     def send(self, reading):
