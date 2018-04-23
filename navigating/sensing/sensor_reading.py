@@ -21,6 +21,9 @@ class SensorReading(object):
     returns [-1,1]
     """
     raise NotImplementedError()
+  
+  def time_window(self):
+    raise NotImplementedError()
 
   def raw(self):
     raise NotImplementedError()
@@ -96,6 +99,11 @@ class UltraSoundSensorReading(SensorReading):
   
   def raw(self):
     return self.raw_data
+    
+  def time_window(self):
+    first = self.raw_data[-1]
+    last = self.raw_data[0]
+    return first['timestamp'] - last['timestamp']
 
 class CameraSensorReading(SensorReading):
   """
@@ -115,6 +123,11 @@ class CameraSensorReading(SensorReading):
   def raw(self):
     return self.raw_data
 
+  def time_window(self):
+    first = self.raw_data[-1]
+    last = self.raw_data[0]
+    return first['timestamp'] - last['timestamp']
+    
 
 class GPSSensorReading(SensorReading):
   """

@@ -37,3 +37,8 @@ def cleanup(limit):
   for f in to_be_removed:
     os.remove("{}/{}".format(DIR, f))
   
+
+
+def list_files():
+  files = ["{}/{}".format(DIR, f) for f in os.listdir(DIR)]
+  return files
