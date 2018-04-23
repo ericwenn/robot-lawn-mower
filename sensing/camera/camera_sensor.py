@@ -32,6 +32,7 @@ class CameraSensorThread(Thread):
       image = self.cam_stream.get_latest_image()
       if not image == None:
         analyzed, _ = analyze_image(image)
+        print analyzed
         print "Took and analyzed image"
 #        self.send(analyzed)
 
