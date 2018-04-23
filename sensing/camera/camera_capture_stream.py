@@ -65,3 +65,4 @@ if __name__ == "__main__":
   # print "{} images over {} seconds. {} ips".format(count, delta, float(count)/delta)
   while True:
     print cam_stream.get_latest_image()
+    time.sleep(.1)
