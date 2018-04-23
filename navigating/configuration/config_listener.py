@@ -17,8 +17,11 @@ def make_handler(command_queue, position_queue):
         except Empty:
           pass
         if not pos == None:
+          self.send_response(200)
+          self.send_header('Content-Type', 'application/json')
+          self.end_headers()
           body = json.dumps({ 'coords': pos })
-          self.send_response(body)
+          self.wfile.write(body)
         return
 
       if self.path == '/config/left':
