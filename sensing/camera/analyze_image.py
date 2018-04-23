@@ -82,23 +82,9 @@ def most_frequent_colour(image):
   return most_frequent_pixel
 
 def average_color(image):
-    w, h = image.size
-    pixels = image.getcolors(w * h)
-
-    counts = 0
-    r, g, b = 0, 0, 0
-
-    for count, colour in pixels:
-        #if count > 1:
-        r += colour[0]*count
-        g += colour[1]*count
-        b += colour[2]*count
-        counts += count
-
-    average_color = (r/counts, g/counts, b/counts) if counts > 0 else (0,0,0)
-
-    return (counts, average_color)
-
+    rsz = image.resize((1,1), Image.BILINEAR)
+    return rsz.getcolors()[0]
+    
 # Checks if a section of an image is clear
 def analyze_section(splits, start, stop, (proximity, size_diff)):
     mx = stop - start
