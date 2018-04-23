@@ -7,6 +7,7 @@ from visualization.printer import create_visualizer
 from configuration.config_listener import ConfigListener
 import configuration.commands as cmds
 import atexit
+import httplib
 import persistant_readings
 
 sensors = Sensors()
@@ -114,6 +115,15 @@ def main():
         steer.forward()
       if cmd == cmds.BACKWARD:
         steer.back()
+      if cmd == cmds.PROBE:
+        conn = httplib.HTTPConnection("cmg-sensor", "8085")
+          try:
+            conn.request("POST", "/probe")
+            conn.getresponse()
+      
+          except Exception as e:
+            pass
+
 
     else:
       can_forward, certainty = can_move_forward()
