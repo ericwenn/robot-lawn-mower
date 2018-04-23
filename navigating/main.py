@@ -21,6 +21,7 @@ def can_move_forward():
 
 
   if len(grs.raw()) > 0:
+    print "Register position"
     conf.register_position(grs.raw()[0]['payload']['coord'])
   
   vis.register_reading('Camera', 'camera', css)
@@ -132,4 +133,4 @@ def main():
     sleep(.001)
 
 if __name__ == "__main__":
-  main2()
+  main()
