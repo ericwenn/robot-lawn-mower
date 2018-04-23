@@ -5,6 +5,7 @@ from Queue import Queue, Empty
 from picamera import PiCamera
 from take_picture import take_picture
 from PIL import Image
+import io
 
 class CameraCaptureStreamThread(Thread):
   def __init__(self, queue):
@@ -14,7 +15,7 @@ class CameraCaptureStreamThread(Thread):
   def run(self):
     with PiCamera(resolution = (144,96)) as c:
       stream = io.BytesIO()
-      for foo in camera.capture_continuous(stream, format='jpeg'):
+      for foo in c.capture_continuous(stream, format='jpeg'):
         # Truncate the stream to the current position (in case
         # prior iterations output a longer image)
         stream.truncate()
