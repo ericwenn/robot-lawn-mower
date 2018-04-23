@@ -63,6 +63,10 @@ if __name__ == "__main__":
   # delta = 10
   # count = cam_stream.speed_test(delta)
   # print "{} images over {} seconds. {} ips".format(count, delta, float(count)/delta)
+  last_img = None
   while True:
-    print cam_stream.get_latest_image()
+    new_img = cam_stream.get_latest_image()
+    if (new_img == last_img):
+      print "Same"
+    last_img = new_img
     time.sleep(.1)
