@@ -19,7 +19,7 @@ def make_handler(command_queue, position_queue):
           self.send_response(200)
           self.send_header('Content-Type', 'application/json')
           self.end_headers()
-          body = json.dumps({ 'coords': self.last_pos })
+          body = '||'.join(self.last_pos)
           print body
           self.wfile.write(body)
         return
