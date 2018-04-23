@@ -10,6 +10,7 @@ def make_handler(command_queue, position_queue):
     def do_POST(self):
       print "Got config", self.path
       if self.path == '/config/position':
+        pos = None
         try:
           while True:
             pos = position_queue.get(block=False)
