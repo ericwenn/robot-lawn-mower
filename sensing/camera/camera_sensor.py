@@ -19,7 +19,6 @@ class CameraSensorThread(Thread):
         img = take_picture(camera)
         reading, _ = analyze_image(img)
         reading, intermediate = analyze_image(img)
-        print "took image"
         #store_image(img, 'in', 3)
         #store_image(intermediate[0], 'avg', 3)
         #store_image(intermediate[1], 'green', 3)
@@ -38,6 +37,7 @@ class CameraSensorThread(Thread):
         with PiCamera(resolution = (144,96)) as c:
             while(True):
                 reading = self.sensorCam(c)
+                print "sending"
                 self.send(reading)
                 print "sent"
                 time.sleep(0.05)
