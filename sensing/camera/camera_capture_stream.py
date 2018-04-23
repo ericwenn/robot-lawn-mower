@@ -60,6 +60,8 @@ class CameraCaptureStream(object):
 if __name__ == "__main__":
   cam_stream = CameraCaptureStream()
   cam_stream.start()
-  delta = 10
-  count = cam_stream.speed_test(delta)
-  print "{} images over {} seconds. {} ips".format(count, delta, float(count)/delta)
+  # delta = 10
+  # count = cam_stream.speed_test(delta)
+  # print "{} images over {} seconds. {} ips".format(count, delta, float(count)/delta)
+  while True:
+    print cam_stream.get_latest_image()
