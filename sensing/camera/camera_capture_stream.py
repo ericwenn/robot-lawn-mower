@@ -23,6 +23,7 @@ class CameraCaptureStreamThread(Thread):
         img = Image.open(stream)
         img.load()
         self.queue.put(img)
+        stream = io.BytesIO()
 
 
 class CameraCaptureStream(object):
