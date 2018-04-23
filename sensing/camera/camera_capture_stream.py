@@ -37,14 +37,21 @@ class CameraCaptureStream(object):
       pass
 
     return self.latest_image
+
+  def speed_test(self):
+    time.sleep(10)
+    count = 0
+    try:
+      while True:
+        self.queue.get(block=False)
+        count +=1
+    except Empty:
+      pass
+
+    return count
     
-
-
-
 
 if __name__ == "__main__":
   cam_stream = CameraCaptureStream()
   cam_stream.start()
-  while True:
-    print cam_stream.get_latest_image()  
-    time.sleep(.5)
+  print cam_stream.speed_test()
