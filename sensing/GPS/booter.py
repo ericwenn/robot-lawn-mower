@@ -16,5 +16,5 @@ def start():
 if __name__ == "__main__":
    
     start()
-    time.sleep(100)
+    time.sleep(5000)
 
