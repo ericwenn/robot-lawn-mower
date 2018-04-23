@@ -20,9 +20,8 @@ class CameraCaptureStreamThread(Thread):
         # prior iterations output a longer image)
         stream.truncate()
         stream.seek(0)
-        img = Image.open(stream)
+        img = Image.open(stream).load()
         self.queue.put(img)
-        stream = None
 
 
 class CameraCaptureStream(object):
