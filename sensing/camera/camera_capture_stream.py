@@ -38,8 +38,8 @@ class CameraCaptureStream(object):
 
     return self.latest_image
 
-  def speed_test(self):
-    time.sleep(10)
+  def speed_test(self, delta):
+    time.sleep(delta)
     count = 0
     try:
       while True:
@@ -54,4 +54,6 @@ class CameraCaptureStream(object):
 if __name__ == "__main__":
   cam_stream = CameraCaptureStream()
   cam_stream.start()
-  print cam_stream.speed_test()
+  delta = 10
+  count = cam_stream.speed_test(delta)
+  print "{} images over {} seconds. {} ips".format(count, delta, float(count)/delta)
