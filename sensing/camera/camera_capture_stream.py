@@ -15,7 +15,7 @@ class CameraCaptureStreamThread(Thread):
   def run(self):
     with PiCamera(resolution = (144,96)) as c:
       stream = io.BytesIO()
-      for foo in c.capture_continuous(stream, format='jpeg', use_video_port=True):
+      for _ in c.capture_continuous(stream, format='jpeg', use_video_port=True):
         # Truncate the stream to the current position (in case
         # prior iterations output a longer image)
         stream.truncate()
@@ -63,10 +63,3 @@ if __name__ == "__main__":
   delta = 10
   count = cam_stream.speed_test(delta)
   print "{} images over {} seconds. {} ips".format(count, delta, float(count)/delta)
-  # last_img = None
-  # while True:
-  #   new_img = cam_stream.get_latest_image()
-  #   if (new_img == last_img):
-  #     print "Same"
-  #   last_img = new_img
-  #   time.sleep(.1)

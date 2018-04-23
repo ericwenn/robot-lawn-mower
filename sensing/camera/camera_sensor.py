@@ -10,44 +10,34 @@ import httplib
 import json
 from visualize_images import CameraVisualizer
 from store_image import store_image
+from camera_capture_stream import CameraCaptureStream
 
 class CameraSensorThread(Thread):
-    def __init__(self):
-        Thread.__init__(self)
+  def __init__(self):
+    Thread.__init__(self)
+    self.cam_stream = CameraCaptureStream()
 
-    def sensorCam(self, camera):
-        img = take_picture(camera)
-        reading, _ = analyze_image(img)
-        reading, intermediate = analyze_image(img)
-        #store_image(img, 'in', 3)
-        #store_image(intermediate[0], 'avg', 3)
-        #store_image(intermediate[1], 'green', 3)
-        return reading
-
-    def send(self, reading):
-        conn = httplib.HTTPConnection("cmg-navigating", "8080")
-        body = json.dumps({ 'can_move': reading })
-        try:
-            conn.request("POST", "/camera", body, { 'Content-Type': 'application/json' })
-            conn.getresponse()
-        except:
-            pass
+  def send(self, reading):
+    conn = httplib.HTTPConnection("cmg-navigating", "8080")
+    body = json.dumps({ 'can_move': reading })
+    try:
+      conn.request("POST", "/camera", body, { 'Content-Type': 'application/json' })
+      conn.getresponse()
+    except:
+      pass
         
-    def run(self):
-        with PiCamera(resolution = (144,96)) as c:
-            while(True):
-                reading = self.sensorCam(c)
-                print "sending"
-                self.send(reading)
-                print "sent"
-                time.sleep(0.05)
-
-
+  def run(self):
+    self.cam_stream.start()
+    while True:
+      image = self.cam_stream.get_latest_image()
+      if not image == None:
+        analyzed, _ = analyze_image(image)
+        print "Took and analyzed image"
+#        self.send(analyzed)
 
 class CameraSensor(object):
     def __init__(self):
         self.thread = CameraSensorThread()
-
 
     def start(self):
         self.thread.daemon = True
@@ -62,4 +52,4 @@ if __name__ == "__main__":
     camera_vis = CameraVisualizer()
     camera_vis.start()
     while True:
-        time.sleep(.5)
+        time.sleep(5)
