@@ -10,6 +10,7 @@ import httplib
 import json
 from visualize_images import CameraVisualizer
 from store_image import store_image
+
 class CameraSensorThread(Thread):
     def __init__(self):
         Thread.__init__(self)

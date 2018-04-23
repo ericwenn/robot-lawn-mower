@@ -136,13 +136,15 @@ def analyze_image(image, stitch = True, size_diff = SIZE_DIFF, proximity = PROXI
     hue_upper = HUE_UPPER, sat_lower = SAT_LOWER, sat_upper = SAT_UPPER, val_lower = VAL_LOWER, 
     val_upper = VAL_UPPER, splits_x = SPLITS_X, splits_y = SPLITS_Y):
 
-
+    intermediates = []
     resized = image.resize((splits_x, splits_y), Image.BILINEAR)
-
+    intermediates.append(resized)
+    
     sec1 = int(math.floor(splits_x/3))
     sec2 = 2 * sec1
 
     clear1, clear2, clear3 = False, False, False
+
 
     splits = []
     #Replace actual color with average color
