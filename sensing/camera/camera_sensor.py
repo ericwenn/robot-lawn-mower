@@ -31,11 +31,10 @@ class CameraSensorThread(Thread):
     while True:
       image = self.cam_stream.get_latest_image()
       if not image == None:
-        analyzed, _ = analyze_image(image)
-        print analyzed
-        print "Took and analyzed image"
-#        self.send(analyzed)
+        analyzed, intermediates = analyze_image(image)
 
+        store_image(image, 'in', 1)
+#        self.send(analyzed)
 class CameraSensor(object):
     def __init__(self):
         self.thread = CameraSensorThread()

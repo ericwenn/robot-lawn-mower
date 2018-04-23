@@ -138,7 +138,7 @@ def analyze_image(image, stitch = True, size_diff = SIZE_DIFF, proximity = PROXI
 
     intermediates = []
     resized = image.resize((splits_x, splits_y), Image.BILINEAR)
-    intermediates.append(resized)
+    intermediates.append(('avg', resized))
     
     sec1 = int(math.floor(splits_x/3))
     sec2 = 2 * sec1
@@ -158,6 +158,8 @@ def analyze_image(image, stitch = True, size_diff = SIZE_DIFF, proximity = PROXI
                 )
             })
         splits.append(split_x)
+    
+
 
 
     clear1, s1, s_limit1, p_limit1 = analyze_section(splits, 0, sec1, (proximity, size_diff))
@@ -167,5 +169,5 @@ def analyze_image(image, stitch = True, size_diff = SIZE_DIFF, proximity = PROXI
     # print s1
     # print s2
     # print s3
-    return (clear1, clear2, clear3), []
+    return (clear1, clear2, clear3), intermediates
 
