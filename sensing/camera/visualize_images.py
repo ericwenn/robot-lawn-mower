@@ -19,7 +19,6 @@ class myHandler(BaseHTTPRequestHandler):
         pictures = list(set(glob.glob(DIR+"/*")))
         pictures.sort(reverse=True)
 
-        print "found", len(pictures)
 
         html = '<html><head><title>Webhost</title></head><body>'
         for pic in pictures[:10]:
@@ -47,7 +46,6 @@ class myHandler(BaseHTTPRequestHandler):
         try:
         #Check the file extension required and
         #set the right mime type
-            print self.path
             sendReply = False
             if self.path.endswith(".html"):
             	mimetype='text/html'
