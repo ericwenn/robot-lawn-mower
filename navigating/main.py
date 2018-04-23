@@ -117,12 +117,12 @@ def main():
         steer.back()
       if cmd == cmds.PROBE:
         conn = httplib.HTTPConnection("cmg-sensor", "8085")
-          try:
-            conn.request("POST", "/probe")
-            conn.getresponse()
+        try:
+          conn.request("POST", "/probe")
+          conn.getresponse()
       
-          except Exception as e:
-            pass
+        except Exception as e:
+          pass
 
 
     else:
