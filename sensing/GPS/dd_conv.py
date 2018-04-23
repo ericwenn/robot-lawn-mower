@@ -1,6 +1,6 @@
-#import serial
-#from time import sleep
-#ser = serial.Serial('/dev/serial0', 9600, timeout=0.5)
+import serial
+from time import sleep
+ser = serial.Serial('/dev/serial0', 9600, timeout=0.5)
 
 config = False
 coords = []
@@ -10,8 +10,8 @@ def getDDconv():
     while True:
         e_count = 0
         try:
-            #str=ser.readline()
-            str="$GPRMC,093643.000,A,5741.2511,N,01158.7425,E,0.30,174.65,130418,,,A*61"
+            str=ser.readline()
+            #str="$GPRMC,093643.000,A,5741.2511,N,01158.7425,E,0.30,174.65,130418,,,A*61"
         except:
             pass
         if(str[1:6]!="GPRMC"):
