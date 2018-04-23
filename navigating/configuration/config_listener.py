@@ -16,7 +16,9 @@ def make_handler(command_queue, position_queue):
             pos = position_queue.get(block=False)
         except Empty:
           pass
-        self.send_response(pos)
+        if not pos == None:
+          body = json.dumps({ 'coords': pos })
+          self.send_response(body)
         return
 
       if self.path == '/config/left':
