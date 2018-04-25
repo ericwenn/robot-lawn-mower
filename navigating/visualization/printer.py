@@ -86,7 +86,7 @@ class Vis(object):
         for i in range(len(d['payload']['can_move'])):
           graphs[i].append( '*' if d['payload']['can_move'][i] else '_')
     
-    freshness = reading['data'][-1].freshness()
+    # freshness = reading['data'][-1].freshness()
     # certainty = reading['data'][-1].certainty()
     verdict = reading['data'][-1].can_move_forward()
 
@@ -103,9 +103,9 @@ class Vis(object):
       
     row += 2
 
-    reading['screen'].addstr(row, 2, 'Freshness')
-    reading['screen'].addstr(row, 15, str(freshness), self.color(0, 1, freshness))
-    row +=1
+    # reading['screen'].addstr(row, 2, 'Freshness')
+    # reading['screen'].addstr(row, 15, str(freshness), self.color(0, 1, freshness))
+    # row +=1
 
     # reading['screen'].addstr(row, 2, 'Certainty')
     # reading['screen'].addstr(row, 15, str(certainty), self.color(0, 1, certainty))
