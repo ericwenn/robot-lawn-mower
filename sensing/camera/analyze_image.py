@@ -11,8 +11,8 @@ SAT_UPPER = .7
 VAL_LOWER = 30
 VAL_UPPER = 165
 
-SPLITS_X = 9
-SPLITS_Y = 14
+SPLITS_X = 14
+SPLITS_Y = 9
 
 #Splits and image in squares
 def split_image(image_path, split_x=None, split_y=None, split_save_path=None):
