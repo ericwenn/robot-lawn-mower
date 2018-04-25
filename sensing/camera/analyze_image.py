@@ -126,8 +126,8 @@ def stitch_green_splits(splits, size):
     for x in range(len(splits)):
         for y in range(len(splits[x])):
             split = splits[x][y]            
-            im = Image.new('RGB', split['slice'].size, (255, 255, 255) if split['is_green'] else (0,0,0))
-            full_im.paste(im, (split['xoffset'], split['yoffset']))
+            im = Image.new('RGB', (1,1), (255, 255, 255) if split['is_green'] else (0,0,0))
+            full_im.paste(im, (x, y))
     return full_im
 
 
@@ -159,6 +159,8 @@ def analyze_image(image, stitch = True, size_diff = SIZE_DIFF, proximity = PROXI
             })
         splits.append(split_x)
     
+
+    intermediates.append(('vedict', stitch_green_splits(splits, (splits_x, splits_y))))
 
 
 
