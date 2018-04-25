@@ -12,17 +12,22 @@ class CameraCaptureStreamThread(Thread):
     self.queue = queue
     Thread.__init__(self)
 
+  def calibrate(self, c):
+    c.iso = 100
+    c.exposure_mode = 'auto'
+    c.awb_mode = 'auto'
+    time.sleep(2)
+    c.shutter_speed = c.exposure_speed
+    c.exposure_mode = 'off'
+    g = c.awb_gains
+    c.awb_mode = 'off'
+    c.awb_gains = g
+
   def run(self):
     with PiCamera(resolution = (144,96)) as c:
+      self.calibrate(c)
       
-      c.iso = 100
-      time.sleep(2)
-      c.shutter_speed = c.exposure_speed
-      c.exposure_mode = 'off'
-      g = c.awb_gains
-      c.awb_mode = 'off'
-      c.awb_gains = g
-
+      i = 0
       stream = io.BytesIO()
       for _ in c.capture_continuous(stream, format='jpeg', use_video_port=True):
         # Truncate the stream to the current position (in case
@@ -31,6 +36,10 @@ class CameraCaptureStreamThread(Thread):
         stream.seek(0)
         img = Image.open(io.BytesIO(stream.getvalue()))
         self.queue.put(img)
+        i += 1
+        if i % 50 == 0:
+          print "calibrating"
+          self.calibrate(c)
 
 
 class CameraCaptureStream(object):
