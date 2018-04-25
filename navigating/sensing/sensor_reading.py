@@ -126,3 +126,6 @@ class GPSSensorReading(SensorReading):
     
   def raw(self):
     return self.raw_data
+
+  def can_move_forward(self):
+    return 1.0
