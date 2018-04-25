@@ -40,7 +40,7 @@ class CameraSensorThread(Thread):
         print "stored and analyzed image", i
         time.sleep(0.05)
         i += 1
-#        self.send(analyzed)
+        self.send(analyzed)
 class CameraSensor(object):
     def __init__(self):
         self.thread = CameraSensorThread()

@@ -3,7 +3,7 @@ import os
 import math
 
 DIR = 'stored_images'
-FILE_LIMIT = 10
+FILE_LIMIT = 20000
 
 def ensure_dir_exists():
   if not os.path.exists(DIR):
