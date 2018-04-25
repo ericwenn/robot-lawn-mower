@@ -23,7 +23,7 @@ class myHandler(BaseHTTPRequestHandler):
         html = '<html><head><title>Webhost</title></head><body>'
         for pic in pictures[:10]:
           basepath = pic.split('/')[-1]
-          html += '<img style="width:30%" src="'+basepath+'"/>'
+          html += '<img style="width:30%; image-rendering: pixelated;" src="'+basepath+'"/>'
           
         html += '</body></html>'
         return html
