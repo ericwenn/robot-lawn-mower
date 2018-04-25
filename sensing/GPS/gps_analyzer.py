@@ -33,10 +33,13 @@ class AnalyzerThread(Thread):
       try:
         cmd = self.queue.get(block=False)
         if(cmd == "probe"):
+          print "Got Probe"
           dd_conv.save_point()
         elif(cmd == "enter_config"):
+          print "Got enter_config"
           dd_conv.setup_config(True)
         elif(cmd == "exit_config"):
+          print "got exit_config"
           dd_conv.setup_config(False)
           
       except Exception as e:

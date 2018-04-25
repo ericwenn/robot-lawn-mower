@@ -111,7 +111,10 @@ def isPointInPath(x, y, poly):
 def check_if_inside():
     global coords
     pos = getDDconv()
-    return isPointInPath(pos[0],pos[1],coords)
+    if(len(coords) >= 3)
+        return isPointInPath(pos[0],pos[1],coords)
+    else:
+        raise Exception('Not enough nodes')
 
 
 
