@@ -9,35 +9,13 @@ import configuration.commands as cmds
 import atexit
 import httplib
 import persistant_readings
+from can_move_forward import can_move_forward
 
 sensors = Sensors()
 vis = create_visualizer()
 conf = ConfigListener(8085)
 atexit.register(vis.cleanup)
 
-def can_move_forward():
-  uss = sensors.get_ultrasound_readings()
-  css = sensors.get_camera_readings()
-  grs = sensors.get_gps_readings()
-
-
-  if len(grs.raw()) > 0:
-    coords = grs.raw()[0]['payload']['coord']
-    conf.register_position(coords)
-  
-  vis.register_reading('Camera', 'camera', css)
-  vis.register_reading('Ultrasound', 'ultrasound', uss)
-  vis.register_reading('GPS', 'gps', grs)
-
-
-  if uss.freshness() < 0.2:
-    return True, 0 # total uncertainty
-  
-  can_forward = uss.verdict() == 1
-  certainty = uss.certainty()
-
-  vis.register_reading('Can move forward', 'can_move_forward', (can_forward, certainty))
-  return can_forward, certainty
 
 REVOLVE_TIME = 2
 def spin():
@@ -98,6 +76,18 @@ def main():
   sensors.start()
   conf.start()
   while(True):
+    uss = sensors.get_ultrasound_readings()
+    css = sensors.get_camera_readings()
+    grs = sensors.get_gps_readings()
+
+    vis.register_reading('Camera', 'camera', css)
+    vis.register_reading('Ultrasound', 'ultrasound', uss)
+    vis.register_reading('GPS', 'gps', grs)
+    vis.render()
+
+    if len(grs.raw()) > 0:
+      coords = grs.raw()[0]['payload']['coord']
+      conf.register_position(coords)
 
     if conf.is_configuring():
       cmd = conf.last_command()
@@ -122,19 +112,14 @@ def main():
 
 
     else:
-      can_forward, certainty = can_move_forward()
-
+      can_forward = can_move_forward(uss, css, grs)
+      vis.register_reading('Can move forward', 'can_move_forward', (can_forward, 1.0))
+      
       #vis.render()    
       if can_forward:
-        if certainty >= .6:
-          steer.forward()
-        else:
-          steer.stop()
+        steer.forward()
       else:
-        if certainty >= .5:
-          spin()
-        else:
-          steer.stop()
+        spin()
       
     sleep(.001)
 
