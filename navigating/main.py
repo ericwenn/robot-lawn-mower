@@ -9,6 +9,7 @@ import configuration.commands as cmds
 import atexit
 import httplib
 import persistant_readings
+import json
 from can_move_forward import can_move_forward
 
 sensors = Sensors()
@@ -114,8 +115,8 @@ def main():
           try:
             conn.request("POST", "/probe")
             resp = conn.getresponse()
-            data = resp.read()
-            print data
+            data = json.loads(resp.read())
+            conf.register_probe(data)
       
           except Exception:
             pass
