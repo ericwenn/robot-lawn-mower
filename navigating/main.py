@@ -105,7 +105,9 @@ def main():
         conn = httplib.HTTPConnection("cmg-sensor", "8085")
         try:
           conn.request("POST", "/probe")
-          conn.getresponse()
+          resp = conn.getresponse()
+          data = resp.read()
+          print data
       
         except Exception as e:
           pass
