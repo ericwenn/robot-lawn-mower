@@ -85,7 +85,6 @@ def main():
     vis.register_reading('Camera', 'camera', css)
     vis.register_reading('Ultrasound', 'ultrasound', uss)
     vis.register_reading('GPS', 'gps', grs)
-    vis.render()
 
     if len(grs.raw()) > 0:
       coords = grs.raw()[0]['payload']['coord']
@@ -114,7 +113,7 @@ def main():
     else:
       can_forward = can_move_forward(uss, css, grs)
       vis.register_reading('Can move forward', 'can_move_forward', (can_forward, 1.0))
-      
+      print grs
       #vis.render()    
       if can_forward:
         steer.forward()
