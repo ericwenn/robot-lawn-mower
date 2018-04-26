@@ -157,7 +157,7 @@ class Vis(object):
     row +=1
 
     reading['screen'].addstr(row, 2, 'Time window')
-    reading['screen'].addstr(row, 15, str(time), self.color(0, 4, time_window))
+    reading['screen'].addstr(row, 15, str(time_window), self.color(0, 4, time_window))
     row +=1
 
     reading['screen'].addstr(row, 2, 'Verdict')
@@ -169,7 +169,6 @@ class Vis(object):
   
   def render_can_move(self, key, reading):
     data = reading['data'][-1]
-    print data
 
     reading['screen'].clear()
     reading['screen'].addstr(1, 2, key)
@@ -182,7 +181,6 @@ class Vis(object):
 
     reading['screen'].border()
     reading['screen'].refresh()
-    print "can_move_done"
 
 
 def _create(screen):
