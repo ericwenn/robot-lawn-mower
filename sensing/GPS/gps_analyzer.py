@@ -9,14 +9,21 @@ class AnalyzerThread(Thread):
   def __init__(self, queue):
     Thread.__init__(self)
     self.queue = queue
+    try:
+      dd_conv.load_file("config_data.conf")
+      self.configured = True
+    except:
+      self.configured = False
     
   def send(self,coord,verdict):
     conn = httplib.HTTPConnection("cmg-navigating", "8080")
-    body = json.dumps({ 'coord': coord,'isInside': verdict })
+    if(self.configured):
+      body = json.dumps({ 'coord': coord,'isInside': verdict, 'configured' : True})
+    else:
+      body = json.dumps({ 'coord': None,'isInside': None, 'configured' : False})
     try:
-      conn.request("POST", "/gps", body, { 'Content-Type': 'application/json' })
-      conn.getresponse()
-      
+        conn.request("POST", "/gps", body, { 'Content-Type': 'application/json' })
+        conn.getresponse()
     except Exception as e:
       pass
             
@@ -41,7 +48,7 @@ class AnalyzerThread(Thread):
         elif(cmd == "exit_config"):
           print "got exit_config"
           dd_conv.setup_config(False)
-          
+          self.configured = True
       except Exception as e:
         pass
       
