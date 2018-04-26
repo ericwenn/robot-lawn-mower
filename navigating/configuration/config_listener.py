@@ -9,6 +9,9 @@ import commands
 def make_handler(command_queue, position_queue, probe_queue):
   class Webserver(BaseHTTPRequestHandler):
     def do_POST(self):
+      if not hasattr(self, 'just_probed'):
+        self.just_probed = False
+
       print "Got config", self.path
       if self.path == '/config/position':
         try:
@@ -26,17 +29,26 @@ def make_handler(command_queue, position_queue, probe_queue):
         return
 
       if self.path == '/config/probe':
-        command_queue.put(commands.PROBE)
-        probe_data = probe_queue.get()
-        self.send_response(200)
-        self.send_header('Content-Type', 'application/json')
-        self.end_headers()
-        coord = probe_data['coord']
-        body = "{}||{}".format( str(coord[0]), str(coord[1]))
-        print body
-        self.wfile.write(body)
-        return 
-
+        if not self.just_probed:
+          conn = httplib.HTTPConnection("cmg-sensing", "8085")
+          self.just_probed = True
+          print "Sending probe to cmg-sensing"
+          try:
+            conn.request("POST", "/probe")
+            resp = conn.getresponse()
+            data = json.loads(resp.read())
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            coord = data['coord']
+            body = "{}||{}".format( str(coord[0]), str(coord[1]))
+            print body
+            self.wfile.write(body)
+          except Exception:
+            pass
+          return 
+      
+      self.just_probed = False
       if self.path == '/config/left':
         command_queue.put(commands.LEFT)
       if self.path == '/config/right':

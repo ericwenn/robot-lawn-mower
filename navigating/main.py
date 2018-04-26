@@ -109,9 +109,10 @@ def main():
         steer.back()
         probed = False
       if cmd == cmds.PROBE:
-        conn = httplib.HTTPConnection("cmg-sensing", "8085")
         if(not probed):
+          conn = httplib.HTTPConnection("cmg-sensing", "8085")
           probed = True
+          print "Sending probe to cmg-sensing"
           try:
             conn.request("POST", "/probe")
             resp = conn.getresponse()
