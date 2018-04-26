@@ -6,9 +6,10 @@ import httplib
 import dd_conv
 
 class AnalyzerThread(Thread):
-  def __init__(self, queue):
+  def __init__(self, queue, probe_Q):
     Thread.__init__(self)
     self.queue = queue
+    self.probe_Q = probe_Q
     try:
       dd_conv.load_file("config_data.conf")
       self.configured = True
@@ -20,7 +21,7 @@ class AnalyzerThread(Thread):
     if(self.configured):
       body = json.dumps({ 'coord': coord,'isInside': verdict, 'configured' : True})
     else:
-      body = json.dumps({ 'coord': None,'isInside': None, 'configured' : False})
+      body = json.dumps({ 'coord': coord,'isInside': None, 'configured' : False})
     try:
         conn.request("POST", "/gps", body, { 'Content-Type': 'application/json' })
         conn.getresponse()
@@ -32,16 +33,21 @@ class AnalyzerThread(Thread):
 
       try:
         conv = dd_conv.getDDconv()
+      except Exception:
+        conv = None
+      try:
         inside = dd_conv.check_if_inside()
-        self.send(conv, inside)
-      except Exception as e:
-        pass
+      except Exception:
+        inside = None
+      self.send(conv, inside)
 
       try:
         cmd = self.queue.get(block=False)
         if(cmd == "probe"):
           print "Got Probe"
-          dd_conv.save_point()
+          save = dd_conv.save_point()
+          self.probe_Q.put(json.dumps({ 'coord': save,'isInside': None, 'configured' : False}))
+          print "hello"
         elif(cmd == "enter_config"):
           print "Got enter_config"
           dd_conv.setup_config(True)
@@ -49,7 +55,7 @@ class AnalyzerThread(Thread):
           print "got exit_config"
           dd_conv.setup_config(False)
           self.configured = True
-      except Exception as e:
+      except Exception:
         pass
       
       time.sleep(0.05)
@@ -57,8 +63,8 @@ class AnalyzerThread(Thread):
     
 
 class GPSAnalyzer(object):
-  def __init__(self, queue=None):
-    self.thread = AnalyzerThread(queue)
+  def __init__(self, queue=None, probe_Q=None):
+    self.thread = AnalyzerThread(queue,probe_Q)
     self.isStarted = False
 
   def start(self):

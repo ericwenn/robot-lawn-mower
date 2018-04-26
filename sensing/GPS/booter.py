@@ -6,8 +6,9 @@ import time
 
 def start():
     q = Queue()
-    cl = CommandListener(8085, q)
-    ga = GPSAnalyzer(q)
+    probe_Q = Queue()
+    cl = CommandListener(8085, q, probe_Q)
+    ga = GPSAnalyzer(q, probe_Q)
 
 
     cl.start()

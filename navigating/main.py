@@ -75,6 +75,7 @@ def main():
   steer.setup()
   sensors.start()
   conf.start()
+  probed = False
   while(True):
     uss = sensors.get_ultrasound_readings()
     css = sensors.get_camera_readings()
@@ -93,22 +94,49 @@ def main():
       cmd = conf.last_command()
       if cmd == cmds.LEFT:
         steer.left()
+        probed = False
       if cmd == cmds.RIGHT:
         steer.right()
+        probed = False
       if cmd == cmds.STOP:
         steer.stop()
+        probed = False
       if cmd == cmds.FORWARD:
         steer.forward()
+        probed = False
       if cmd == cmds.BACKWARD:
         steer.back()
+        probed = False
       if cmd == cmds.PROBE:
-        conn = httplib.HTTPConnection("cmg-sensor", "8085")
-        try:
-          conn.request("POST", "/probe")
-          conn.getresponse()
+        conn = httplib.HTTPConnection("cmg-sensing", "8085")
+        if(not probed):
+          try:
+            conn.request("POST", "/probe")
+            resp = conn.getresponse()
+            data = resp.read()
+            print data
       
-        except Exception as e:
-          pass
+          except Exception:
+            pass
+      if cmd == cmds.CONFIG_ON:
+        probed = False
+        conn = httplib.HTTPConnection("cmg-sensing", "8085")
+          try:
+            conn.request("POST", "/enter_config")
+            conn.getresponse()
+      
+          except Exception as e:
+            pass
+      if cmd == cmds.CONFIG_OFF:
+        probed = False
+        conn = httplib.HTTPConnection("cmg-sensing", "8085")
+          try:
+            conn.request("POST", "/exit_config")
+            conn.getresponse()
+      
+          except Exception as e:
+            pass
+
 
 
     else:
