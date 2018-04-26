@@ -92,8 +92,22 @@ class ConfigListener(object):
       while True:
         command = self.command_queue.get(block=False)
         if command == commands.CONFIG_ON:
+          conn = httplib.HTTPConnection("cmg-sensing", "8085")
+          try:
+            conn.request("POST", "/enter_config")
+            conn.getresponse()
+      
+          except Exception as e:
+            pass
           self.config_mode = True
         elif command == commands.CONFIG_OFF:
+          conn = httplib.HTTPConnection("cmg-sensing", "8085")
+          try:
+            conn.request("POST", "/exit_config")
+            conn.getresponse()
+      
+          except Exception as e:
+            pass
           self.config_mode = False
         self.command = command
     except Empty:
