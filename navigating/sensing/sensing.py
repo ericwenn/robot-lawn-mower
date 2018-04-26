@@ -21,7 +21,7 @@ class Sensors(object):
     return uls
   
   def get_camera_readings(self):
-    events = self.sensor_listener.get_camera_events(5)
+    events = self.sensor_listener.get_camera_events(10)
     csr = CameraSensorReading(events)
     return csr
   
