@@ -47,6 +47,7 @@ class AnalyzerThread(Thread):
           print "Got Probe"
           save = dd_conv.save_point()
           self.probe_Q.put(json.dumps({ 'coord': save,'isInside': None, 'configured' : False}))
+          print "hello"
         elif(cmd == "enter_config"):
           print "Got enter_config"
           dd_conv.setup_config(True)
