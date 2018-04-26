@@ -69,6 +69,7 @@ class WebserverThread(Thread):
     Thread.__init__(self)
     self.gps_queue = gps_queue
     self.camera_queue = camera_queue
+    self.probe_queue
     self.should_exit = Event()
     self.port = port
 
