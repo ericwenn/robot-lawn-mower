@@ -133,9 +133,9 @@ class Vis(object):
   def render_gps(self, key, reading):
     print "render_gps"
     verdict = reading['data'][-1].can_move_forward()
-    return
     print reading['data'][-1]
     time_window = reading['data'][-1].time_window()
+    return
     print "time_window", time_window
     return 
     raw_data = reading['data'][-1].raw()
