@@ -58,18 +58,26 @@ class Vis(object):
 
 
   def color(self, minv, maxv, value):
+    buckets = [1, 3, 2]
+    return curses.color_pair(buckets[color_bucket(minv, maxv, value)])
+  
+  def color_inverted(self, minv, maxv, value):
+    buckets = [2, 3, 1]
+    return curses.color_pair(buckets[color_bucket(minv, maxv, value)])
+    
+  def color_bucket(self, minv, maxv, value):
     d = maxv - minv
     slic = float(d) / 3
     upperbound = minv + slic*2
     lowerbound = minv + slic
 
     if value > upperbound:
-      return curses.color_pair(2)
+      return 2
     
     if value > lowerbound:
-      return curses.color_pair(3)
+      return 1
 
-    return curses.color_pair(1)
+    return 0
 
   def render_sensor(self, key, reading):
     raw_data = reading['data'][-1].raw()
@@ -114,7 +122,7 @@ class Vis(object):
     # row +=1
 
     reading['screen'].addstr(row, 2, 'Time window')
-    reading['screen'].addstr(row, 15, str(time_window), self.color(0, 1, time_window))
+    reading['screen'].addstr(row, 15, str(time_window), self.color_inverted(0, 1, time_window))
     row +=1
 
     reading['screen'].addstr(row, 2, 'Verdict')
@@ -157,7 +165,7 @@ class Vis(object):
     row +=1
 
     reading['screen'].addstr(row, 2, 'Time window')
-    reading['screen'].addstr(row, 15, str(time_window), self.color(0, 1, time_window))
+    reading['screen'].addstr(row, 15, str(time_window), self.color_inverted(0, 1, time_window))
     row +=1
 
     reading['screen'].addstr(row, 2, 'Verdict')
