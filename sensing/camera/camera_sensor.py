@@ -2,7 +2,6 @@
 import time
 from threading import Thread, Event
 from Queue import Queue, Empty
-from picamera import PiCamera
 from take_picture import take_picture
 from analyze_image import analyze_image
 import camera
@@ -28,7 +27,6 @@ class CameraSensorThread(Thread):
         
   def run(self):
     self.cam_stream.start()
-    i = 0
     while True:
       image = self.cam_stream.get_latest_image()
       if not image == None:
@@ -37,9 +35,7 @@ class CameraSensorThread(Thread):
         for intermediate in intermediates:
           store_image(intermediate[1], intermediate[0], 1 + len(intermediates))
           
-        print "stored and analyzed image", i
         time.sleep(0.05)
-        i += 1
         self.send(analyzed)
 class CameraSensor(object):
     def __init__(self):
