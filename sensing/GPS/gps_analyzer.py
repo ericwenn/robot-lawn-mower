@@ -32,14 +32,16 @@ class AnalyzerThread(Thread):
     while True:
 
       try:
-        conv = dd_conv.getDDconv()
-      except Exception:
-        conv = [0,0]
-      try:
         inside = dd_conv.check_if_inside()
       except Exception:
         inside = None
-      self.send(conv, inside)
+      try:
+        conv = dd_conv.getDDconv()
+        self.send(conv, inside)
+      except Exception:
+        pass
+      
+      
 
       try:
         cmd = self.queue.get(block=False)
