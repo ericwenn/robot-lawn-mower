@@ -114,7 +114,7 @@ class Vis(object):
     # row +=1
 
     reading['screen'].addstr(row, 2, 'Time window')
-    reading['screen'].addstr(row, 15, str(time_window), self.color(0, 4, time_window))
+    reading['screen'].addstr(row, 15, str(time_window), self.color(0, 1, time_window))
     row +=1
 
     reading['screen'].addstr(row, 2, 'Verdict')
@@ -157,7 +157,7 @@ class Vis(object):
     row +=1
 
     reading['screen'].addstr(row, 2, 'Time window')
-    reading['screen'].addstr(row, 15, str(time_window), self.color(0, 4, time_window))
+    reading['screen'].addstr(row, 15, str(time_window), self.color(0, 1, time_window))
     row +=1
 
     reading['screen'].addstr(row, 2, 'Verdict')
