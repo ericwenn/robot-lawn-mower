@@ -88,9 +88,13 @@ class Vis(object):
     
     # freshness = reading['data'][-1].freshness()
     # certainty = reading['data'][-1].certainty()
-    time_window = reading['data'][-1].time_window()
-    verdict = reading['data'][-1].can_move_forward()
-
+    if (len(raw_data) > 0):
+      time_window = reading['data'][-1].time_window()
+      verdict = reading['data'][-1].can_move_forward()
+    else:
+      time_window = 0
+      verdict = 0
+    
     reading['screen'].clear()
 
     row = 1
