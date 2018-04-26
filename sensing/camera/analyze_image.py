@@ -8,7 +8,7 @@ HUE_LOWER = .12
 HUE_UPPER = .23
 SAT_LOWER = .3
 SAT_UPPER = .7
-VAL_LOWER = 30
+VAL_LOWER = 10
 VAL_UPPER = 165
 
 SPLITS_X = 14
@@ -65,7 +65,7 @@ def close_to_green(color, (hue_lower, hue_upper, sat_lower, sat_upper, val_lower
   r = False
   if valid_hue and valid_sat and valid_val:
       r = True
-  return r
+  return r, hsv
 
 
 #Analyze the pixels in an image and return the most frequent colur present
@@ -151,11 +151,13 @@ def analyze_image(image, stitch = True, size_diff = SIZE_DIFF, proximity = PROXI
     for x in range(splits_x):
         split_x = []
         for y in range(splits_y):
+            is_green, hsv = close_to_green(
+                resized.getpixel((x,y)),
+                (hue_lower, hue_upper, sat_lower, sat_upper, val_lower, val_upper)
+            )
             split_x.append({
-                'is_green': close_to_green(
-                    resized.getpixel((x,y)),
-                    (hue_lower, hue_upper, sat_lower, sat_upper, val_lower, val_upper)
-                )
+                'is_green': is_green,
+                'hsv': hsv
             })
         splits.append(split_x)
     
@@ -168,8 +170,8 @@ def analyze_image(image, stitch = True, size_diff = SIZE_DIFF, proximity = PROXI
     clear2, s2, s_limit2, p_limit2 = analyze_section(splits, sec1, sec2, (proximity, size_diff))
     clear3, s3, s_limit3, p_limit3 = analyze_section(splits, sec2, len(splits), (proximity, size_diff))
 
-    # print s1
-    # print s2
-    # print s3
-    return (clear1, clear2, clear3), intermediates
+    # print s1, s_limit1, p_limit1
+    # print s2, s_limit2, p_limit2
+    # print s3, s_limit3, p_limit3
+    return (clear1, clear2, clear3), intermediates, splits
 

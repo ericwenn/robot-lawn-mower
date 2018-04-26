@@ -9,7 +9,7 @@ incorrect = 0
 false_positive = 0
 
 for (img_path, actual) in test_images:
-  result, _ = analyze_image(Image.open(img_path), stitch = False)
+  result, _, splits = analyze_image(Image.open(img_path), stitch = False)
 
   printed = False  
   for r in range(len(result)):
@@ -17,7 +17,8 @@ for (img_path, actual) in test_images:
       correct += 1
     else:
       if not printed:
-        #print img_path, actual, result
+        print img_path, actual, result
+        #print splits
         printed = True
       if result[r]:
         false_positive += 1
