@@ -1,16 +1,14 @@
 import time
 import operator
 
-# If a reading is less fresh than this value (in milliseconds) its considered to be unfresh.
-FRESHNESS_LIMIT = 2000
-
 class SensorReading(object):
-  def freshness(self):
-    """
-    Defines how fresh this reading is.
-    MAX(0, 1 - (diff / FRESHNESS_LIMIT))
-    """
-    raise NotImplementedError()
+  def __init__(self, raw_data):
+    self.raw_data = raw_data
+
+  def time_window(self):
+    first = self.raw_data[-1]
+    last = self.raw_data[0]
+    return first['timestamp'] - last['timestamp']
   
   def can_move_forward(self):
     """
@@ -19,11 +17,8 @@ class SensorReading(object):
     """
     raise NotImplementedError()
   
-  def time_window(self):
-    raise NotImplementedError()
-
   def raw(self):
-    raise NotImplementedError()
+    return self.raw_data
 
 
 class UltraSoundSensorReading(SensorReading):
@@ -34,18 +29,6 @@ class UltraSoundSensorReading(SensorReading):
     can_move: [ Bool, Bool, Bool ]
   }, ...]
   """
-  def __init__(self, raw_data):
-    self.raw_data = raw_data
-  
-  def freshness(self):
-    return 1.0
-    
-    if len(self.raw_data) < 1:
-      return 0
-
-    diff = (time.time() - self.raw_data[-1]["timestamp"]) * 1000
-    return max(0, 1 - (diff / FRESHNESS_LIMIT))
-
   def can_move_forward(self):
     """
     """
@@ -65,22 +48,11 @@ class UltraSoundSensorReading(SensorReading):
       averages.append(average)
     
     return min(averages)
-
- 
-  def raw(self):
-    return self.raw_data
     
-  def time_window(self):
-    first = self.raw_data[-1]
-    last = self.raw_data[0]
-    return first['timestamp'] - last['timestamp']
+
 
 class CameraSensorReading(SensorReading):
-  """
-  """
-  def __init__(self, raw_data):
-    self.raw_data = raw_data
-  
+
   def can_move_forward(self):
     number_of_readings = len(self.raw_data)
 
@@ -99,33 +71,7 @@ class CameraSensorReading(SensorReading):
     
     return min(averages)
 
-    
-  def raw(self):
-    return self.raw_data
-
-  def time_window(self):
-    first = self.raw_data[-1]
-    last = self.raw_data[0]
-    return first['timestamp'] - last['timestamp']
-    
 
 class GPSSensorReading(SensorReading):
-  """
-  """
-  def __init__(self, raw_data):
-    self.raw_data = raw_data
-  
-  def freshness(self):
-    return 1.0    
-
-  def certainty(self):
-    return 1.0    
-
-  def verdict(self):
-    return -1.0
-    
-  def raw(self):
-    return self.raw_data
-
   def can_move_forward(self):
     return 1.0

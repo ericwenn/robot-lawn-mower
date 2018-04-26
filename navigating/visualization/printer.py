@@ -88,6 +88,7 @@ class Vis(object):
     
     # freshness = reading['data'][-1].freshness()
     # certainty = reading['data'][-1].certainty()
+    time_window = reading['data'][-1].time_window()
     verdict = reading['data'][-1].can_move_forward()
 
     reading['screen'].clear()
@@ -107,9 +108,9 @@ class Vis(object):
     # reading['screen'].addstr(row, 15, str(freshness), self.color(0, 1, freshness))
     # row +=1
 
-    # reading['screen'].addstr(row, 2, 'Certainty')
-    # reading['screen'].addstr(row, 15, str(certainty), self.color(0, 1, certainty))
-    # row +=1
+    reading['screen'].addstr(row, 2, 'Time window')
+    reading['screen'].addstr(row, 15, str(time), self.color(0, 4, time_window))
+    row +=1
 
     reading['screen'].addstr(row, 2, 'Verdict')
     reading['screen'].addstr(row, 15, str(verdict), self.color(-1, 1, verdict))
@@ -122,6 +123,7 @@ class Vis(object):
     
     raw_data = reading['data'][-1].raw()
     verdict = reading['data'][-1].can_move_forward()
+    time_window = reading['data'][-1].time_window()
 
     if len(raw_data) > 0:
       lat = raw_data[0]['payload']['coord'][0]
@@ -150,7 +152,11 @@ class Vis(object):
     reading['screen'].addstr(row, 2, 'Configured')
     reading['screen'].addstr(row, 15, str(configured), self.color(0, 1, 1))
     row +=1
-    
+
+    reading['screen'].addstr(row, 2, 'Time window')
+    reading['screen'].addstr(row, 15, str(time), self.color(0, 4, time_window))
+    row +=1
+
     reading['screen'].addstr(row, 2, 'Verdict')
     reading['screen'].addstr(row, 15, str(verdict), self.color(-1, 1, verdict))
     row +=1
