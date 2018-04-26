@@ -81,7 +81,7 @@ def main():
     uss = sensors.get_ultrasound_readings()
     css = sensors.get_camera_readings()
     grs = sensors.get_gps_readings()
-    print grs
+    print grs.raw()
     
 
     vis.register_reading('Camera', 'camera', css)
