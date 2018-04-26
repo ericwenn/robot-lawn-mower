@@ -113,14 +113,17 @@ class Vis(object):
     # reading['screen'].addstr(row, 2, 'Freshness')
     # reading['screen'].addstr(row, 15, str(freshness), self.color(0, 1, freshness))
     # row +=1
+    print "sensor1"
 
     reading['screen'].addstr(row, 2, 'Time window')
     reading['screen'].addstr(row, 15, str(time_window), self.color(0, 4, time_window))
     row +=1
+    print "sensor2"
 
     reading['screen'].addstr(row, 2, 'Verdict')
     reading['screen'].addstr(row, 15, str(verdict), self.color(-1, 1, verdict))
     row +=1
+    print "sensor3"
 
     reading['screen'].border()
     reading['screen'].refresh()
