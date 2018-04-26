@@ -128,6 +128,7 @@ class Vis(object):
 
     reading['screen'].border()
     reading['screen'].refresh()
+    print "sensor4"
   
   def render_gps(self, key, reading):
     print "render_gps"
