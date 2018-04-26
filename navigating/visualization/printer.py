@@ -124,11 +124,9 @@ class Vis(object):
     reading['screen'].refresh()
   
   def render_gps(self, key, reading):
-    print reading['data']
-    return
     verdict = reading['data'][-1].can_move_forward()
     time_window = reading['data'][-1].time_window()
-
+    return 
     raw_data = reading['data'][-1].raw()
     if len(raw_data) > 0:
       lat = raw_data[0]['payload']['coord'][0]
