@@ -59,11 +59,11 @@ class Vis(object):
 
   def color(self, minv, maxv, value):
     buckets = [1, 3, 2]
-    return curses.color_pair(buckets[color_bucket(minv, maxv, value)])
+    return curses.color_pair(buckets[self.color_bucket(minv, maxv, value)])
   
   def color_inverted(self, minv, maxv, value):
     buckets = [2, 3, 1]
-    return curses.color_pair(buckets[color_bucket(minv, maxv, value)])
+    return curses.color_pair(buckets[self.color_bucket(minv, maxv, value)])
     
   def color_bucket(self, minv, maxv, value):
     d = maxv - minv
