@@ -110,6 +110,7 @@ def main():
       if cmd == cmds.PROBE:
         conn = httplib.HTTPConnection("cmg-sensing", "8085")
         if(not probed):
+          probed = True
           try:
             conn.request("POST", "/probe")
             resp = conn.getresponse()
@@ -121,21 +122,21 @@ def main():
       if cmd == cmds.CONFIG_ON:
         probed = False
         conn = httplib.HTTPConnection("cmg-sensing", "8085")
-          try:
-            conn.request("POST", "/enter_config")
-            conn.getresponse()
-      
-          except Exception as e:
-            pass
+        try:
+          conn.request("POST", "/enter_config")
+          conn.getresponse()
+    
+        except Exception as e:
+          pass
       if cmd == cmds.CONFIG_OFF:
         probed = False
         conn = httplib.HTTPConnection("cmg-sensing", "8085")
-          try:
-            conn.request("POST", "/exit_config")
-            conn.getresponse()
-      
-          except Exception as e:
-            pass
+        try:
+          conn.request("POST", "/exit_config")
+          conn.getresponse()
+    
+        except Exception as e:
+          pass
 
 
 
