@@ -51,11 +51,15 @@ class CameraSensor(object):
 
 
 
+def start():
+  cam_sense = CameraSensor()
+  cam_sense.start()
+  camera_vis = CameraVisualizer()
+  camera_vis.start()
+
+
 
 if __name__ == "__main__":
-    cam_sense = CameraSensor()
-    cam_sense.start()
-    camera_vis = CameraVisualizer()
-    camera_vis.start()
-    while True:
-        time.sleep(5)
+  start()
+  while True:
+    time.sleep(5)
