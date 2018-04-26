@@ -12,7 +12,9 @@ def make_handler(queue, probe_Q):
             command = self.path[1:]
             queue.put(command)
             if(command == "probe"):
+                print"Waiting"
                 resp = probe_Q.get()
+                print"Done"
                 self.send_response(200)
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
