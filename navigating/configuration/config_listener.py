@@ -31,6 +31,7 @@ def make_handler(command_queue, position_queue, probe_queue):
         self.send_response(200)
         self.send_header('Content-Type', 'application/json')
         self.end_headers()
+        print probe_data
         print probe_data['coords']
         # body = "{}||{}".format( str(self.last_pos[0]), str(self.last_pos[1]))
         # self.wfile.write(body)
