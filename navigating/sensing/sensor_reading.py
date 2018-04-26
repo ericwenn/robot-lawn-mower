@@ -9,6 +9,8 @@ class SensorReading(object):
     print "raw", self.raw_data
     first = self.raw_data[-1]
     last = self.raw_data[0]
+    print "first", first
+    print "last", last
 
     return first['timestamp'] - last['timestamp']
   
