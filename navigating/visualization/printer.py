@@ -45,7 +45,6 @@ class Vis(object):
         reading['screen'] = curses.newwin(15, 25, windef[0], windef[1])
         self.screen_index += 1
       
-      print "is gps", reading
       if reading['type'] == 'gps':
         self.render_gps(key, reading)
 
@@ -96,7 +95,6 @@ class Vis(object):
       time_window = 0
       verdict = 0
 
-    print "timewindow", time_window
     
     reading['screen'].clear()
 
@@ -114,21 +112,17 @@ class Vis(object):
     # reading['screen'].addstr(row, 2, 'Freshness')
     # reading['screen'].addstr(row, 15, str(freshness), self.color(0, 1, freshness))
     # row +=1
-    print "sensor1"
 
     reading['screen'].addstr(row, 2, 'Time window')
     reading['screen'].addstr(row, 15, str(time_window), self.color(0, 4, time_window))
     row +=1
-    print "sensor2"
 
     reading['screen'].addstr(row, 2, 'Verdict')
     reading['screen'].addstr(row, 15, str(verdict), self.color(-1, 1, verdict))
     row +=1
-    print "sensor3"
 
     reading['screen'].border()
     reading['screen'].refresh()
-    print "sensor4"
   
   def render_gps(self, key, reading):
     verdict = reading['data'][-1].can_move_forward()
