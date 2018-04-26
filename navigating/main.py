@@ -81,6 +81,8 @@ def main():
     uss = sensors.get_ultrasound_readings()
     css = sensors.get_camera_readings()
     grs = sensors.get_gps_readings()
+    print grs
+    
 
     vis.register_reading('Camera', 'camera', css)
     vis.register_reading('Ultrasound', 'ultrasound', uss)
@@ -94,26 +96,20 @@ def main():
       cmd = conf.last_command()
       if cmd == cmds.LEFT:
         steer.left()
-        probed = False
       if cmd == cmds.RIGHT:
         steer.right()
-        probed = False
       if cmd == cmds.STOP:
         steer.stop()
-        probed = False
       if cmd == cmds.FORWARD:
         steer.forward()
-        probed = False
       if cmd == cmds.BACKWARD:
         steer.back()
-        probed = False
 
 
 
     else:
       can_forward = can_move_forward(uss, css, grs)
       vis.register_reading('Can move forward', 'can_move_forward', (can_forward, 1.0))
-      print grs
       #vis.render()    
       if can_forward:
         steer.forward()
