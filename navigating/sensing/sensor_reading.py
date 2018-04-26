@@ -6,8 +6,10 @@ class SensorReading(object):
     self.raw_data = raw_data
 
   def time_window(self):
+    print self.raw_data
     first = self.raw_data[-1]
     last = self.raw_data[0]
+
     return first['timestamp'] - last['timestamp']
   
   def can_move_forward(self):
