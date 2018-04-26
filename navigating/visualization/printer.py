@@ -94,6 +94,8 @@ class Vis(object):
     else:
       time_window = 0
       verdict = 0
+
+    print "timewindow", time_window
     
     reading['screen'].clear()
 
@@ -113,7 +115,7 @@ class Vis(object):
     # row +=1
 
     reading['screen'].addstr(row, 2, 'Time window')
-    reading['screen'].addstr(row, 15, str(time), self.color(0, 4, time_window))
+    reading['screen'].addstr(row, 15, str(time_window), self.color(0, 4, time_window))
     row +=1
 
     reading['screen'].addstr(row, 2, 'Verdict')
