@@ -94,8 +94,8 @@ def load_file(file_name):
         print f
         for line in f:
             print line
-           splitted_line = line.split(",")
-           coords_tmp.append( [ int(splitted_line[0]) , int(splitted_line[1]) ] )
+            splitted_line = line.split(",")
+            coords_tmp.append( [ int(splitted_line[0]) , int(splitted_line[1]) ] )
     coords = coords_tmp
     print coords
     
