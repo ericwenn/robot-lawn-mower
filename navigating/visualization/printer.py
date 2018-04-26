@@ -121,15 +121,16 @@ class Vis(object):
   def render_gps(self, key, reading):
     
     raw_data = reading['data'][-1].raw()
-    #freshness = reading['data'][-1].freshness()
-    #certainty = reading['data'][-1].certainty()
     verdict = reading['data'][-1].can_move_forward()
+
     if len(raw_data) > 0:
       lat = raw_data[0]['payload']['coord'][0]
       lon = raw_data[0]['payload']['coord'][1]
+      configured = raw_data[0]['payload']['configured']
     else:
       lat = '-'
       lon = '-'
+      configured = '-'
 
     reading['screen'].clear()
     
@@ -146,14 +147,10 @@ class Vis(object):
     reading['screen'].addstr(row, 8, str(lon), self.color(0, 1, 1))
     row +=2
 
-    # reading['screen'].addstr(row, 2, 'Freshness')
-    # reading['screen'].addstr(row, 15, str(freshness), self.color(0, 1, freshness))
-    # row +=1
-
-    # reading['screen'].addstr(row, 2, 'Certainty')
-    # reading['screen'].addstr(row, 15, str(certainty), self.color(0, 1, certainty))
-    # row +=1
-
+    reading['screen'].addstr(row, 2, 'Configured')
+    reading['screen'].addstr(row, 15, str(configured), self.color(0, 1, 1))
+    row +=1
+    
     reading['screen'].addstr(row, 2, 'Verdict')
     reading['screen'].addstr(row, 15, str(verdict), self.color(-1, 1, verdict))
     row +=1
