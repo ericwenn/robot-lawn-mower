@@ -131,13 +131,8 @@ class Vis(object):
     print "sensor4"
   
   def render_gps(self, key, reading):
-    print "render_gps"
     verdict = reading['data'][-1].can_move_forward()
-    print reading['data'][-1]
     time_window = reading['data'][-1].time_window()
-    return
-    print "time_window", time_window
-    return 
     raw_data = reading['data'][-1].raw()
     if len(raw_data) > 0:
       lat = raw_data[0]['payload']['coord'][0]

@@ -8,11 +8,8 @@ class SensorReading(object):
   def time_window(self):
     if len(self.raw_data) < 1:
       return 0.0
-    print "raw", self.raw_data
     first = self.raw_data[-1]
     last = self.raw_data[0]
-    print "first", first
-    print "last", last
 
     return first['timestamp'] - last['timestamp']
   
