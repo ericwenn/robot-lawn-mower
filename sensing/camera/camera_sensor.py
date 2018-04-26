@@ -35,7 +35,7 @@ class CameraSensorThread(Thread):
         for intermediate in intermediates:
           store_image(intermediate[1], intermediate[0], 1 + len(intermediates))
           
-        time.sleep(0.05)
+        time.sleep(0.01)
         self.send(analyzed)
 class CameraSensor(object):
     def __init__(self):
