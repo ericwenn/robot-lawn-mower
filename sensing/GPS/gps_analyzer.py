@@ -55,7 +55,7 @@ class AnalyzerThread(Thread):
           print "got exit_config"
           dd_conv.setup_config(False)
           self.configured = True
-      except Exception as e:
+      except Exception:
         pass
       
       time.sleep(0.05)
