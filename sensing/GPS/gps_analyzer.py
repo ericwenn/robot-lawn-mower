@@ -34,7 +34,7 @@ class AnalyzerThread(Thread):
       try:
         conv = dd_conv.getDDconv()
       except Exception:
-        conv = None
+        conv = [0,0]
       try:
         inside = dd_conv.check_if_inside()
       except Exception:
