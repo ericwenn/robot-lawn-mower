@@ -107,7 +107,7 @@ def main():
 
 
     else:
-      can_forward = can_move_forward(uss, css, grs)
+      can_forward, _ = can_move_forward(uss, css, grs)
       vis.register_reading('Can move forward', 'can_move_forward', (can_forward, 1.0))
       vis.render()    
       if can_forward:
