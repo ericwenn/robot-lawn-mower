@@ -1,6 +1,6 @@
-import serial
-from time import sleep
-ser = serial.Serial('/dev/serial0', 9600, timeout=0.5)
+#import serial
+#from time import sleep
+#ser = serial.Serial('/dev/serial0', 9600, timeout=0.5)
 
 config = False
 coords = []
@@ -10,8 +10,8 @@ def getDDconv():
     while True:
         e_count = 0
         try:
-            str=ser.readline()
-            #str="$GPRMC,093643.000,A,5741.2511,N,01158.7425,E,0.30,174.65,130418,,,A*61"
+            #str=ser.readline()
+            str="$GPRMC,093643.000,A,5741.2511,N,01158.7425,E,0.30,174.65,130418,,,A*61"
         except:
             pass
         if(str[1:6]!="GPRMC"):
@@ -68,6 +68,7 @@ def save_point():
             y = y + c[1]
         point=[x/5,y/5]
         coords.append(point)
+        return point
     else:
         raise Exception('Not possible outside of config mode, please run setup_config(True) first')
 
@@ -77,10 +78,13 @@ def setup_config(val):
     if(val):
         config = True
     else:
-        file = open("config_data.conf", "w")
-        for c in coords:
-            file.write(str(c[0])+","+str(c[1])+"\n")
-        config = False
+        if(len(coords) >= 3):
+            file = open("config_data.conf", "w")
+            for c in coords:
+                file.write(str(c[0])+","+str(c[1])+"\n")
+            config = False
+        else:
+            raise Exception('Not enough nodes')
 
 def load_file(file_name):
     global coords
@@ -111,7 +115,10 @@ def isPointInPath(x, y, poly):
 def check_if_inside():
     global coords
     pos = getDDconv()
-    return isPointInPath(pos[0],pos[1],coords)
+    if(len(coords) >= 3):
+        return isPointInPath(pos[0],pos[1],coords)
+    else:
+        raise Exception('Not enough nodes')
 
 
 
