@@ -10,7 +10,7 @@ def make_handler(queue):
         def do_POST(self):
             
             command = self.path[1:]
-            queue.put(command)
+            queue.put(command)                
             self.send_response(200)
         
         def log_message(self, format, *args):

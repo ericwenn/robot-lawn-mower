@@ -22,7 +22,6 @@ def make_handler(command_queue, position_queue):
           self.send_header('Content-Type', 'application/json')
           self.end_headers()
           body = "{}||{}".format( str(self.last_pos[0]), str(self.last_pos[1]))
-          print body
           self.wfile.write(body)
         return
 
