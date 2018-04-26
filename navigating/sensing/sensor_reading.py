@@ -11,7 +11,8 @@ class SensorReading(object):
     first = self.raw_data[-1]
     last = self.raw_data[0]
 
-    return first['timestamp'] - last['timestamp']
+    window = first['timestamp'] - last['timestamp']
+    return float("%.3f"%window)
   
   def can_move_forward(self):
     """
