@@ -84,6 +84,7 @@ def setup_config(val):
                 file.write(str(c[0])+","+str(c[1])+"\n")
             config = False
         else:
+            coords = []
             raise Exception('Not enough nodes')
 
 def load_file(file_name):
