@@ -178,6 +178,7 @@ class Vis(object):
   
   def render_can_move(self, key, reading):
     data = reading['data'][-1]
+    print data
 
     reading['screen'].clear()
     reading['screen'].addstr(1, 2, key)
@@ -190,6 +191,7 @@ class Vis(object):
 
     reading['screen'].border()
     reading['screen'].refresh()
+    print "can_move_done"
 
 
 def _create(screen):
