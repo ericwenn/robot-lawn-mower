@@ -6,7 +6,7 @@ import json
 import httplib
 import commands
 
-def make_handler(command_queue, position_queue):
+def make_handler(command_queue, position_queue, probe_queue):
   class Webserver(BaseHTTPRequestHandler):
     def do_POST(self):
       print "Got config", self.path
@@ -25,6 +25,17 @@ def make_handler(command_queue, position_queue):
           self.wfile.write(body)
         return
 
+      if self.path == '/config/probe':
+        command_queue.put(commands.PROBE)
+        probe_data = probe_queue.get()
+        self.send_response(200)
+        self.send_header('Content-Type', 'application/json')
+        self.end_headers()
+        print probe_data['coords']
+        # body = "{}||{}".format( str(self.last_pos[0]), str(self.last_pos[1]))
+        # self.wfile.write(body)
+        return 
+
       if self.path == '/config/left':
         command_queue.put(commands.LEFT)
       if self.path == '/config/right':
@@ -41,8 +52,10 @@ def make_handler(command_queue, position_queue):
       if self.path == '/config/off':
         command_queue.put(commands.CONFIG_OFF)
 
+
       if self.path == '/config/probe':
         command_queue.put(commands.PROBE)
+        
       self.send_response(200)
     
     def log_message(self, format, *args):
@@ -52,7 +65,7 @@ def make_handler(command_queue, position_queue):
 
 
 class WebserverThread(Thread):
-  def __init__(self, gps_queue, camera_queue, port):
+  def __init__(self, gps_queue, camera_queue, probe_queue, port):
     Thread.__init__(self)
     self.gps_queue = gps_queue
     self.camera_queue = camera_queue
@@ -61,7 +74,7 @@ class WebserverThread(Thread):
 
   def run(self):
     server_address = ('', self.port)
-    httpd = HTTPServer(server_address, make_handler(self.gps_queue, self.camera_queue))
+    httpd = HTTPServer(server_address, make_handler(self.gps_queue, self.camera_queue, self.probe_queue))
     httpd.serve_forever()
 
 
@@ -69,8 +82,9 @@ class ConfigListener(object):
   def __init__(self, port=8080):
     self.command_queue = Queue()
     self.position_queue = Queue()
+    self.probe_queue = Queue()
     self.port = port
-    self.thread = WebserverThread(self.command_queue, self.position_queue, port)
+    self.thread = WebserverThread(self.command_queue, self.position_queue, self.probe_queue, port)
     self.isStarted = False
 
     self.command = None
@@ -86,6 +100,9 @@ class ConfigListener(object):
 
   def register_position(self, position):
     self.position_queue.put(position)
+
+  def register_probe(self, probe_data):
+    self.probe_queue.put(probe_data)
   
   def aggregate_commands(self):
     try:
