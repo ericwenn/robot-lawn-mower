@@ -81,7 +81,6 @@ def main():
     uss = sensors.get_ultrasound_readings()
     css = sensors.get_camera_readings()
     grs = sensors.get_gps_readings()
-    print grs.raw()
     
 
     vis.register_reading('Camera', 'camera', css)
@@ -110,7 +109,7 @@ def main():
     else:
       can_forward = can_move_forward(uss, css, grs)
       vis.register_reading('Can move forward', 'can_move_forward', (can_forward, 1.0))
-      #vis.render()    
+      vis.render()    
       if can_forward:
         steer.forward()
       else:
