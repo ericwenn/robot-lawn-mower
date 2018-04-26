@@ -33,6 +33,7 @@ def make_handler(command_queue, position_queue, probe_queue):
         self.end_headers()
         coord = probe_data['coord']
         body = "{}||{}".format( str(coord[0]), str(coord[1]))
+        print body
         self.wfile.write(body)
         return 
 
