@@ -45,6 +45,7 @@ class Vis(object):
         reading['screen'] = curses.newwin(15, 25, windef[0], windef[1])
         self.screen_index += 1
       
+      print "is gps", reading
       if reading['type'] == 'gps':
         self.render_gps(key, reading)
 
