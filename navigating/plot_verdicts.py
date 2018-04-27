@@ -32,7 +32,7 @@ def plot_verdicts():
       c = 'red'
       s = 10
     if can_move and (not can_move_2):
-      c = 'purple'
+      c = 'yellow'
       s = 100
     if (not can_move) and can_move_2:
       c = 'orange'
