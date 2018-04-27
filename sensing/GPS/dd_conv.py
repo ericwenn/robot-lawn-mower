@@ -77,6 +77,7 @@ def setup_config(val):
     global coords
     if(val):
         config = True
+        coords = []
     else:
         if(len(coords) >= 3):
             file = open("config_data.conf", "w")
