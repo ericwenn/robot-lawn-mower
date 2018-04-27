@@ -68,9 +68,9 @@ class CameraSensorReading(SensorReading):
     averages = []
     for i in range(number_of_sensors):
       sum_readings = 0
-      for reading in self.raw_data[:4]:
+      for reading in self.raw_data:
         sum_readings += (1.0 if reading['payload']["can_move"][i] else -1.0)
-      average = sum_readings / len(self.raw_data[:4])
+      average = sum_readings / len(self.raw_data)
       averages.append(average)
     
     return min(averages)
@@ -78,4 +78,14 @@ class CameraSensorReading(SensorReading):
 
 class GPSSensorReading(SensorReading):
   def can_move_forward(self):
-    return 1.0
+    number_of_readings = len(self.raw_data)
+    if number_of_readings < 3:
+      return 1.0
+
+    verdict = self.raw_data[1]['payload']['isInside']
+    is_configured = self.raw_data[1]['payload']['configured']
+
+    if not is_configured:
+      return 1.0
+    
+    return 1.0 if verdict else -1.0

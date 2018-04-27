@@ -17,17 +17,43 @@ vis = create_visualizer()
 conf = ConfigListener(8085)
 atexit.register(vis.cleanup)
 
+# time it takes for the robot under normal conditions
+# to spin 360 degrees
 
 REVOLVE_TIME = 2
 def spin():
-  # spin atleast .2s
-  time_to_spin = random()*REVOLVE_TIME
+  rand = max(random(), .2)
+  time_to_spin = rand*REVOLVE_TIME
   steer.back()
   sleep(2)
   steer.right()
   sleep(time_to_spin)
   steer.stop()
 
+def gps_spin():
+  time_to_spin = .5*REVOLVE_TIME
+  steer.right()
+  sleep(time_to_spin)
+  
+  iterations = 0
+  good_gps_readings_in_row = 0
+  while good_gps_readings_in_row < 3 and iterations < 6:
+    steer.forward()
+    sleep(.5)
+    gps_verdict = sensors.get_gps_readings().can_move_forward()
+    if gps_verdict > .8:
+      good_gps_readings_in_row += 1
+    else:
+      good_gps_readings_in_row = 0
+    iterations += 1
+  
+  # end with a random spin for randomness
+  time_to_spin = random()*REVOLVE_TIME
+  steer.right()
+  sleep(time_to_spin)
+  steer.stop()
+
+     
 
 def main2():
 
@@ -76,7 +102,6 @@ def main():
   steer.setup()
   sensors.start()
   conf.start()
-  probed = False
   while(True):
     uss = sensors.get_ultrasound_readings()
     css = sensors.get_camera_readings()
@@ -107,9 +132,13 @@ def main():
 
 
     else:
+      gps_verdict = grs.can_move_forward()
       can_forward, _ = can_move_forward(uss, css, grs)
       vis.register_reading('Can move forward', 'can_move_forward', (can_forward, 1.0))
-      vis.render()    
+      vis.render()
+
+      if gps_verdict < .8:
+        gps_spin()
       if can_forward:
         steer.forward()
       else:
