@@ -31,7 +31,7 @@ class CameraSensorThread(Thread):
       image = self.cam_stream.get_latest_image()
       if not image == None:
         analyzed, intermediates, _ = analyze_image(image)
-        # store_image(image, 'in', 1 + len(intermediates))
+#        store_image(image, 'in', 1 + len(intermediates))
         # for intermediate in intermediates:
         #   store_image(intermediate[1], intermediate[0], 1 + len(intermediates))
           
