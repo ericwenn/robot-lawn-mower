@@ -6,7 +6,7 @@ config = False
 coords = []
 
 #Will return a tuple [a,b] where a is latitude in decimal degrees and b is longitude...
-def getDDconv():
+def getCoord():
     while True:
         e_count = 0
         try:
@@ -46,29 +46,33 @@ def getDDconv():
         dd=[lat_sign*(float(lat[0:2])+(float(lat[2:])/60)),lng_sign*(float(lng[0:3])+(float(lng[3:]))/60)]
         return(dd)
 
+def getDDconv():
+    x = 0
+    y = 0
+    c = [0,0]
+    for i in range(0, 5):
+        e_count = 0
+        while(True):
+            try:
+                c = getCoord()
+                break
+            except ValueError:
+                e_count+=1
+                if(e_count > 5):
+                    raise ValueError('Save timeout')
+
+        x = x + c[0]
+        y = y + c[1]
+    point=[x/5,y/5]
+    return point
+
 def save_point():
     global config
     global coords
     if(config):
-        x = 0
-        y = 0
-        c = [0,0]
-        for i in range(0, 5):
-            e_count = 0
-            while(True):
-                try:
-                    c = getDDconv()
-                    break
-                except ValueError:
-                    e_count+=1
-                    if(e_count > 5):
-                        raise ValueError('Save timeout')
-
-            x = x + c[0]
-            y = y + c[1]
-        point=[x/5,y/5]
-        coords.append(point)
-        return point
+        c=getDDconv()
+        coords.append(c)
+        return c
     else:
         raise Exception('Not possible outside of config mode, please run setup_config(True) first')
 
