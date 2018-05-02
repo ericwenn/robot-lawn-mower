@@ -6,7 +6,7 @@ config = False
 coords = []
 
 #Will return a tuple [a,b] where a is latitude in decimal degrees and b is longitude...
-def getCoord():
+def getDDconv():
     while True:
         e_count = 0
         try:
@@ -46,7 +46,7 @@ def getCoord():
         dd=[lat_sign*(float(lat[0:2])+(float(lat[2:])/60)),lng_sign*(float(lng[0:3])+(float(lng[3:]))/60)]
         return(dd)
 
-def getDDconv():
+def getHighAcc():
     x = 0
     y = 0
     c = [0,0]
@@ -70,7 +70,7 @@ def save_point():
     global config
     global coords
     if(config):
-        c=getDDconv()
+        c=getHighAcc()
         coords.append(c)
         return c
     else:
