@@ -54,7 +54,7 @@ def getHighAcc():
         e_count = 0
         while(True):
             try:
-                c = getCoord()
+                c = getDDconv()
                 break
             except ValueError:
                 e_count+=1
