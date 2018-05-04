@@ -1,4 +1,7 @@
-#import RPi.GPIO as GPIO
+'''
+Captures images as fast as possible and puts them in a queue for consumer to use.
+Camera is set to use video which drastically increases speed of images.
+'''
 import time
 from threading import Thread, Event
 from Queue import Queue, Empty
@@ -24,13 +27,9 @@ class CameraCaptureStreamThread(Thread):
     c.awb_gains = g
 
   def run(self):
-    with PiCamera(resolution = (144,96)) as c:
-      # self.calibrate(c)
-      
+    with PiCamera(resolution = (144,96)) as c:      
       stream = io.BytesIO()
       for _ in c.capture_continuous(stream, format='jpeg', use_video_port=True):
-        # Truncate the stream to the current position (in case
-        # prior iterations output a longer image)
         stream.truncate()
         stream.seek(0)
         img = Image.open(io.BytesIO(stream.getvalue()))

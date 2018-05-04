@@ -1,7 +1,9 @@
+'''
+Tests camera accuracy for images stored in 'training_images'.
+'''
 from PIL import Image
 from analyze_image import analyze_image
 from test_images import test_images
-
 
 correct = 0
 incorrect = 0
@@ -9,7 +11,7 @@ incorrect = 0
 false_positive = 0
 
 for (img_path, actual) in test_images:
-  result, _, splits = analyze_image(Image.open(img_path), stitch = False)
+  result, _, splits = analyze_image(Image.open(img_path))
 
   printed = False  
   for r in range(len(result)):

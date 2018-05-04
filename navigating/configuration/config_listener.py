@@ -12,7 +12,7 @@ import commands
 
 def make_handler(command_queue, position_queue, probe_queue):
   class Webserver(BaseHTTPRequestHandler):
-    
+
     def do_POST(self):
       if not hasattr(self, 'just_probed'):
         self.just_probed = False
@@ -130,7 +130,7 @@ class ConfigListener(object):
             conn.request("POST", "/enter_config")
             conn.getresponse()
       
-          except Exception as e:
+          except Exception:
             pass
           self.config_mode = True
         elif command == commands.CONFIG_OFF:

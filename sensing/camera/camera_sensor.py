@@ -1,4 +1,7 @@
-#import RPi.GPIO as GPIO
+'''
+Reads images from the capture stream and analyzes them.
+The verdict from the algorithm is sent to navigation RPi over HTTP.
+'''
 import time
 from threading import Thread, Event
 from Queue import Queue, Empty

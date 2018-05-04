@@ -1,3 +1,6 @@
+'''
+Exposes a webserver which hosts images taken in real time from camera.
+'''
 from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 from os import curdir, sep, path
 import glob

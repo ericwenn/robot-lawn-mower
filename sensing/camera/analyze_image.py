@@ -1,9 +1,19 @@
+'''
+Image analysis algorithm. Given an image the algorithm decides whether its possible to move forward.
+This decision is done for three different sections of the image; left, middle, right.
+The algorithm uses color similarity (in HSV) to make these decisions.
+'''
 import math
 import colorsys
 from PIL import Image
 
+# On a row in section, how big ratio needs to be grass for it to be considered "safe".
 SIZE_DIFF = .4
+# How close to the robot does the "unsafe" row for it to be impossible to move further ahead.
 PROXIMITY = 0.2
+
+# Upper and lower boundaries for hue, saturation and value.
+# Used for deciding what grass or not.
 HUE_LOWER = .1
 HUE_UPPER = .42
 SAT_LOWER = .35
@@ -11,167 +21,99 @@ SAT_UPPER = 1.0
 VAL_LOWER = 0
 VAL_UPPER = 260
 
+# How many pixels to average the image over initially.
 SPLITS_X = 14
 SPLITS_Y = 9
 
-#Splits and image in squares
-def split_image(image_path, split_x=None, split_y=None, split_save_path=None):
-  img = image_path
-  (imageWidth, imageHeight)=image_path.size
-
-  rangex=split_x
-  rangey=split_y
-
-  gridx=int(math.ceil(float(imageWidth)/rangex))
-  gridy=int(math.ceil(float(imageHeight)/rangey))
-
-  split_grid = []
-  for x in xrange(rangex):
-    split_grid_y = []
-    for y in xrange(rangey):
-      x1 = min(x*gridx, imageWidth)
-      x2 = min(x1+gridx, imageWidth)
-      y1 = min(y*gridy, imageHeight)
-      y2 = min(y1+gridy, imageHeight)
-
-      if x1 == x2 or y1 == y2:
-        continue
-      bbox=(x1, y1, x2, y2)
-      slice_bit=img.crop(bbox)
-
-      split_grid_y.append({
-          'slice': slice_bit,
-          'xoffset': x1,
-          'yoffset': y1
-      })
-
-    if len(split_grid_y) > 0:
-      split_grid.append(split_grid_y)
-  return (imageWidth, imageHeight), split_grid
-
-#Check of a given RGB color is within the green color spectrum
-def close_to_green(color, (hue_lower, hue_upper, sat_lower, sat_upper, val_lower, val_upper)):
+def close_to_green(color):
+  '''
+  Color in rgb is converted to HSV and checked if its within grass boundaries
+  '''
   hsv = colorsys.rgb_to_hsv(color[0] + 0.0, color[1] + 0.0, color[2] + 0.0)
-  hue_treshold = [hue_lower, hue_upper]
-  sat_treshold = [sat_lower, sat_upper]
-  val_treshold = [val_lower, val_upper]
-
+  hue_treshold = [HUE_LOWER, HUE_UPPER]
+  sat_treshold = [SAT_LOWER, SAT_UPPER]
+  val_treshold = [VAL_LOWER, VAL_UPPER]
 
   valid_hue = hsv[0] <= hue_treshold[1] and hsv[0] >= hue_treshold[0]
   valid_sat = hsv[1] <= sat_treshold[1] and hsv[1] >= sat_treshold[0]
   valid_val = hsv[2] <= val_treshold[1] and hsv[2] >= val_treshold[0]
 
-
   r = False
   if valid_hue and valid_sat and valid_val:
-      r = True
+    r = True
   return r, hsv
 
-
-#Analyze the pixels in an image and return the most frequent colur present
-def most_frequent_colour(image):
-  w, h = image.size
-  pixels = image.getcolors(w * h)
-
-  most_frequent_pixel = pixels[0]
-
-  for count, colour in pixels:
-    if count > most_frequent_pixel[0]:
-      most_frequent_pixel = (count, colour)
-
-  return most_frequent_pixel
-
-def average_color(image):
-    rsz = image.resize((1,1), Image.BILINEAR)
-    return rsz.getcolors()[0]
+def analyze_section(splits, start, stop):
+  '''
+  Checks if a section of an image is clear
+  '''
+  mx = stop - start
+  my = len(splits[0])
     
-# Checks if a section of an image is clear
-def analyze_section(splits, start, stop, (proximity, size_diff)):
-    mx = stop - start
-    my = len(splits[0])
-    
-    green_in_row = []
+  green_in_row = []
 
-    for y in reversed(range(my)):
-        n_green = 0
-        for x in range(start, stop):
-            split = splits[x][y]
-            close = split['is_green']
-            if not close:
-                n_green += 1
-        green_in_row.append(n_green)
+  for y in reversed(range(my)):
+    n_green = 0
+    for x in range(start, stop):
+      split = splits[x][y]
+      close = split['is_green']
+      if not close:
+        n_green += 1
+    green_in_row.append(n_green)
 
+  proximity_limit = math.ceil(PROXIMITY*my)
+  size_limit = math.ceil(SIZE_DIFF*mx)
 
-    proximity_limit = math.ceil(proximity*my)
-    size_limit = math.ceil(size_diff*mx)
-
-    can_move = True
-    for (i,p) in enumerate(green_in_row):
-        if i < proximity_limit and p > size_limit:
-            can_move = False
-    
-    return can_move, green_in_row, size_limit, proximity_limit
-
-def stitch_colored_splits(splits, size):
-    full_im = Image.new('RGB', size)
-    for x in range(len(splits)):
-        for y in range(len(splits[x])):
-            split = splits[x][y]            
-            im = Image.new('RGB', split['slice'].size, split['color'][1])
-            full_im.paste(im, (split['xoffset'], split['yoffset']))
-    return full_im
+  can_move = True
+  for (i,p) in enumerate(green_in_row):
+    if i < proximity_limit and p > size_limit:
+      can_move = False
+  
+  return can_move, green_in_row, size_limit, proximity_limit
 
 def stitch_green_splits(splits, size):
-    full_im = Image.new('RGB', size)
-    for x in range(len(splits)):
-        for y in range(len(splits[x])):
-            split = splits[x][y]            
-            im = Image.new('RGB', (1,1), (255, 255, 255) if split['is_green'] else (0,0,0))
-            full_im.paste(im, (x, y))
-    return full_im
+  '''
+  Creates a PIL image from splits thats used for visualising algorithm.
+  '''
+  full_im = Image.new('RGB', size)
+  for x in range(len(splits)):
+    for y in range(len(splits[x])):
+      split = splits[x][y]            
+      im = Image.new('RGB', (1,1), (255, 255, 255) if split['is_green'] else (0,0,0))
+      full_im.paste(im, (x, y))
+  return full_im
+
+def analyze_image(image):
+  '''
+  Checks if, given and image, its safe for the robot to continue driving.
+  This is done in each of three sections; left, middle, right.
+  '''
+  intermediates = []
+  resized = image.resize((SPLITS_X, SPLITS_Y), Image.BILINEAR)
+  intermediates.append(('avg', resized))
+  
+  sec1 = int(math.floor(SPLITS_X/3))
+  sec2 = 2 * sec1
+
+  clear1, clear2, clear3 = False, False, False
 
 
-#"Splits" the image into three parts and checks wether each part is free
-def analyze_image(image, stitch = True, size_diff = SIZE_DIFF, proximity = PROXIMITY, hue_lower = HUE_LOWER,
-    hue_upper = HUE_UPPER, sat_lower = SAT_LOWER, sat_upper = SAT_UPPER, val_lower = VAL_LOWER, 
-    val_upper = VAL_UPPER, splits_x = SPLITS_X, splits_y = SPLITS_Y):
+  splits = []
+  for x in range(SPLITS_X):
+    split_x = []
+    for y in range(SPLITS_Y):
+      is_green, hsv = close_to_green(resized.getpixel((x,y)))
+      split_x.append({
+        'is_green': is_green,
+        'hsv': hsv
+      })
+    splits.append(split_x)
 
-    intermediates = []
-    resized = image.resize((splits_x, splits_y), Image.BILINEAR)
-    intermediates.append(('avg', resized))
-    
-    sec1 = int(math.floor(splits_x/3))
-    sec2 = 2 * sec1
+  intermediates.append(('verdict', stitch_green_splits(splits, (SPLITS_X, SPLITS_Y))))
 
-    clear1, clear2, clear3 = False, False, False
+  clear1, s1, s_limit1, p_limit1 = analyze_section(splits, 0, sec1)
+  clear2, s2, s_limit2, p_limit2 = analyze_section(splits, sec1, sec2)
+  clear3, s3, s_limit3, p_limit3 = analyze_section(splits, sec2, len(splits))
 
-
-    splits = []
-    #Replace actual color with average color
-    for x in range(splits_x):
-        split_x = []
-        for y in range(splits_y):
-            is_green, hsv = close_to_green(
-                resized.getpixel((x,y)),
-                (hue_lower, hue_upper, sat_lower, sat_upper, val_lower, val_upper)
-            )
-            split_x.append({
-                'is_green': is_green,
-                'hsv': hsv
-            })
-        splits.append(split_x)
-    
-
-    intermediates.append(('vedict', stitch_green_splits(splits, (splits_x, splits_y))))
-
-
-
-    clear1, s1, s_limit1, p_limit1 = analyze_section(splits, 0, sec1, (proximity, size_diff))
-    clear2, s2, s_limit2, p_limit2 = analyze_section(splits, sec1, sec2, (proximity, size_diff))
-    clear3, s3, s_limit3, p_limit3 = analyze_section(splits, sec2, len(splits), (proximity, size_diff))
-
-    # print s1, s_limit1, p_limit1
-    # print s2, s_limit2, p_limit2
-    # print s3, s_limit3, p_limit3
-    return (clear1, clear2, clear3), intermediates, splits
+  return (clear1, clear2, clear3), intermediates, splits
 
