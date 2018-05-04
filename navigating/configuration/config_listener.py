@@ -1,3 +1,7 @@
+'''
+Exposes a webserver that listens for commands from an external device.
+Using these commands the device can setup GPS fencing and control the robot.
+'''
 from threading import Thread, Event
 from Queue import Queue, Empty
 import time
@@ -8,6 +12,7 @@ import commands
 
 def make_handler(command_queue, position_queue, probe_queue):
   class Webserver(BaseHTTPRequestHandler):
+    
     def do_POST(self):
       if not hasattr(self, 'just_probed'):
         self.just_probed = False

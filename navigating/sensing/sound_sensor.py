@@ -1,3 +1,6 @@
+'''
+Continuously polls GPIO for readings from ultra sound sensor.
+'''
 import RPi.GPIO as GPIO
 import time
 from threading import Thread, Event

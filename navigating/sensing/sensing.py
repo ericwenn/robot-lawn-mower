@@ -1,3 +1,7 @@
+'''
+Exposes a consistent interface to all sensors.
+This is what should be used from other modules.
+'''
 from sensor_listener import SensorListener
 from sensor_reading import UltraSoundSensorReading, CameraSensorReading, GPSSensorReading
 from sound_sensor import SoundSensor

@@ -1,3 +1,6 @@
+'''
+Visualizes driving data readings from sensors in terminal using curses.
+'''
 import curses
 import curses.ascii as asc
 import time
@@ -94,8 +97,6 @@ class Vis(object):
         for i in range(len(d['payload']['can_move'])):
           graphs[i].append( '*' if d['payload']['can_move'][i] else '_')
     
-    # freshness = reading['data'][-1].freshness()
-    # certainty = reading['data'][-1].certainty()
     if (len(raw_data) > 0):
       time_window = reading['data'][-1].time_window()
       verdict = reading['data'][-1].can_move_forward()
@@ -116,10 +117,6 @@ class Vis(object):
       row += 1
       
     row += 2
-
-    # reading['screen'].addstr(row, 2, 'Freshness')
-    # reading['screen'].addstr(row, 15, str(freshness), self.color(0, 1, freshness))
-    # row +=1
 
     reading['screen'].addstr(row, 2, 'Time window')
     reading['screen'].addstr(row, 15, str(time_window), self.color_inverted(0, 1, time_window))

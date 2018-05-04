@@ -1,9 +1,13 @@
+"""
+Plots decision done by 'can_move_forward', compared to the stored values in 'persistant_readings'.
+"""
 import matplotlib.pyplot as plt
 from can_move_forward import can_move_forward
 from persistant_readings import list_files
 import json
 from sensing.sensor_reading import CameraSensorReading, UltraSoundSensorReading, GPSSensorReading
 from random import random
+
 def rehydrate(path):
   d = json.load(open(path))
   uss = UltraSoundSensorReading(d['uss'])
@@ -14,8 +18,6 @@ def rehydrate(path):
 
 def plot_verdicts():
   files = list_files()
-
-
   x = []
   y = []
   color = []

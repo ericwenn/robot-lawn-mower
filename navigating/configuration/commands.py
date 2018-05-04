@@ -8,4 +8,3 @@ CONFIG_ON = 'command.config_on'
 CONFIG_OFF = 'command.config_off'
 
 PROBE = 'command.probe'
-# POSITION = 'command.position'

@@ -1,3 +1,8 @@
+"""
+Stores readings from all sensors along with a decision on if its possible to continue driving.
+Readings are encoded as json and stored in 'stored_readings' directory.
+"""
+
 from time import time
 import os
 import math

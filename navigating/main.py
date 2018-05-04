@@ -1,16 +1,16 @@
-from sensing.sensing import Sensors
-from sensing.sensor_reading import UltraSoundSensorReading
-import steering.steer as steer
 from random import random
 from time import sleep
-from visualization.printer import create_visualizer
+import httplib
+import atexit
+import json
+from sensing.sensing import Sensors
+from sensing.sensor_reading import UltraSoundSensorReading
 from configuration.config_listener import ConfigListener
 import configuration.commands as cmds
-import atexit
-import httplib
 import persistant_readings
-import json
 from can_move_forward import can_move_forward
+import steering.steer as steer
+from visualization.printer import create_visualizer
 
 sensors = Sensors()
 vis = create_visualizer()
@@ -19,8 +19,8 @@ atexit.register(vis.cleanup)
 
 # time it takes for the robot under normal conditions
 # to spin 360 degrees
-
 REVOLVE_TIME = 2
+
 def spin():
   rand = max(random(), .2)
   time_to_spin = rand*REVOLVE_TIME
@@ -47,7 +47,7 @@ def gps_spin():
       good_gps_readings_in_row = 0
     iterations += 1
   
-  # end with a random spin for randomness
+  # end with a spin for randomness
   time_to_spin = random()*REVOLVE_TIME
   steer.right()
   sleep(time_to_spin)
@@ -55,50 +55,55 @@ def gps_spin():
 
      
 
-def main2():
+# def main2():
 
-  steer.setup()
-  sensors.start()
-  conf.start()
+#   steer.setup()
+#   sensors.start()
+#   conf.start()
 
-  initialized = False
-  just_spun = False
+#   initialized = False
+#   just_spun = False
 
-  while True:
-    cmd = conf.last_command()
+#   while True:
+#     cmd = conf.last_command()
 
-    uss = sensors.get_ultrasound_readings()
-    css = sensors.get_camera_readings()
-    grs = sensors.get_gps_readings()
+#     uss = sensors.get_ultrasound_readings()
+#     css = sensors.get_camera_readings()
+#     grs = sensors.get_gps_readings()
 
-    vis.register_reading('Camera', 'camera', css)
-    vis.register_reading('Ultrasound', 'ultrasound', uss)
-    vis.register_reading('GPS', 'gps', grs)
-    vis.render()
+#     vis.register_reading('Camera', 'camera', css)
+#     vis.register_reading('Ultrasound', 'ultrasound', uss)
+#     vis.register_reading('GPS', 'gps', grs)
+#     vis.render()
 
-    if cmd == None:
-      steer.stop()
-      continue
-    if cmd == cmds.STOP:
-      steer.stop()
-      just_spun = False
-      continue
+#     if cmd == None:
+#       steer.stop()
+#       continue
+#     if cmd == cmds.STOP:
+#       steer.stop()
+#       just_spun = False
+#       continue
 
-    if cmd == cmds.FORWARD:
-      persistant_readings.store_reading(uss, css, grs, True)
-      steer.forward()
-      just_spun = False
+#     if cmd == cmds.FORWARD:
+#       persistant_readings.store_reading(uss, css, grs, True)
+#       steer.forward()
+#       just_spun = False
 
-    elif cmd == cmds.BACKWARD:
-      if not just_spun:
-        persistant_readings.store_reading(uss, css, grs, False)    
-        spin()
-        just_spun = True
+#     elif cmd == cmds.BACKWARD:
+#       if not just_spun:
+#         persistant_readings.store_reading(uss, css, grs, False)    
+#         spin()
+#         just_spun = True
     
-    sleep(0.1)
+#     sleep(0.1)
     
 
 def main():
+  '''
+  Listens to ultrasound readings and takes navigation decisions based on them.
+  The robot can be in configuration mode, which means and external device is controlling the navigation.
+  Continiously register data thats used to visualize the progress.
+  '''
   steer.setup()
   sensors.start()
   conf.start()

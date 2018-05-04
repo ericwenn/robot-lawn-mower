@@ -1,3 +1,6 @@
+'''
+Classes for working with sensors readings in a normalized way.
+'''
 import time
 import operator
 
@@ -34,8 +37,6 @@ class UltraSoundSensorReading(SensorReading):
   }, ...]
   """
   def can_move_forward(self):
-    """
-    """
     number_of_readings = len(self.raw_data)
 
     if number_of_readings < 3:
