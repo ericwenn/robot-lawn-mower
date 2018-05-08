@@ -83,8 +83,8 @@ class GPSSensorReading(SensorReading):
     if number_of_readings < 3:
       return 1.0
 
-    verdict = self.raw_data[1]['payload']['isInside']
-    is_configured = self.raw_data[1]['payload']['configured']
+    verdict = self.raw_data[-1]['payload']['isInside']
+    is_configured = self.raw_data[-1]['payload']['configured']
 
     if not is_configured:
       return 1.0
