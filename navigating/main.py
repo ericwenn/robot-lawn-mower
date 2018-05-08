@@ -143,8 +143,9 @@ def main():
       vis.render()
 
       if gps_verdict < .8:
-        gps_spin()
-      if can_forward:
+#        gps_spin()
+        steer.stop()
+      elif can_forward:
         steer.forward()
       else:
         spin()
