@@ -19,7 +19,7 @@ atexit.register(vis.cleanup)
 
 # time it takes for the robot under normal conditions
 # to spin 360 degrees
-REVOLVE_TIME = 2
+REVOLVE_TIME = 4
 
 def spin():
   rand = max(random(), .2)
@@ -143,12 +143,12 @@ def main():
       vis.render()
 
       if gps_verdict < .8:
-#        gps_spin()
-        steer.stop()
+        gps_spin()
+#        steer.stop()
       elif can_forward:
         steer.forward()
       else:
-        spin()
+       spin()
       
     sleep(.001)
 
